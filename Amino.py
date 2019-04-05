@@ -1,8 +1,9 @@
 class Amino(object):
     """ representation of an amino acid """
 
-    def __init__(self, kind):
+    def __init__(self, id, kind):
         """ initializes an amino acid """
+        self.id = id
         self.kind = kind
         self.conn = []
         self.location = []
@@ -21,10 +22,6 @@ class Amino(object):
         Returns an int"""
         return self.bond_strength
 
-    def set_conn(self, conn):
-        """sets the connections for the amino"""
-        self.conn = conn
-
     def set_location(self, location):
         """ sets the location of the amino: [x, y]"""
         self.location = location
@@ -37,3 +34,10 @@ class Amino(object):
             self.bond_strength = -5
         else:
             self.bond_strength = 0
+
+    def set_connections(self, connected_amino):
+        """ a function to add a connected amino to self.conn"""
+        self.conn += [connected_amino]
+
+    def __repr__(self):
+        return "{}: {}".format(self.id, self.kind)
