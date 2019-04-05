@@ -12,8 +12,8 @@ Find the most optimal folding technique for the proteïn
 ### Test (Testing)
 
 ## Auteurs (Authors)
-Machiel
-Valerie
+Machiel Cligge
+Valerie Sawirja
 Amber Mayenburg
 
 ## Dankwoord (Acknowledgments)
