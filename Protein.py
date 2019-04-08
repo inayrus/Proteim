@@ -7,7 +7,7 @@ class Protein(object):
 
     def __init__(self, file):
         """initializes a protein"""
-        self.stability= 0
+        self.stability = 0
         self.amino_acids = self.load_protein("ProteinData/{}.txt".format(file))
         self.bonds = []
 
