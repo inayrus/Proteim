@@ -39,6 +39,30 @@ class Protein(object):
                     amino_acids.append(new_amino)
         return amino_acids
 
+    def ribosome_fold(self):
+        """
+        a function that folds the protein by placing its amino acids
+        one by one on a grid
+        """
+        for amino in self.amino_acids:
+            # place the first amino in location 0,0.
+
+            #  save lcations in amino attributes and in some extern Protein attribute
+
+            # for every other amino,
+            # 1) loop through the spaces around amino
+            # 2) check the Protein attribute what places are empty
+            # 3) pick one location to place the amino in
+            # 4) update amino location & location Protein attribute
+
+            # when no places around last amino available, break
+
+            # when all aminos should have been placed:
+            # 1) if doodgelopen/ not all amino's placed, do not save
+            # 2) if placed without issue:
+            #    2a) check bonds of new Protein vs saved Protein.
+            #    2b) save location attribute of most stable Protein
+
 
 if __name__ == "__main__":
 
