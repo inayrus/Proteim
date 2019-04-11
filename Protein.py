@@ -109,3 +109,4 @@ if __name__ == "__main__":
 
     # if all is good, create a protein object
     protein = Protein(sys.argv[1])
+    protein.ribosome_fold()
