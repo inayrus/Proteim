@@ -1,5 +1,8 @@
 import sys
 import pathlib
+import random
+import matplotlib.pyplot as plt
+from matplotlib_test import visualize
 from Amino import Amino
 
 class Protein(object):
@@ -10,6 +13,7 @@ class Protein(object):
         self.stability = 0
         self.amino_acids = self.load_protein("ProteinData/{}.txt".format(file))
         self.bonds = []
+        self.coordinates = {}
 
     def load_protein(self, file):
         """
@@ -44,24 +48,50 @@ class Protein(object):
         a function that folds the protein by placing its amino acids
         one by one on a grid
         """
-        for amino in self.amino_acids:
-            # place the first amino in location 0,0.
+        for index, amino in enumerate(self.amino_acids):
 
-            #  save lcations in amino attributes and in some extern Protein attribute
+            all_places = []
+
+            # place the first amino in location 0,0.
+            if index == 0:
+                self.coordinates[index] = [amino, [0, 0]]
+                amino.set_location([0, 0])
 
             # for every other amino,
             # 1) loop through the spaces around amino
-            # 2) check the Protein attribute what places are empty
-            # 3) pick one location to place the amino in
-            # 4) update amino location & location Protein attribute
+            else:
+                prev_amino, coordinates = self.coordinates[index - 1]
+                x, y = coordinates
+                all_places = [[x, y + 1], [x, y - 1], [x + 1, y], [x - 1, y]]
 
-            # when no places around last amino available, break
+                # 2) check the Protein attribute what places are empty
+                for prev_aminos, xy in self.coordinates.values():
+                    if xy in all_places:
+                        all_places.remove(xy)
+
+                # when no places around last amino available, break
+                if all_places == []:
+                    return []
+
+                # 3) pick one location to place the amino in
+                picked_place = random.choice(all_places)
+                print(picked_place)
+
+                # 4) update amino location & location Protein attribute
+                self.coordinates[index] = [amino, picked_place]
+                amino.set_location(picked_place)
+
 
             # when all aminos should have been placed:
             # 1) if doodgelopen/ not all amino's placed, do not save
             # 2) if placed without issue:
             #    2a) check bonds of new Protein vs saved Protein.
             #    2b) save location attribute of most stable Protein
+
+            #  return coordinates of the amino's in the protein
+
+        visualize(self.coordinates)
+        return self.coordinates
 
 
 if __name__ == "__main__":
@@ -78,4 +108,4 @@ if __name__ == "__main__":
         exit(1)
 
     # if all is good, create a protein object
-    Protein(sys.argv[1])
+    protein = Protein(sys.argv[1])
