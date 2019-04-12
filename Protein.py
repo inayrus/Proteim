@@ -161,9 +161,9 @@ class Protein(object):
             other_amino = other_amino.get_kind()
 
             # Set stability to -1 of -5 depending on bond
-            if amino or other_amino == "H":
+            if amino == "H" or other_amino == "H":
                 self.stability -= 1
-            elif amino and other_amino == "C":
+            elif amino == "C" and other_amino == "C":
                 self.stability -= 5
 
         print(self.stability)
