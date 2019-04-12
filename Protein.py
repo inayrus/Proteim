@@ -42,6 +42,19 @@ class Protein(object):
                     amino_acids.append(new_amino)
         return amino_acids
 
+    def brute_force_search(self):
+        """
+        A function that makes all proteins and saves the protein with the lowest stability
+        """
+        # TODO make a proteins
+        # if folded in on itself skip this one move on to new protein
+        # if list empty, Save that protein to list
+        # if current stability>stability in x_list delete list and append
+        # if smaller do nothing
+        # if not empty: check stability
+        # if same, check coordinates
+        # if same do nothing
+
     def ribosome_fold(self):
         """
         A function that folds the protein by placing its amino acids
@@ -137,6 +150,25 @@ class Protein(object):
                     # # check if other H not in amino's own connections
                     # amino.is_connected(neighbor_amino)
 
+    def set_stability(self):
+        """
+        A function that sets the stability of the protein
+        """
+        # Check all bonds and get kinds of bonded amino's
+        for bond in self.bonds:
+            amino, other_amino = bond
+            amino = amino.get_kind()
+            other_amino = other_amino.get_kind()
+
+            # Set stability to -1 of -5 depending on bond
+            if amino or other_amino == "H":
+                self.stability -= 1
+            elif amino and other_amino == "C":
+                self.stability -= 5
+
+        print(self.stability)
+        return self.stability
+
 
     def get_neightbors(self, coordinates):
         """
@@ -152,7 +184,7 @@ class Protein(object):
         A function that visualizes the folded protein using matplotlib
         """
         # putting the coordinates in an x and an y list
-        x_list, y_list, scat_hx_list, scat_hy_list, scat_px_list, scat_py_list = ([] for list in range(6))
+        x_list, y_list, scat_hx_list, scat_hy_list, scat_px_list, scat_py_list, scat_cx_list, scat_cy_list = ([] for list in range(8))
 
         for index in range(len(all_coordinates)):
             # unpack the coordinate values
@@ -169,6 +201,9 @@ class Protein(object):
             elif amino_kind == 'H':
                 scat_hx_list.append(x)
                 scat_hy_list.append(y)
+            else:
+                scat_cx_list.append(x)
+                scat_cy_list.append(y)
 
         # Plot cavalent line
         plt.plot(x_list, y_list, color='black', linestyle='solid', zorder=1)
@@ -176,6 +211,7 @@ class Protein(object):
         # use different colours to visualize the amino kind groups
         plt.scatter(scat_px_list, scat_py_list, color='red', zorder=2)
         plt.scatter(scat_hx_list, scat_hy_list, color='blue', zorder=2)
+        plt.scatter(scat_cx_list, scat_cy_list, color='gold', zorder=2)
 
         # unpack the bonds neightboring_locations
         for bond in bonds:
@@ -211,6 +247,7 @@ if __name__ == "__main__":
     protein = Protein(sys.argv[1])
     all_coordinates = protein.ribosome_fold()
     all_bonds = protein.set_bonds(all_coordinates)
+    stability = protein.set_stability()
 
     # Visualize the protein
     protein.visualize(all_coordinates, all_bonds)
