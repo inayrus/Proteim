@@ -44,11 +44,11 @@ class Protein(object):
 
     def ribosome_fold(self):
         """
-        a function that folds the protein by placing its amino acids
+        A function that folds the protein by placing its amino acids
         one by one on a grid
         """
         for index, amino in enumerate(self.amino_acids):
-
+            # initializes list of all possible plces for new aminoacid
             all_places = []
 
             # place the first amino in location 0,0.
@@ -67,17 +67,22 @@ class Protein(object):
                     if xy in all_places:
                         all_places.remove(xy)
 
-                # 3) pick one location to place the amino in
-                picked_place = random.choice(all_places)
-
                 # when no places around last amino available, break
                 if all_places == []:
-                    return []
+                    # TODO
+                    # Breadth of depth first search implementeren
+                    # Tegen doodlopen
+                    print("Whoops folded in on myself")
+                    exit(1)
+
+                # 3) pick one location to place the amino in
+                picked_place = random.choice(all_places)
 
                 # 4) update amino location & location Protein attribute
                 self.coordinates += [[amino, picked_place]]
                 amino.set_location(picked_place)
 
+            # TODO
             # when all aminos should have been placed:
             # 1) if doodgelopen/ not all amino's placed, do not save
             # 2) if placed without issue:
@@ -90,7 +95,9 @@ class Protein(object):
 
 
     def set_bonds(self, coordinates):
-        """function to store the bonds H's or C's made in the protein"""
+        """
+        Function to store the bonds H's or C's made in the protein
+        """
 
         # loop through the aminos in the protein
         for amino in self.amino_acids:
@@ -133,21 +140,19 @@ class Protein(object):
 
     def get_neightbors(self, coordinates):
         """
-        a function that returns a list of all coordinates around a certain
+        A function that returns a list of all coordinates around a certain
         grid point
         """
         x, y = coordinates
         return [[x, y + 1], [x, y - 1], [x + 1, y], [x - 1, y]]
 
 
-    def visualize(all_coordinates, bonds):
+    def visualize(self, all_coordinates, bonds):
+        """
+        A function that visualizes the folded protein using matplotlib
+        """
         # putting the coordinates in an x and an y list
-        x_list = []
-        y_list = []
-        scat_hx_list = []
-        scat_hy_list = []
-        scat_px_list = []
-        scat_py_list = []
+        x_list, y_list, scat_hx_list, scat_hy_list, scat_px_list, scat_py_list = ([] for list in range(6))
 
         for index in range(len(all_coordinates)):
             # unpack the coordinate values
@@ -181,8 +186,8 @@ class Protein(object):
                 bonds_x.append(x)
                 bonds_y.append(y)
 
-        # plot bond
-        plt.plot(bonds_x, bonds_y, color='green', linestyle='--', zorder=1)
+            # plot bond
+            plt.plot(bonds_x, bonds_y, color='green', linestyle='--', zorder=1)
 
         #  set plot axis and show plot
         plt.axis([min(x_list) - 1, max(x_list) + 1, min(y_list) - 1, max(y_list) + 1])
@@ -206,4 +211,6 @@ if __name__ == "__main__":
     protein = Protein(sys.argv[1])
     all_coordinates = protein.ribosome_fold()
     all_bonds = protein.set_bonds(all_coordinates)
-    visualize(all_coordinates, all_bonds)
+
+    # Visualize the protein
+    protein.visualize(all_coordinates, all_bonds)
