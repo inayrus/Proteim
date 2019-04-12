@@ -2,7 +2,6 @@ import sys
 import pathlib
 import random
 import matplotlib.pyplot as plt
-from matplotlib_test import visualize
 from Amino import Amino
 
 class Protein(object):
