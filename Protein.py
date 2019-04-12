@@ -100,7 +100,6 @@ class Protein(object):
 
             # for H's and C's, get neighboring locations
             if amino_kind != 'P':
-
                 amino_location = amino.get_location()
                 neightboring_locations = self.get_neightbors(amino_location)
 
@@ -113,7 +112,6 @@ class Protein(object):
 
                 # check if amino is neighboring a non-covalent H or C
                 for another_amino, coordinates in self.coordinates:
-
                     if coordinates in neightboring_locations and another_amino.get_kind() != 'P':
                         bonded_amino = another_amino
 
@@ -121,10 +119,10 @@ class Protein(object):
                         if self.bonds == []:
                             self.bonds += [[amino, bonded_amino]]
 
-                        for bond in self.bonds:
-                            if (amino and bonded_amino) not in bond:
-                                # if not, add bond to attribute
-                                self.bonds += [[amino, bonded_amino]]
+                        # for bond in self.bonds:
+                        if [amino, bonded_amino] not in self.bonds and [bonded_amino, amino] not in self.bonds:
+                            # if not, add bond to attribute
+                            self.bonds += [[amino, bonded_amino]]
 
 
         print("bonds: {}".format(self.bonds))
@@ -141,6 +139,55 @@ class Protein(object):
         """
         x, y = coordinates
         return [[x, y + 1], [x, y - 1], [x + 1, y], [x - 1, y]]
+
+
+    def visualize(all_coordinates, bonds):
+        # putting the coordinates in an x and an y list
+        x_list = []
+        y_list = []
+        scat_hx_list = []
+        scat_hy_list = []
+        scat_px_list = []
+        scat_py_list = []
+
+        for index in range(len(all_coordinates)):
+            # unpack the coordinate values
+            amino, coordinates = all_coordinates[index]
+            x, y = coordinates
+            x_list.append(x)
+            y_list.append(y)
+
+            # group the coordinates of the same amino kinds
+            amino_kind = amino.get_kind()
+            if amino_kind == 'P':
+                scat_px_list.append(x)
+                scat_py_list.append(y)
+            elif amino_kind == 'H':
+                scat_hx_list.append(x)
+                scat_hy_list.append(y)
+
+        # Plot cavalent line
+        plt.plot(x_list, y_list, color='black', linestyle='solid', zorder=1)
+
+        # use different colours to visualize the amino kind groups
+        plt.scatter(scat_px_list, scat_py_list, color='red', zorder=2)
+        plt.scatter(scat_hx_list, scat_hy_list, color='blue', zorder=2)
+
+        # unpack the bonds neightboring_locations
+        for bond in bonds:
+            bonds_x = []
+            bonds_y = []
+            for bonds_amino in bond:
+                x, y = bonds_amino.get_location()
+                bonds_x.append(x)
+                bonds_y.append(y)
+
+        # plot bond
+        plt.plot(bonds_x, bonds_y, color='green', linestyle='--', zorder=1)
+
+        #  set plot axis and show plot
+        plt.axis([min(x_list) - 1, max(x_list) + 1, min(y_list) - 1, max(y_list) + 1])
+        plt.show()
 
 
 if __name__ == "__main__":

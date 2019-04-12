@@ -12,7 +12,6 @@ def visualize(all_coordinates, bonds):
     scat_px_list = []
     scat_py_list = []
 
-
     for index in range(len(all_coordinates)):
         # unpack the coordinate values
         amino, coordinates = all_coordinates[index]
@@ -29,13 +28,8 @@ def visualize(all_coordinates, bonds):
             scat_hx_list.append(x)
             scat_hy_list.append(y)
 
-        # add a new line between two aminos, then pop the amino longest in list
-        if len(x_list) == 2:
-            plt.plot(x_list, y_list, color='black', linestyle='solid', zorder=1)
-            # print(x_list, y_list)
-            x_list.pop(0)
-            y_list.pop(0)
-            
+    # Plot cavalent line
+    plt.plot(x_list, y_list, color='black', linestyle='solid', zorder=1)
 
     # use different colours to visualize the amino kind groups
     plt.scatter(scat_px_list, scat_py_list, color='red', zorder=2)
@@ -53,7 +47,7 @@ def visualize(all_coordinates, bonds):
         plt.plot(bonds_x, bonds_y, color='green', linestyle='--', zorder=1)
 
     #  set plot axis and show plot
-    plt.axis([-5, 5, -5, 5])
+    plt.axis([min(x_list) - 1, max(x_list) + 1, min(y_list) - 1, max(y_list) + 1])
     plt.show()
 
 
