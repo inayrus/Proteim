@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-def visualize(all_coordinates):
+def visualize(all_coordinates, bonds):
 
     # putting the coordinates in an x and an y list
     x_list = []
@@ -12,35 +12,47 @@ def visualize(all_coordinates):
     scat_px_list = []
     scat_py_list = []
 
-    # unpack the values in the dict
+
     for index in range(len(all_coordinates)):
+        # unpack the coordinate values
         amino, coordinates = all_coordinates[index]
         x, y = coordinates
         x_list.append(x)
         y_list.append(y)
 
-        print(amino)
-        amino = str(amino)
-        if 'P' in amino:
+        # group the coordinates of the same amino kinds
+        amino_kind = amino.get_kind()
+        if amino_kind == 'P':
             scat_px_list.append(x)
             scat_py_list.append(y)
-            plt.scatter(scat_px_list, scat_py_list, color='red', zorder=2)
-
-        if 'H' in amino:
+        elif amino_kind == 'H':
             scat_hx_list.append(x)
             scat_hy_list.append(y)
-            plt.scatter(scat_hx_list, scat_hy_list, color='blue', zorder=2)
 
-        # add a new line when there are two points, then pop one longest in list
+        # add a new line between two aminos, then pop the amino longest in list
         if len(x_list) == 2:
-            plt.plot(x_list, y_list, color='black', marker='o', linestyle='solid', zorder=1)
+            plt.plot(x_list, y_list, color='black', linestyle='solid', zorder=1)
             # print(x_list, y_list)
             x_list.pop(0)
             y_list.pop(0)
+            
 
+    # use different colours to visualize the amino kind groups
+    plt.scatter(scat_px_list, scat_py_list, color='red', zorder=2)
+    plt.scatter(scat_hx_list, scat_hy_list, color='blue', zorder=2)
 
+    # unpack the bonds neightboring_locations
+    for bond in bonds:
+        bonds_x = []
+        bonds_y = []
+        for bonds_amino in bond:
+            x, y = bonds_amino.get_location()
+            bonds_x.append(x)
+            bonds_y.append(y)
+        # plot bond
+        plt.plot(bonds_x, bonds_y, color='green', linestyle='--', zorder=1)
 
-
+    #  set plot axis and show plot
     plt.axis([-5, 5, -5, 5])
     plt.show()
 

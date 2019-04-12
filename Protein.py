@@ -13,7 +13,7 @@ class Protein(object):
         self.stability = 0
         self.amino_acids = self.load_protein("ProteinData/{}.txt".format(file))
         self.bonds = []
-        self.coordinates = {}
+        self.coordinates = []
 
     def load_protein(self, file):
         """
@@ -54,33 +54,30 @@ class Protein(object):
 
             # place the first amino in location 0,0.
             if index == 0:
-                self.coordinates[index] = [amino, [0, 0]]
+                self.coordinates += [[amino, [0, 0]]]
                 amino.set_location([0, 0])
 
-            # for every other amino,
+            # for the other aminos:
             # 1) loop through the spaces around amino
             else:
                 prev_amino, coordinates = self.coordinates[index - 1]
-                x, y = coordinates
-                all_places = [[x, y + 1], [x, y - 1], [x + 1, y], [x - 1, y]]
+                all_places = self.get_neightbors(coordinates)
 
                 # 2) check the Protein attribute what places are empty
-                for prev_aminos, xy in self.coordinates.values():
+                for prev_aminos, xy in self.coordinates:
                     if xy in all_places:
                         all_places.remove(xy)
+
+                # 3) pick one location to place the amino in
+                picked_place = random.choice(all_places)
 
                 # when no places around last amino available, break
                 if all_places == []:
                     return []
 
-                # 3) pick one location to place the amino in
-                picked_place = random.choice(all_places)
-                print(picked_place)
-
                 # 4) update amino location & location Protein attribute
-                self.coordinates[index] = [amino, picked_place]
+                self.coordinates += [[amino, picked_place]]
                 amino.set_location(picked_place)
-
 
             # when all aminos should have been placed:
             # 1) if doodgelopen/ not all amino's placed, do not save
@@ -90,8 +87,60 @@ class Protein(object):
 
             #  return coordinates of the amino's in the protein
 
-        visualize(self.coordinates)
         return self.coordinates
+
+
+    def set_bonds(self, coordinates):
+        """function to store the bonds H's or C's made in the protein"""
+
+        # loop through the aminos in the protein
+        for amino in self.amino_acids:
+            amino_kind = amino.get_kind()
+            # print(amino_kind)
+
+            # for H's and C's, get neighboring locations
+            if amino_kind != 'P':
+
+                amino_location = amino.get_location()
+                neightboring_locations = self.get_neightbors(amino_location)
+
+                # remove location if neighboring amino is in amino's own connections
+                connected_aminos = amino.get_conn()
+                for conn_amino in connected_aminos:
+                    conn_amino_location = conn_amino.get_location()
+                    if conn_amino_location in neightboring_locations:
+                        neightboring_locations.remove(conn_amino_location)
+
+                # check if amino is neighboring a non-covalent H or C
+                for another_amino, coordinates in self.coordinates:
+
+                    if coordinates in neightboring_locations and another_amino.get_kind() != 'P':
+                        bonded_amino = another_amino
+
+                        # check if current bond is already stored
+                        if self.bonds == []:
+                            self.bonds += [[amino, bonded_amino]]
+
+                        for bond in self.bonds:
+                            if (amino and bonded_amino) not in bond:
+                                # if not, add bond to attribute
+                                self.bonds += [[amino, bonded_amino]]
+
+
+        print("bonds: {}".format(self.bonds))
+        return self.bonds
+
+                    # # check if other H not in amino's own connections
+                    # amino.is_connected(neighbor_amino)
+
+
+    def get_neightbors(self, coordinates):
+        """
+        a function that returns a list of all coordinates around a certain
+        grid point
+        """
+        x, y = coordinates
+        return [[x, y + 1], [x, y - 1], [x + 1, y], [x - 1, y]]
 
 
 if __name__ == "__main__":
@@ -109,4 +158,6 @@ if __name__ == "__main__":
 
     # if all is good, create a protein object
     protein = Protein(sys.argv[1])
-    protein.ribosome_fold()
+    all_coordinates = protein.ribosome_fold()
+    all_bonds = protein.set_bonds(all_coordinates)
+    visualize(all_coordinates, all_bonds)

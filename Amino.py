@@ -9,6 +9,10 @@ class Amino(object):
         self.location = []
         self.bond_strength = self.set_bond_strength(kind)
 
+    def get_kind(self):
+        """returns the amino kind (a H, P, or C)"""
+        return self.kind
+
     def get_conn(self):
         """ returns the amino's connections (a list) """
         return self.conn
