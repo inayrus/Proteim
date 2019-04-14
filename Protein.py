@@ -47,6 +47,34 @@ class Protein(object):
         """
         A function that makes all proteins and saves the protein with the lowest stability
         """
+        # creates an empty list proteins
+        proteins = []
+
+        # if proteins is empty add the current protein to the list
+        if proteins == []:
+            proteins.append([self.stability, self.amino_acids, self.bonds, \
+            self.all_coordinates, self.amino_places])
+
+        # if the stability of the current amino is bigger than the amino in the list
+        #  Protiens stay the same
+        elif proteins [0][0] < self.stability:
+            proteins = proteins
+
+        # if the amino in proteins is the same as the current amino append the list
+        elif proteins [0] [0] == self.stability:
+            proteins.append([self.stability, self.amino_acids, self.bonds, \
+            self.all_coordinates, self.amino_places])
+
+        # if the stability of the current amino is smaller than the amino in the list
+        # the content of the list proteins is deleted en the current amino is appended 
+        elif proteins [0][0] > self.stability:
+            proteins.clear()
+            proteins.append([self.stability, self.amino_acids, self.bonds, \
+            self.all_coordinates, self.amino_places])
+
+        print("protein: ","{}".format(proteins))
+        print("protein stability: ","{}".format(proteins[0][0]))
+
         # TODO make a proteins
         # if folded in on itself skip this one move on to new protein
         # if list empty, Save that protein to list
@@ -247,6 +275,7 @@ if __name__ == "__main__":
     all_coordinates = protein.ribosome_fold()
     all_bonds = protein.set_bonds(all_coordinates)
     stability = protein.set_stability()
+    brute_force_search = protein.brute_force_search()
 
     # Visualize the protein
     protein.visualize()
