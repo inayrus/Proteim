@@ -10,7 +10,7 @@ class Protein(object):
     def __init__(self, file):
         """initializes a protein"""
         self.stability = 0
-        self.amino_acids = self.load_protein("ProteinData/{}.txt".format(file))
+        self.amino_acids = self.load_protein(file)
         self.bonds = []
         self.all_coordinates = []
         self.amino_places = {}
@@ -20,8 +20,14 @@ class Protein(object):
         Reads the protein in from a text file.
         Returns a list of Amino instances
         """
+        # ensure the file can be found despite the directory that the user is in
+        filepath = pathlib.Path("ProteinData/{}.txt".format(file))
+        if not filepath.exists():
+            p = pathlib.Path("../ProteinData/{}.txt".format(file))
+            filepath = p.resolve()
+
         # read in the file
-        with open(file, "r") as f:
+        with filepath.open('r') as f:
             amino_acids = []
 
             for line in f:
@@ -56,59 +62,6 @@ class Protein(object):
         # if same, check coordinates
         # if same do nothing
 
-    def ribosome_fold(self):
-        """
-        A function that folds the protein by placing its amino acids
-        one by one on a grid
-        """
-        for index, amino in enumerate(self.amino_acids):
-            # initializes list of all possible plces for new aminoacid
-            all_places = []
-
-            # place the first amino in location 0,0.
-            if index == 0:
-                self.all_coordinates += [[0, 0]]
-                amino.set_location([0, 0])
-                self.amino_places["[0, 0]"] = amino
-
-            # for the other aminos:
-            # 1) loop through the spaces around amino
-            else:
-                coordinates = self.all_coordinates[index - 1]
-                all_places = self.get_neighbors(coordinates)
-
-                # 2) check the Protein attribute what places are empty
-                for xy in self.all_coordinates:
-                    if xy in all_places:
-                        all_places.remove(xy)
-
-                # when no places around last amino available, break
-                if all_places == []:
-                    # TODO
-                    # Breadth of depth first search implementeren
-                    # Tegen doodlopen
-                    print("Whoops folded in on myself")
-                    exit(1)
-
-                # 3) pick one location to place the amino in
-                picked_place = random.choice(all_places)
-
-                # 4) update amino location & location Protein attribute
-                self.all_coordinates += [picked_place]
-                amino.set_location(picked_place)
-
-                self.amino_places["{}".format(picked_place)] = amino
-            # TODO
-            # when all aminos should have been placed:
-            # 1) if doodgelopen/ not all amino's placed, do not save
-            # 2) if placed without issue:
-            #    2a) check bonds of new Protein vs saved Protein.
-            #    2b) save location attribute of most stable Protein
-
-            #  return coordinates of the amino's in the protein
-
-        return self.all_coordinates
-
 
     def set_bonds(self, coordinates):
         """
@@ -142,12 +95,8 @@ class Protein(object):
                             # if not, add bond to attribute
                             self.bonds += [[amino, bonded_amino]]
 
-
         print("bonds: {}".format(self.bonds))
         return self.bonds
-
-                    # # check if other H not in amino's own connections
-                    # amino.is_connected(neighbor_amino)
 
     def set_stability(self):
         """
@@ -168,6 +117,19 @@ class Protein(object):
         print(self.stability)
         return self.stability
 
+    def add_coordinates(self, coordinate):
+        """
+        A function that adds a coordinate to the list of all used coordinates
+        in the protein
+        """
+        self.all_coordinates += [coordinate]
+
+    def add_amino_place(self, coordinate, amino):
+        """
+        A function that links an Amino to its coordinates
+        {'coordinates': Amino}
+        """
+        self.amino_places["{}".format(coordinate)] = amino
 
     def get_neighbors(self, coordinates):
         """
@@ -183,7 +145,8 @@ class Protein(object):
         A function that visualizes the folded protein using matplotlib
         """
         # putting the coordinates in an x and an y list
-        x_list, y_list, scat_hx_list, scat_hy_list, scat_px_list, scat_py_list, scat_cx_list, scat_cy_list = ([] for list in range(8))
+        x_list, y_list, scat_hx_list, scat_hy_list, scat_px_list, scat_py_list, \
+        scat_cx_list, scat_cy_list = ([] for list in range(8))
 
         for index, coordinates in enumerate(self.all_coordinates):
             # unpack the coordinate values
@@ -227,6 +190,40 @@ class Protein(object):
         #  set plot axis and show plot
         plt.axis([min(x_list) - 1, max(x_list) + 1, min(y_list) - 1, max(y_list) + 1])
         plt.show()
+
+
+    # some getters the algorithms are allowed to access
+    def get_stability(self):
+        """
+        Returns the protein's stability (int)
+        """
+        return self.stability
+
+    def get_amino_acids(self):
+        """
+        Returns a list with all Amino objects in this Protein
+        """
+        return self.amino_acids
+
+    def get_bonds(self):
+        """
+        Returns a list with all bonds between H and C amino acids
+        [Amino object 1, Amino object 2]
+        """
+        return self.bonds
+
+    def get_all_coordinates(self):
+        """
+        Returns a list with all coordinates in this protein configuarion
+        """
+        return self.all_coordinates
+
+    def get_amino_places(self):
+        """
+        Returns a dict for all locations of the amino acids
+        {'coordinate': Amino object}
+        """
+        return self.amino_places
 
 
 if __name__ == "__main__":
