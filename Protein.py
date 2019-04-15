@@ -1,4 +1,5 @@
 import sys
+sys.path.append('../')
 import pathlib
 import random
 import matplotlib.pyplot as plt
@@ -49,49 +50,8 @@ class Protein(object):
                     amino_acids.append(new_amino)
         return amino_acids
 
-    def brute_force_search(self):
-        """
-        A function that makes all proteins and saves the protein with the lowest stability
-        """
-        # creates an empty list proteins
-        proteins = []
 
-        # if proteins is empty add the current protein to the list
-        if proteins == []:
-            proteins.append([self.stability, self.amino_acids, self.bonds, \
-            self.all_coordinates, self.amino_places])
-
-        # if the stability of the current amino is bigger than the amino in the list
-        #  Protiens stay the same
-        elif proteins [0][0] < self.stability:
-            proteins = proteins
-
-        # if the amino in proteins is the same as the current amino append the list
-        elif proteins [0] [0] == self.stability:
-            proteins.append([self.stability, self.amino_acids, self.bonds, \
-            self.all_coordinates, self.amino_places])
-
-        # if the stability of the current amino is smaller than the amino in the list
-        # the content of the list proteins is deleted en the current amino is appended 
-        elif proteins [0][0] > self.stability:
-            proteins.clear()
-            proteins.append([self.stability, self.amino_acids, self.bonds, \
-            self.all_coordinates, self.amino_places])
-
-        print("protein: ","{}".format(proteins))
-        print("protein stability: ","{}".format(proteins[0][0]))
-
-        # TODO make a proteins
-        # if folded in on itself skip this one move on to new protein
-        # if list empty, Save that protein to list
-        # if current stability>stability in x_list delete list and append
-        # if smaller do nothing
-        # if not empty: check stability
-        # if same, check coordinates
-        # if same do nothing
-
-
-    def set_bonds(self, coordinates):
+    def set_bonds(self):
         """
         Function to store the bonds H's or C's made in the protein
         """
@@ -176,7 +136,7 @@ class Protein(object):
         x_list, y_list, scat_hx_list, scat_hy_list, scat_px_list, scat_py_list, \
         scat_cx_list, scat_cy_list = ([] for list in range(8))
 
-        for index, coordinates in enumerate(self.all_coordinates):
+        for coordinates in self.all_coordinates:
             # unpack the coordinate values
             x, y = coordinates
             x_list.append(x)
@@ -270,7 +230,7 @@ if __name__ == "__main__":
     # if all is good, create a protein object
     protein = Protein(sys.argv[1])
     all_coordinates = protein.ribosome_fold()
-    all_bonds = protein.set_bonds(all_coordinates)
+    all_bonds = protein.set_bonds()
     stability = protein.set_stability()
     brute_force_search = protein.brute_force_search()
 

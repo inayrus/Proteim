@@ -5,6 +5,7 @@ import random
 # and re-enters the Proteim dir, where Protein.py currently is
 sys.path.append('../')
 from Protein import Protein
+from helpers import save_best_protein
 
 def ribosome_fold(protein_filename):
     """
@@ -15,6 +16,7 @@ def ribosome_fold(protein_filename):
     # initialize a new protein object
     protein = Protein(protein_filename)
     amino_acids = protein.get_amino_acids()
+    best_proteins = []
 
     for index, amino in enumerate(amino_acids):
         # initializes list of all possible plces for new aminoacid
@@ -64,6 +66,8 @@ def ribosome_fold(protein_filename):
 
         #  return coordinates of the amino's in the protein
 
+    best_proteins = save_best_protein(best_proteins, protein)
+
     return protein
 
 
@@ -82,9 +86,9 @@ if __name__ == "__main__":
 
     # if all is good, run the algorithm
     protein = ribosome_fold(sys.argv[1])
-    all_coordinates = protein.get_all_coordinates()
-    all_bonds = protein.set_bonds(all_coordinates)
-    stability = protein.set_stability()
+    # all_coordinates = protein.get_all_coordinates()
+    # all_bonds = protein.set_bonds()
+    # stability = protein.set_stability()
 
     # Visualize the protein
     protein.visualize()
