@@ -29,25 +29,40 @@ def ribosome_fold(protein_filename):
             amino.set_location([0, 0])
 
         # for the other aminos:
-        # 1) loop through the spaces around amino
         else:
-            all_coordinates = protein.get_all_coordinates()
+            # prevent the protein from folding in on itself
+            while all_places == []:
+                # 1) loop through the spaces around amino
+                all_coordinates = protein.get_all_coordinates()
+                coordinates = all_coordinates[index - 1]
+                all_places = protein.get_neighbors(coordinates)
 
-            coordinates = all_coordinates[index - 1]
-            all_places = protein.get_neighbors(coordinates)
+                # 2) check the Protein attribute what places are empty
+                for xy in all_coordinates:
+                    if xy in all_places:
+                        all_places.remove(xy)
 
-            # 2) check the Protein attribute what places are empty
-            for xy in all_coordinates:
-                if xy in all_places:
-                    all_places.remove(xy)
+                # backtrack if last amino is dead ending (place last amino elsewhere)
+                if all_places == []:
+                    # get remaining places the last amino could have been placed
+                    prev_coordinates = all_coordinates[index - 2]
+                    remain_places = protein.get_neighbors(prev_coordinates)
+                    remain_places.remove(coordinates)
 
-            # when no places around last amino available, break
-            if all_places == []:
-                # TODO
-                # Breadth of depth first search implementeren
-                # Tegen doodlopen
-                print("Whoops folded in on myself")
-                exit(1)
+                    # pick a random new place
+                    new_place = random.choice(remain_places)
+
+                    # erase the stuck-amino coordinates from datastructures
+                    protein.remove_coordinates(coordinates)
+                    prev_amino = protein.remove_amino_place(coordinates)
+
+                    # set the new place of last amino in the protein Object
+                    protein.add_coordinates(new_place)
+                    protein.add_amino_place(new_place, prev_amino)
+                    prev_amino.set_location(new_place)
+
+                    # (beginning of loop) to get possible locations for curr amino
+                    print("Whoops folded in on myself")
 
             # 3) pick one location to place the amino in
             picked_place = random.choice(all_places)

@@ -29,9 +29,11 @@ def visualize_csv(algorithm, protein):
     x_list, y_list, scat_hx_list, scat_hy_list, scat_px_list, scat_py_list, \
     scat_cx_list, scat_cy_list = ([] for list in range(8))
 
-    for coordinates in list(all_coordinates):
-        # unpack the coordinate values
-        print(coordinates)
+    print(all_coordinates)
+
+    # for coordinates in list(all_coordinates):
+    #     # unpack the coordinate values
+    #     print(coordinates)
     #     x, y = coordinates
     #     x_list.append(x)
     #     y_list.append(y)
