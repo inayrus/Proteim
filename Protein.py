@@ -112,12 +112,26 @@ class Protein(object):
         """
         self.all_coordinates += [coordinate]
 
+    def remove_coordinates(self, coordinate):
+        """
+        A function that removes a coordinate from the list of all used coordinates
+        in the protein
+        """
+        self.all_coordinates.remove(coordinate)
+
     def add_amino_place(self, coordinate, amino):
         """
         A function that links an Amino to its coordinates
         {'coordinates': Amino}
         """
         self.amino_places["{}".format(coordinate)] = amino
+
+    def remove_amino_place(self, coordinate):
+        """
+        A function that deletes a coordinate key from the dict
+        Returns the removed amino
+        """
+        return self.amino_places.pop("{}".format(coordinate))
 
     def get_neighbors(self, coordinates):
         """
