@@ -16,35 +16,14 @@ def visualize_csv(algorithm, protein):
         print("file cannot be found")
         exit(1)
 
-    with filepath.open('r') as csv_file:
-        csv_reader = csv.reader(csv_file, delimiter=",")
-        print(csv_reader)
 
-        lines = csv_file.readlines()
+    df = pd.read_csv(filepath, decimal=",")
 
-        for line in lines:
-            line = line.split(',')
-            print(line)
-            all_coordinates = line[1]
-            print(all_coordinates)
+    print(df.head())
 
-        for row in csv_reader:
-            # unpack the file
-            if row != []:
-                stability = row[0]
-                all_coordinates = row[1]
-                amino_places = row[2]
-                bonds = row[3]
-
-    # putting the coordinates in an x and an y list
-    x_list, y_list, scat_hx_list, scat_hy_list, scat_px_list, scat_py_list, \
-    scat_cx_list, scat_cy_list = ([] for list in range(8))
-
-    # print(all_coordinates)
-
-    # for coordinates in all_coordinates:
+    # for coordinates in df['all_coordinates']:
         # unpack the coordinate values
-        # print(coordinates)
+        # print()
     #     x, y = coordinates
     #     x_list.append(x)
     #     y_list.append(y)
@@ -86,6 +65,5 @@ def visualize_csv(algorithm, protein):
     # plt.axis([min(x_list) - 1, max(x_list) + 1, min(y_list) - 1, max(y_list) + 1])
     # plt.show()
 
-
-if __name__ == "__main__":
+if __name__=="__main__":
     visualize_csv(sys.argv[1], sys.argv[2])

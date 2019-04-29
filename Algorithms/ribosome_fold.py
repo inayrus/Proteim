@@ -85,10 +85,11 @@ if __name__ == "__main__":
         exit(1)
 
     # if all is good, run the algorithm
-    protein = ribosome_fold(sys.argv[1])
+    for i in range(3**4):
+        protein = ribosome_fold(sys.argv[1])
     # all_coordinates = protein.get_all_coordinates()
     # all_bonds = protein.set_bonds()
     # stability = protein.set_stability()
 
     # Visualize the protein
-    protein.visualize()
+    # protein.visualize()
