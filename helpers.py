@@ -28,35 +28,11 @@ def save_best_protein(best_proteins, new_protein):
     else:
         best_stability = best_proteins[0].get_stability()
 
-
-    # if the stabilities are the same and protein is not yet in list, append
+    # only append proteins with same stabilities if they're folded differently
     if best_stability == new_stability:
-
-        # loop over all the best proteins
-        for best in best_proteins:
-            best_coordinates = best.get_all_coordinates()
-            new_coordinates = new_protein.get_all_coordinates()
-            same = 0
-            past_proteins = 0
-
-            # check if the coordinates match
-            for index, best_coordinate in enumerate(best_coordinates):
-                print("in for loop 2")
-                if best_coordinate == new_coordinates[index]:
-                    same += 1
-
-            # if the coordinates of a whole protein match, stop loop, don't save
-            if same == len(best_coordinates):
-                break
-            # remember how many non matching proteins have passed
-            else:
-                past_proteins += 1
-
-            # only save the new protein when looped through all best proteins
-            if past_proteins == len(best_proteins):
+        if not is_duplicate(best_proteins, new_protein):
                 best_proteins.append(new_protein)
                 save_in_csv(new_protein, "append")
-
 
     # overwrite list if there is a lower protein stabilty
     elif best_stability > new_stability:
@@ -133,6 +109,31 @@ def load_from_csv(file):
                 # append the protein to the best proteins list
                 best_proteins.append(protein)
     return best_proteins
+
+
+def is_duplicate(best_proteins, new_protein):
+    """
+    Checks if a certain protein folding has been made before.
+    Returns a bool.
+    """
+    # loop over all the best proteins
+    for best in best_proteins:
+        best_coordinates = best.get_all_coordinates()
+        new_coordinates = new_protein.get_all_coordinates()
+        same = 0
+        past_proteins = 0
+
+        # check if the coordinates match
+        for index, best_coordinate in enumerate(best_coordinates):
+            if best_coordinate == new_coordinates[index]:
+                same += 1
+
+        # if all coordinates are similar, the new protein is a duplicate
+        if same == len(best_coordinates):
+            return True
+
+    # only no duplicates when looped through all existing proteins
+    return False
 
 
 def get_file():
