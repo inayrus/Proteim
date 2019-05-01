@@ -20,14 +20,6 @@ def visualize_csv(algorithm, protein):
         csv_reader = csv.reader(csv_file, delimiter=",")
         print(csv_reader)
 
-        lines = csv_file.readlines()
-
-        for line in lines:
-            line = line.split(',')
-            print(line)
-            all_coordinates = line[1]
-            print(all_coordinates)
-
         for row in csv_reader:
             # unpack the file
             if row != []:
@@ -40,19 +32,11 @@ def visualize_csv(algorithm, protein):
     x_list, y_list, scat_hx_list, scat_hy_list, scat_px_list, scat_py_list, \
     scat_cx_list, scat_cy_list = ([] for list in range(8))
 
-<<<<<<< HEAD
-    # print(all_coordinates)
-
-    # for coordinates in all_coordinates:
-        # unpack the coordinate values
-        # print(coordinates)
-=======
     print(all_coordinates)
 
     # for coordinates in list(all_coordinates):
     #     # unpack the coordinate values
     #     print(coordinates)
->>>>>>> a0b8958b16cb47514bcd386563e43d6992486734
     #     x, y = coordinates
     #     x_list.append(x)
     #     y_list.append(y)

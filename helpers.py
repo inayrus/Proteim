@@ -21,12 +21,6 @@ def save_best_protein(best_proteins, new_protein):
         if not file.exists():
             best_stability = 0
         else:
-            # with file.open(mode='r') as f:
-            #     for line in f:
-            #         protein_data = line.split(',')
-            #         best_stability = int(protein_data[0])
-            #         break
-
             # load all the proteins that are saved in csv
             best_proteins = load_from_csv(file)
             # get the stability
@@ -34,21 +28,35 @@ def save_best_protein(best_proteins, new_protein):
     else:
         best_stability = best_proteins[0].get_stability()
 
+
     # if the stabilities are the same and protein is not yet in list, append
-    
     if best_stability == new_stability:
-        print("in if + {}".format(best_proteins))
+
+        # loop over all the best proteins
         for best in best_proteins:
-            print("in for loop 1")
-            x= 0
-            for i in range(len(new_protein.get_all_coordinates())):
+            best_coordinates = best.get_all_coordinates()
+            new_coordinates = new_protein.get_all_coordinates()
+            same = 0
+            past_proteins = 0
+
+            # check if the coordinates match
+            for index, best_coordinate in enumerate(best_coordinates):
                 print("in for loop 2")
-                print(best.get_all_coordinates()[i])
-                if best.get_all_coordinates()[i] == new_protein.get_all_coordinates()[i]:
-                    x = x + 1
-            if x != len(new_protein.get_all_coordinates()):
+                if best_coordinate == new_coordinates[index]:
+                    same += 1
+
+            # if the coordinates of a whole protein match, stop loop, don't save
+            if same == len(best_coordinates):
+                break
+            # remember how many non matching proteins have passed
+            else:
+                past_proteins += 1
+
+            # only save the new protein when looped through all best proteins
+            if past_proteins == len(best_proteins):
                 best_proteins.append(new_protein)
-                save_in_csv(best_proteins, "append")
+                save_in_csv(new_protein, "append")
+
 
     # overwrite list if there is a lower protein stabilty
     elif best_stability > new_stability:
@@ -61,10 +69,10 @@ def save_best_protein(best_proteins, new_protein):
     return best_proteins
 
 
-def save_in_csv(proteins, write_or_append):
+def save_in_csv(protein, write_or_append):
     """
     A function that writes a protein to a csv file.
-    The protein will be saved in the Results folder, under the name:
+    The protein is saved in the Results folder, under the name:
     'algorithm_protein_filename.csv'
     """
     file = get_file()
@@ -72,8 +80,8 @@ def save_in_csv(proteins, write_or_append):
     print(write_or_append)
     # data to write:
     data = []
-    for protein in proteins:
-        data.append([protein.get_stability(), protein.get_all_coordinates(),
+    # for protein in proteins:
+    data.append([protein.get_stability(), protein.get_all_coordinates(),
                      protein.get_amino_places(), protein.get_bonds()])
 
     #  write data if file doesn't exist or it got a write argument
@@ -87,13 +95,16 @@ def save_in_csv(proteins, write_or_append):
             csvwriter = csv.writer(csvfile)
             csvwriter.writerows(data)
 
-    return proteins[0].get_stability()
+    return protein.get_stability()
 
 
 def load_from_csv(file):
     """
     Recreates a protein object from a csvfile.
     Returns the protein object
+
+    --> ISSUE: ast can't read the way the bonds are represented.
+               might need to change the Amino __repr__
     """
     best_proteins = []
     protein_name = sys.argv[1]
@@ -104,10 +115,11 @@ def load_from_csv(file):
     # read the csvfile
     with file.open('r') as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=",")
-            # split the data in each row
+
+        # split the data in each row
         for row in csv_reader:
             if row != []:
-                stability = row[0]
+                stability = int(row[0])
                 all_coordinates = ast.literal_eval(row[1])
                 amino_places = ast.literal_eval(row[2])
                 # bonds = ast.literal_eval(row[3])
@@ -120,7 +132,6 @@ def load_from_csv(file):
 
                 # append the protein to the best proteins list
                 best_proteins.append(protein)
-
     return best_proteins
 
 
