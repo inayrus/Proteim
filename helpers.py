@@ -1,6 +1,8 @@
 import sys
 import pathlib
 import csv
+import ast
+from Protein import Protein
 
 def save_best_protein(best_proteins, new_protein):
     """
@@ -8,8 +10,8 @@ def save_best_protein(best_proteins, new_protein):
     Returns a list with the best proteins objects.
     """
     # remember the stabilities in variables
-    new_protein.set_bonds()
-    new_stability = new_protein.set_stability()
+    new_protein.update_bonds()
+    new_stability = new_protein.update_stability()
 
     # create a variable for the best stability
     if best_proteins == []:
@@ -19,11 +21,16 @@ def save_best_protein(best_proteins, new_protein):
         if not file.exists():
             best_stability = 0
         else:
-            with file.open(mode='r') as f:
-                for line in f:
-                    protein_data = line.split(',')
-                    best_stability = int(protein_data[0])
-                    break
+            # with file.open(mode='r') as f:
+            #     for line in f:
+            #         protein_data = line.split(',')
+            #         best_stability = int(protein_data[0])
+            #         break
+
+            # load all the proteins that are saved in csv
+            best_proteins = load_from_csv(file)
+            # get the stability
+            best_stability = best_proteins[0].get_stability()
     else:
         best_stability = best_proteins[0].get_stability()
 
@@ -73,6 +80,40 @@ def save_in_csv(proteins, write_or_append):
     return proteins[0].get_stability()
 
 
+def load_from_csv(file):
+    """
+    Recreates a protein object from a csvfile.
+    Returns the protein object
+    """
+    best_proteins = []
+    protein_name = sys.argv[1]
+
+    # create new protein object
+    protein = Protein(protein_name)
+
+    # read the csvfile
+    with file.open('r') as csv_file:
+        csv_reader = csv.reader(csv_file, delimiter=",")
+            # split the data in each row
+        for row in csv_reader:
+            if row != []:
+                stability = row[0]
+                all_coordinates = ast.literal_eval(row[1])
+                amino_places = ast.literal_eval(row[2])
+                # bonds = ast.literal_eval(row[3])
+
+                # set the data as protein attributes
+                protein.set_stability(stability)
+                protein.set_all_coordinates(all_coordinates)
+                protein.set_amino_places(amino_places)
+                # protein.set_bonds(bonds)
+
+                # append the protein to the best proteins list
+                best_proteins.append(protein)
+
+    return best_proteins
+
+
 def get_file():
     """
     Function that returns a path for a results csv file
@@ -86,3 +127,11 @@ def get_file():
     file = pathlib.Path("../Results/{}/{}_{}.csv".format(algrm, algrm, protein_name))
 
     return file
+
+
+# if __name__ == "__main__":
+#     algrm = "ribosome_fold"
+#     protein_name = "protein_a1"
+#     file = pathlib.Path("Results/{}/{}_{}.csv".format(algrm, algrm, protein_name))
+#     best_proteins = load_from_csv(file)
+#     print(best_proteins)

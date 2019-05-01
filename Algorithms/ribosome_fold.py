@@ -19,10 +19,10 @@ def ribosome_loop(protein_filename):
     # fold the protein in a loop
     while True:
         # fold a protein
-        protein, iscompleted = ribosome_fold(protein_filename)
+        protein, is_completed = ribosome_fold(protein_filename)
 
         # only save completed proteins (ones without dead endings)
-        if iscompleted:
+        if is_completed:
             # update the best protein list and save the best protein in a csv
             best_proteins = save_best_protein(best_proteins, protein)
 
@@ -94,8 +94,8 @@ if __name__ == "__main__":
     #     protein = ribosome_fold(sys.argv[1])
 
     # all_coordinates = protein.get_all_coordinates()
-    # all_bonds = protein.set_bonds()
-    # stability = protein.set_stability()
+    # all_bonds = protein.update_bonds()
+    # stability = protein.update_stability()
 
     # Visualize the protein
     # protein.visualize()

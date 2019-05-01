@@ -50,8 +50,7 @@ class Protein(object):
                     amino_acids.append(new_amino)
         return amino_acids
 
-
-    def set_bonds(self):
+    def update_bonds(self):
         """
         Function to store the bonds H's or C's made in the protein
         """
@@ -86,7 +85,13 @@ class Protein(object):
         print("bonds: {}".format(self.bonds))
         return self.bonds
 
-    def set_stability(self):
+    def set_bonds(self, bonds):
+        """
+        Sets the bonds attribute to a certain value.
+        """
+        self.bonds = bonds
+
+    def update_stability(self):
         """
         A function that sets the stability of the protein
         """
@@ -105,6 +110,12 @@ class Protein(object):
         print(self.stability)
         return self.stability
 
+    def set_stability(self, stability):
+        """
+        Sets the stability attribute to a certain value.
+        """
+        self.stability = stability
+
     def add_coordinates(self, coordinate):
         """
         A function that adds a coordinate to the list of all used coordinates
@@ -119,6 +130,12 @@ class Protein(object):
         """
         self.all_coordinates.remove(coordinate)
 
+    def set_all_coordinates(self, coordinates):
+        """
+        Sets the coordinates attribute to a certain value.
+        """
+        self.all_coordinates = coordinates
+
     def add_amino_place(self, coordinate, amino):
         """
         A function that links an Amino to its coordinates
@@ -132,6 +149,12 @@ class Protein(object):
         Returns the removed amino
         """
         return self.amino_places.pop("{}".format(coordinate))
+
+    def set_amino_places(self, amino_places):
+        """
+        Sets the amino places attribute to a certain value.
+        """
+        self.amino_places = amino_places
 
     def get_neighbors(self, coordinates):
         """
@@ -244,8 +267,8 @@ if __name__ == "__main__":
     # if all is good, create a protein object
     protein = Protein(sys.argv[1])
     all_coordinates = protein.ribosome_fold()
-    all_bonds = protein.set_bonds()
-    stability = protein.set_stability()
+    all_bonds = protein.update_bonds()
+    stability = protein.update_stability()
     brute_force_search = protein.brute_force_search()
 
     # Visualize the protein
