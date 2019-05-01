@@ -44,4 +44,4 @@ class Amino(object):
         self.conn += [connected_amino]
 
     def __repr__(self):
-        return "{}".format(self.kind)
+        return "{}: {}".format(self.id, self.kind)
