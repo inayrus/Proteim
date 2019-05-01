@@ -35,10 +35,20 @@ def save_best_protein(best_proteins, new_protein):
         best_stability = best_proteins[0].get_stability()
 
     # if the stabilities are the same and protein is not yet in list, append
+    
     if best_stability == new_stability:
-        if new_protein not in best_proteins:
-            best_proteins.append(new_protein)
-            save_in_csv(best_proteins, "append")
+        print("in if + {}".format(best_proteins))
+        for best in best_proteins:
+            print("in for loop 1")
+            x= 0
+            for i in range(len(new_protein.get_all_coordinates())):
+                print("in for loop 2")
+                print(best.get_all_coordinates()[i])
+                if best.get_all_coordinates()[i] == new_protein.get_all_coordinates()[i]:
+                    x = x + 1
+            if x != len(new_protein.get_all_coordinates()):
+                best_proteins.append(new_protein)
+                save_in_csv(best_proteins, "append")
 
     # overwrite list if there is a lower protein stabilty
     elif best_stability > new_stability:
