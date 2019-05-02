@@ -87,16 +87,16 @@ def save_in_csv(protein, write_or_append):
     return protein.get_stability()
 
 
-def load_from_csv(file):
+def load_from_csv(file, protein_name=sys.argv[1]):
     """
     Recreates a protein object from a csvfile.
+    protein_name arg is optional, but its default is sys.argv[1].
+    This default is used when running a algorithms,
+    but it's specified when visualizing a protein (visualize_csv)
+
     Returns the protein object.
     """
     best_proteins = []
-    protein_name = sys.argv[1]
-
-    # create new protein object
-    protein = Protein(protein_name)
 
     # read the csvfile
     with file.open('r') as csv_file:
@@ -105,6 +105,10 @@ def load_from_csv(file):
         # split the data in each row
         for row in csv_reader:
             if row != []:
+                # create new protein object
+                protein = Protein(protein_name)
+
+                # read the data into the original data structures
                 stability = int(row[0])
                 all_coordinates = ast.literal_eval(row[1])
                 amino_places = ast.literal_eval(row[2])
@@ -119,7 +123,7 @@ def load_from_csv(file):
                 # append the protein to the best proteins list
                 best_proteins.append(protein)
     return best_proteins
-    
+
 
 def is_duplicate(best_proteins, new_protein):
     """
@@ -147,7 +151,8 @@ def is_duplicate(best_proteins, new_protein):
 
 def get_file():
     """
-    Function that returns a path for a results csv file
+    Function that returns a path for a results csv file, provided that the
+    command line looked like "python algorithm.py protein_name"
     """
     # save algorithm name and protein name from args to create csv filename
     algorithm_split = sys.argv[0].split(".")
