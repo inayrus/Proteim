@@ -50,8 +50,7 @@ class Protein(object):
                     amino_acids.append(new_amino)
         return amino_acids
 
-
-    def set_bonds(self):
+    def update_bonds(self):
         """
         Function to store the bonds H's or C's made in the protein
         """
@@ -86,7 +85,13 @@ class Protein(object):
         print("bonds: {}".format(self.bonds))
         return self.bonds
 
-    def set_stability(self):
+    def set_bonds(self, bonds):
+        """
+        Sets the bonds attribute to a certain value.
+        """
+        self.bonds = bonds
+
+    def update_stability(self):
         """
         A function that sets the stability of the protein
         """
@@ -105,6 +110,12 @@ class Protein(object):
         print(self.stability)
         return self.stability
 
+    def set_stability(self, stability):
+        """
+        Sets the stability attribute to a certain value.
+        """
+        self.stability = stability
+
     def add_coordinates(self, coordinate):
         """
         A function that adds a coordinate to the list of all used coordinates
@@ -118,6 +129,12 @@ class Protein(object):
         in the protein
         """
         self.all_coordinates.remove(coordinate)
+
+    def set_all_coordinates(self, coordinates):
+        """
+        Sets the coordinates attribute to a certain value.
+        """
+        self.all_coordinates = coordinates
 
     def add_amino_place(self, coordinate, amino):
         """
@@ -133,6 +150,12 @@ class Protein(object):
         """
         return self.amino_places.pop("{}".format(coordinate))
 
+    def set_amino_places(self, amino_places):
+        """
+        Sets the amino places attribute to a certain value.
+        """
+        self.amino_places = amino_places
+
     def get_neighbors(self, coordinates):
         """
         A function that returns a list of all coordinates around a certain
@@ -140,59 +163,6 @@ class Protein(object):
         """
         x, y = coordinates
         return [[x, y + 1], [x, y - 1], [x + 1, y], [x - 1, y]]
-
-
-    def visualize(self):
-        """
-        A function that visualizes the folded protein using matplotlib
-        """
-        # putting the coordinates in an x and an y list
-        x_list, y_list, scat_hx_list, scat_hy_list, scat_px_list, scat_py_list, \
-        scat_cx_list, scat_cy_list = ([] for list in range(8))
-
-        for coordinates in self.all_coordinates:
-            # unpack the coordinate values
-            x, y = coordinates
-            x_list.append(x)
-            y_list.append(y)
-
-            # group the coordinates of the same amino kinds
-            amino = self.amino_places["{}".format(coordinates)]
-            amino_kind = amino.get_kind()
-            if amino_kind == 'P':
-                scat_px_list.append(x)
-                scat_py_list.append(y)
-            elif amino_kind == 'H':
-                scat_hx_list.append(x)
-                scat_hy_list.append(y)
-            else:
-                scat_cx_list.append(x)
-                scat_cy_list.append(y)
-
-        # Plot cavalent line
-        plt.plot(x_list, y_list, color='black', linestyle='solid', zorder=1)
-
-        # use different colours to visualize the amino kind groups
-        plt.scatter(scat_px_list, scat_py_list, color='red', zorder=2)
-        plt.scatter(scat_hx_list, scat_hy_list, color='blue', zorder=2)
-        plt.scatter(scat_cx_list, scat_cy_list, color='gold', zorder=2)
-
-        # unpack the bonds neighboring_locations
-        for bond in self.bonds:
-            bonds_x = []
-            bonds_y = []
-            for bonds_amino in bond:
-                x, y = bonds_amino.get_location()
-                bonds_x.append(x)
-                bonds_y.append(y)
-
-            # plot bond
-            plt.plot(bonds_x, bonds_y, color='green', linestyle='--', zorder=1)
-
-        #  set plot axis and show plot
-        plt.axis([min(x_list) - 1, max(x_list) + 1, min(y_list) - 1, max(y_list) + 1])
-        plt.show()
-
 
     # some getters the algorithms are allowed to access
     def get_stability(self):
@@ -244,8 +214,8 @@ if __name__ == "__main__":
     # if all is good, create a protein object
     protein = Protein(sys.argv[1])
     all_coordinates = protein.ribosome_fold()
-    all_bonds = protein.set_bonds()
-    stability = protein.set_stability()
+    all_bonds = protein.update_bonds()
+    stability = protein.update_stability()
     brute_force_search = protein.brute_force_search()
 
     # Visualize the protein
