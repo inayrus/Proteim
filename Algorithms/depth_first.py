@@ -40,9 +40,9 @@ def depth_first(protein_filename):
                     protein.place_amino(place, next_amino)
 
                     # update bonds for every new child
-                    # protein_child.update_bonds()
+                    protein_child.update_bonds()
                     # update stability
-                    # protein_child.update_stability()
+                    protein_child.update_stability()
 
                     # put the children on the stack
                     stack.append(protein_child)
