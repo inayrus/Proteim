@@ -1,21 +1,21 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import pathlib
-from helpers import load_from_csv
+from helpers import load_from_csv, get_file
+import math
 import sys
 import csv
 import ast
 
 
-def visualize_csv(algorithm, protein):
+def visualize_csv(algorithm, protein, size=3):
     """
     A function that visualizes the folded protein using matplotlib
-    Usage: python visualize_csv.py algorithm protein_name
+    Usage: python visualize_csv.py algorithm protein_name [size]
     """
-    # construct the csv filename from the commandline args
-    file = "_".join([algorithm, protein])
-    # move into the right algorithm Results folder
-    filepath = pathlib.Path("Results/{}/{}.csv".format(algorithm, file))
+    # construct the path to the csv file
+    filepath = pathlib.Path("Results/{}/{}_{}.csv".format(algorithm, algorithm, protein))
+
     # check if file exists
     if not filepath.exists():
         print("file cannot be found")
@@ -23,9 +23,13 @@ def visualize_csv(algorithm, protein):
 
     # read in the file as a list of protein objects
     all_proteins = load_from_csv(filepath, protein)
-    print(all_proteins)
+    num_proteins = len(all_proteins)
 
-    for protein in all_proteins:
+    # specify how many protein subplots to visualize in one figure
+    size = int(size)
+    total_in_plot = size * size
+
+    for protein_i, protein in enumerate(all_proteins):
         # get the attributes of the protein
         stability = protein.get_stability()
         all_coordinates = protein.get_all_coordinates()
@@ -56,6 +60,12 @@ def visualize_csv(algorithm, protein):
                 scat_cx_list.append(x)
                 scat_cy_list.append(y)
 
+        # put the protein in a subplot
+        position = (protein_i + 1) % total_in_plot
+        if position == 0:
+            position = total_in_plot
+        plt.subplot(size, size, position)
+
         # Plot cavalent line
         plt.plot(x_list, y_list, color='black', linestyle='solid', zorder=1)
 
@@ -66,8 +76,7 @@ def visualize_csv(algorithm, protein):
 
         # unpack the bonds neighboring_locations
         for bond in bonds:
-            bonds_x = []
-            bonds_y = []
+            bonds_x, bonds_y = ([] for list in range(2))
             for coordinate in bond:
                 x, y = coordinate
                 bonds_x.append(x)
@@ -76,10 +85,23 @@ def visualize_csv(algorithm, protein):
             # plot bond
             plt.plot(bonds_x, bonds_y, color='green', linestyle='--', zorder=1)
 
-        #  set plot axis and show plot
+        #  set plot axis
         plt.axis([min(x_list) - 1, max(x_list) + 1, min(y_list) - 1, max(y_list) + 1])
-        plt.show()
+
+        # show figure when total subplots are placed or last protein is reached
+        if position == total_in_plot or protein_i == num_proteins - 1:
+            plt.show()
+            # clear figure
+            plt.clf()
 
 
 if __name__ == "__main__":
-    visualize_csv(sys.argv[1], sys.argv[2])
+
+    if len(sys.argv) == 3:
+        visualize_csv(sys.argv[1], sys.argv[2])
+    # argv[3] is the size of the subplots, which is in this case optional
+    elif len(sys.argv) == 4:
+        visualize_csv(sys.argv[1], sys.argv[2], sys.argv[3])
+    else:
+        print("Usage: python visualize_csv.py algorithm protein_name [size]")
+        exit(1)

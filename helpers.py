@@ -35,7 +35,7 @@ def save_best_protein(best_proteins, new_protein):
     # overwrite list if there is a lower protein stabilty
     elif best_stability > new_stability:
         best_proteins = [new_protein]
-        save_in_csv(best_proteins, "write")
+        save_in_csv(new_protein, "write")
 
     print("new stability: ","{}".format(new_stability))
     print("best stability: ","{}".format(best_stability))
@@ -151,10 +151,11 @@ def is_duplicate(best_proteins, new_protein):
 
 def get_file():
     """
-    Function that returns a path for a results csv file, provided that the
-    command line looked like "python algorithm.py protein_name"
+    Function that returns a path for a results csv file.
+    Values will be retrieved from the command line,
+    assuming the usage: "python algorithm.py protein_name".
     """
-    # save algorithm name and protein name from args to create csv filename
+    # construct csv filename from commandline args
     algorithm_split = sys.argv[0].split(".")
     algrm = algorithm_split[0]
     protein_name = sys.argv[1]
