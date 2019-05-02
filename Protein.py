@@ -56,11 +56,9 @@ class Protein(object):
         """
         # loop through the aminos in the protein
         for amino in self.amino_acids:
-
             # for H's and C's, get neighboring locations
             if amino.get_kind() != 'P':
-                amino_location = amino.get_location()
-                surroundings = self.get_neighbors(amino_location)
+                surroundings = self.get_neighbors(amino)
 
                 # remove location of connected amino's
                 for conn_amino in amino.get_conn():
@@ -156,14 +154,57 @@ class Protein(object):
         """
         self.amino_places = amino_places
 
-    def get_neighbors(self, coordinates):
+    def get_neighbors(self, amino):
         """
         A function that returns a list of all coordinates around a certain
         grid point
         """
+        coordinates = amino.get_location()
         x, y = coordinates
         return [[x, y + 1], [x, y - 1], [x + 1, y], [x - 1, y]]
 
+    def get_place_options(self, amino):
+        """
+        Returns a list with the optional coordinates to place next amino in
+        """
+        # 1) loop through the spaces around amino
+        all_places = self.get_neighbors(amino)
+
+        # 2) check the Protein attribute what places are empty
+        for xy in self.get_all_coordinates():
+            if xy in all_places:
+                all_places.remove(xy)
+        return all_places
+
+    def get_next_amino(self):
+        """
+        Returns the first amino that's not yet placed
+        """
+        # get the number of placed amino's
+        num_placed = len(self.all_coordinates)
+
+        if num_placed < len(self.amino_acids):
+            next_amino = self.amino_acids[num_placed]
+            return next_amino
+        # there is no next amino
+        else:
+            return None
+
+    def get_rearmost_amino(self):
+        """
+        Returns the last placed amino.
+        """
+        num_placed = len(self.all_coordinates)
+        amino = self.amino_acids[num_placed - 1]
+        return amino
+
+    def place_amino(self, coordinates, amino):
+        """
+        Places an amino on given coordinates.
+        """
+        self.add_coordinates(coordinates)
+        self.add_amino_place(coordinates, amino)
+        amino.set_location(coordinates)
 
     def visualize(self):
         """

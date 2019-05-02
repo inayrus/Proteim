@@ -43,21 +43,13 @@ def ribosome_fold(protein_filename):
 
         # place the first amino in location 0,0.
         if index == 0:
-            protein.add_coordinates([0, 0])
-            protein.add_amino_place([0, 0], amino)
-            amino.set_location([0, 0])
+            protein.place_amino([0, 0], amino)
 
         # for the other aminos:
         else:
-            # 1) loop through the spaces around amino
-            all_coordinates = protein.get_all_coordinates()
-            coordinates = all_coordinates[index - 1]
-            all_places = protein.get_neighbors(coordinates)
-
-            # 2) check the Protein attribute what places are empty
-            for xy in all_coordinates:
-                if xy in all_places:
-                    all_places.remove(xy)
+            # get the possible places for the next amino
+            prev_amino = amino_acids[index - 1]
+            all_places = protein.get_place_options(prev_amino)
 
             # stop if last amino is dead ending
             if all_places == []:
