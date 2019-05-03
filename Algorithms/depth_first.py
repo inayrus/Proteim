@@ -9,6 +9,7 @@ def depth_first(protein_filename):
     """
     protein = Protein(protein_filename)
     amino_acids = protein.get_amino_acids()
+    best_proteins = []
     stack = []
 
     # place first two amino acids, bc their placing doesn't matter
@@ -22,10 +23,10 @@ def depth_first(protein_filename):
     while stack != []:
         # pick the last child off the stack (pop function)
         protein = stack.pop()
+        print(len(stack))
 
         # if next amino exists,
         next_amino = protein.get_next_amino()
-        print(next_amino)
 
         if next_amino:
             # get all the possible places to put the next amino
@@ -37,7 +38,7 @@ def depth_first(protein_filename):
                 for place in all_places:
                     protein_child = copy.deepcopy(protein)
                     # place new amino
-                    protein.place_amino(place, next_amino)
+                    protein_child.place_amino(place, next_amino)
 
                     # update bonds for every new child
                     # protein_child.update_bonds()
@@ -50,7 +51,7 @@ def depth_first(protein_filename):
         # when protein is completed
         else:
             # call save_best_protein function
-            save_best_protein(protein)
+            best_proteins = save_best_protein(best_proteins, protein)
 
 if __name__ == "__main__":
     depth_first(sys.argv[1])
