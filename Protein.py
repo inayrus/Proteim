@@ -59,7 +59,7 @@ class Protein(object):
 
         for index in range(num_placed - 1):
             amino = self.amino_acids[index]
-            print(amino)
+            # print(amino)
 
             # for H's and C's, get neighboring locations
             if amino.get_kind() != 'P':
@@ -198,9 +198,23 @@ class Protein(object):
     def get_rearmost_amino(self):
         """
         Returns the last placed amino.
+
+        --> problem is dat there are 7 coordinates in the list, meaning there
+        should be 7 placed amino's. however, the 7th amino's coor are empty.
+        So where is that 7th coordinate in the list coming from?
+
+        --> problem 2: the coordinates list doesn't make sense:
+        [[0, 0], [0, 1], [-1, 1], [2, 1], [2, 0], [0, -1], [2, -2]]
+
+        --> problem 3: the 6th amino's location doesn't even exist in the list
         """
         num_placed = len(self.all_coordinates)
+        print("all_coordinates: {}".format(self.all_coordinates))
         amino = self.amino_acids[num_placed - 1]
+        prev_amino = self.amino_acids[num_placed - 2]
+        print("rearmost amino: {}".format(amino))
+        print("rearmost amino coor: {}".format(amino.get_location()))
+        print("prev amino coor: {}".format(prev_amino.get_location()))
         return amino
 
     def place_amino(self, coordinates, amino):
