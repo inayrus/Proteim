@@ -223,7 +223,7 @@ class Protein(object):
         """
         self.add_coordinates(coordinates)
         self.add_amino_place(coordinates, amino)
-        amino.set_location(coordinates)
+        self.amino_acids[amino.id].set_location(coordinates)
 
 
     # some getters the algorithms are allowed to access

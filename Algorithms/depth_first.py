@@ -40,16 +40,16 @@ def depth_first(protein_filename):
                     # place new amino
                     protein_child.place_amino(place, next_amino)
 
-                    # update bonds for every new child
-                    protein_child.update_bonds()
-                    # update stability
-                    protein_child.update_stability()
-
                     # put the children on the stack
                     stack.append(protein_child)
 
         # when protein is completed
         else:
+            # update bonds for every new child
+            protein.update_bonds()
+            # update stability
+            protein.update_stability()
+
             # call save_best_protein function
             best_proteins = save_best_protein(best_proteins, protein)
 
