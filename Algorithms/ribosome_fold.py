@@ -41,9 +41,11 @@ def ribosome_fold(protein_filename):
         # initializes list of all possible plces for new aminoacid
         all_places = []
 
-        # place the first amino in location 0,0.
+        # place the first two aminos
         if index == 0:
             protein.place_amino([0, 0], amino)
+        elif index == 1:
+            protein.place_amino([0, 1], amino)
 
         # for the other aminos:
         else:
