@@ -6,6 +6,8 @@ from Protein import Protein
 
 def depth_first(protein_filename):
     """
+    Constructive algorithm that finds solutions by going depth first through
+    the whole statespace.
     """
     protein = Protein(protein_filename)
     amino_acids = protein.get_amino_acids()
@@ -26,9 +28,9 @@ def depth_first(protein_filename):
         print(len(stack))
 
         # if next amino exists,
-        next_amino = protein.get_next_amino()
+        next_parent_amino = protein.get_next_amino()
 
-        if next_amino:
+        if next_parent_amino:
             # get all the possible places to put the next amino
             all_places = protein.get_place_options(protein.get_rearmost_amino())
 
@@ -37,8 +39,10 @@ def depth_first(protein_filename):
                 # for every possible place, copy the current protein and create a child
                 for place in all_places:
                     protein_child = copy.deepcopy(protein)
+
                     # place new amino
-                    protein_child.place_amino(place, next_amino)
+                    next_child_amino = protein_child.get_next_amino()
+                    protein_child.place_amino(place, next_child_amino)
 
                     # put the children on the stack
                     stack.append(protein_child)

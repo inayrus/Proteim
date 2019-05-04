@@ -43,5 +43,13 @@ class Amino(object):
         """ a function to add a connected amino to self.conn"""
         self.conn += [connected_amino]
 
-    def __repr__(self):
-        return "{}: {}".format(self.id, self.kind)
+    # def __repr__(self):
+    #     s=""
+    #     s+="id:"+str(self.id)+" "
+    #     s+="conn:"+str(self.conn)+" "
+    #     s+="location:"+str(self.location)+" "
+    #     s+="bond_strength:"+str(self.bond_strength)+" "
+    #     return s
+    #
+    # def __str__(self):
+    #     return repr(self)

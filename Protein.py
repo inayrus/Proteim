@@ -98,6 +98,9 @@ class Protein(object):
         """
         A function that sets the stability of the protein
         """
+        # reset stability
+        self.stability = 0
+
         # Check all bonds and get kinds of bonded amino's
         for bond in self.bonds:
             amino, other_amino = bond
@@ -198,23 +201,10 @@ class Protein(object):
     def get_rearmost_amino(self):
         """
         Returns the last placed amino.
-
-        --> problem is dat there are 7 coordinates in the list, meaning there
-        should be 7 placed amino's. however, the 7th amino's coor are empty.
-        So where is that 7th coordinate in the list coming from?
-
-        --> problem 2: the coordinates list doesn't make sense:
-        [[0, 0], [0, 1], [-1, 1], [2, 1], [2, 0], [0, -1], [2, -2]]
-
-        --> problem 3: the 6th amino's location doesn't even exist in the list
         """
         num_placed = len(self.all_coordinates)
-        print("all_coordinates: {}".format(self.all_coordinates))
         amino = self.amino_acids[num_placed - 1]
         prev_amino = self.amino_acids[num_placed - 2]
-        print("rearmost amino: {}".format(amino))
-        print("rearmost amino coor: {}".format(amino.get_location()))
-        print("prev amino coor: {}".format(prev_amino.get_location()))
         return amino
 
     def place_amino(self, coordinates, amino):
@@ -258,6 +248,18 @@ class Protein(object):
         {'coordinate': Amino object}
         """
         return self.amino_places
+
+    def __repr__(self):
+        s="======= Protein\n"
+        s+="stability:"+str(self.stability)+"\n"
+        s+="amino_acids:"+str(self.amino_acids)+"\n"
+        s+="bonds:"+str(self.bonds)+"\n"
+        s+="all_coordinates:"+str(self.all_coordinates)+"\n"
+        s+="amoni_places"+str(self.amino_places)+"\n"
+        return s
+
+    def __str__(self):
+        return repr(self)
 
 
 if __name__ == "__main__":
