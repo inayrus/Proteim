@@ -43,9 +43,9 @@ def ribosome_fold(protein_filename):
 
         # place the first two aminos
         if index == 0:
-            protein.place_amino([0, 0], amino)
+            protein.place_amino([0, 0], index)
         elif index == 1:
-            protein.place_amino([0, 1], amino)
+            protein.place_amino([0, 1], index)
 
         # for the other aminos:
         else:
@@ -62,9 +62,7 @@ def ribosome_fold(protein_filename):
             picked_place = random.choice(all_places)
 
             # 4) update amino location & location Protein attribute
-            protein.add_coordinates(picked_place)
-            amino.set_location(picked_place)
-            protein.add_amino_place(picked_place, amino)
+            protein.place_amino(picked_place, amino.get_id())
 
     return protein, True
 

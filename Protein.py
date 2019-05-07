@@ -61,7 +61,7 @@ class Protein(object):
             amino = self.amino_acids[index]
             # print(amino)
 
-            # for H's and C's, get neighboring locations
+            # if H or C, get surrounding locations amino is not connected to
             if amino.get_kind() != 'P':
                 surroundings = self.get_neighbors(amino)
 
@@ -72,18 +72,22 @@ class Protein(object):
                         surroundings.remove(conn_location)
 
                 for location in surroundings:
-                    # check if location is in dict and the new amino is H or C
+                    # check if location is in dict
                     str_location = "{}".format(location)
-                    if str_location in self.amino_places and \
-                       self.amino_places[str_location].get_kind() != 'P':
 
-                       # check if current bond is already stored
-                        bonded_amino = self.amino_places[str_location]
-                        if [amino, bonded_amino] not in self.bonds and \
-                           [bonded_amino, amino] not in self.bonds:
+                    if str_location in self.amino_places:
+                        amino_id = self.amino_places[str_location]
+                        nearby_amino = self.amino_acids[amino_id]
 
-                            # if not, add bond to attribute
-                            self.bonds += [[amino, bonded_amino]]
+                        # there's only a bond if new amino is H or C
+                        if nearby_amino.get_kind() != 'P':
+
+                           # check if current bond is already stored
+                            if [amino, nearby_amino] not in self.bonds and \
+                               [nearby_amino, amino] not in self.bonds:
+
+                                # if not, add bond to attribute
+                                self.bonds += [[amino, nearby_amino]]
 
         print("bonds: {}".format(self.bonds))
         return self.bonds
@@ -142,12 +146,12 @@ class Protein(object):
         """
         self.all_coordinates = coordinates
 
-    def add_amino_place(self, coordinate, amino):
+    def add_amino_place(self, coordinate, amino_id):
         """
         A function that links an Amino to its coordinates
-        {'coordinates': Amino}
+        {'coordinates': Amino id}
         """
-        self.amino_places["{}".format(coordinate)] = amino
+        self.amino_places["{}".format(coordinate)] = amino_id
 
     def remove_amino_place(self, coordinate):
         """
@@ -207,14 +211,13 @@ class Protein(object):
         prev_amino = self.amino_acids[num_placed - 2]
         return amino
 
-    def place_amino(self, coordinates, amino):
+    def place_amino(self, coordinates, amino_id):
         """
         Places an amino on given coordinates.
         """
         self.add_coordinates(coordinates)
-        self.add_amino_place(coordinates, amino)
-        self.amino_acids[amino.id].set_location(coordinates)
-
+        self.add_amino_place(coordinates, amino_id)
+        self.amino_acids[amino_id].set_location(coordinates)
 
     # some getters the algorithms are allowed to access
     def get_stability(self):

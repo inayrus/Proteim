@@ -15,8 +15,8 @@ def depth_first(protein_filename):
     stack = []
 
     # place first two amino acids, bc their placing doesn't matter
-    protein.place_amino([0, 0], amino_acids[0])
-    protein.place_amino([0, 1], amino_acids[1])
+    protein.place_amino([0, 0], 0)
+    protein.place_amino([0, 1], 1)
 
     # put start protein in the stack
     stack.append(protein)
@@ -42,7 +42,7 @@ def depth_first(protein_filename):
 
                     # place new amino
                     next_child_amino = protein_child.get_next_amino()
-                    protein_child.place_amino(place, next_child_amino)
+                    protein_child.place_amino(place, next_child_amino.get_id())
 
                     # put the children on the stack
                     stack.append(protein_child)

@@ -57,7 +57,8 @@ def save_in_csv(protein, write_or_append):
 
     # objects can't be saved in a csv:
     # change the values in amino_places from amino Object to 'H'/'C'/'P'
-    for key, amino in amino_places.items():
+    for key, amino_id in amino_places.items():
+        amino = protein.amino_acids[amino_id]
         kind = amino.get_kind()
         amino_places[key] = kind
 
