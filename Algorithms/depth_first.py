@@ -25,6 +25,7 @@ def depth_first(protein_filename):
     while stack != []:
         # pick the last child off the stack (pop function)
         protein = stack.pop()
+        print(len(stack))
 
         # if next amino exists,
         next_parent_amino = protein.get_next_amino()
