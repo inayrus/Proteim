@@ -56,11 +56,16 @@ class Protein(object):
         Function to store the bonds H's or C's made in the protein
         """
         # loop through the aminos in the protein
-        num_placed = len(self.all_coordinates)
+        for amino in self.amino_acids:
+            num_placed = len(self.all_coordinates)
 
         for index in range(num_placed - 1):
             amino = self.amino_acids[index]
-            # print(amino)
+            print(amino)
+
+        for index in range(num_placed - 1):
+            amino = self.amino_acids[index]
+            print(amino)
 
             # if H or C, get surrounding locations amino is not connected to
             if amino.get_kind() != 'P':
