@@ -89,8 +89,6 @@ class Protein(object):
 
                                 # if not, add bond to attribute
                                 self.bonds += [[amino, nearby_amino]]
-
-        print("bonds: {}".format(self.bonds))
         return self.bonds
 
     def set_bonds(self, bonds):
@@ -120,52 +118,6 @@ class Protein(object):
 
         print(self.stability)
         return self.stability
-
-    def set_stability(self, stability):
-        """
-        Sets the stability attribute to a certain value.
-        """
-        self.stability = stability
-
-    def add_coordinates(self, coordinate):
-        """
-        A function that adds a coordinate to the list of all used coordinates
-        in the protein
-        """
-        self.all_coordinates += [coordinate]
-
-    def remove_coordinates(self, coordinate):
-        """
-        A function that removes a coordinate from the list of all used coordinates
-        in the protein
-        """
-        self.all_coordinates.remove(coordinate)
-
-    def set_all_coordinates(self, coordinates):
-        """
-        Sets the coordinates attribute to a certain value.
-        """
-        self.all_coordinates = coordinates
-
-    def add_amino_place(self, coordinate, amino_id):
-        """
-        A function that links an Amino to its coordinates
-        {'coordinates': Amino id}
-        """
-        self.amino_places["{}".format(coordinate)] = amino_id
-
-    def remove_amino_place(self, coordinate):
-        """
-        A function that deletes a coordinate key from the dict
-        Returns the removed amino
-        """
-        return self.amino_places.pop("{}".format(coordinate))
-
-    def set_amino_places(self, amino_places):
-        """
-        Sets the amino places attribute to a certain value.
-        """
-        self.amino_places = amino_places
 
     def get_neighbors(self, amino):
         """
@@ -263,6 +215,52 @@ class Protein(object):
         {'coordinate': Amino object}
         """
         return self.amino_places
+
+    def set_stability(self, stability):
+        """
+        Sets the stability attribute to a certain value.
+        """
+        self.stability = stability
+
+    def add_coordinates(self, coordinate):
+        """
+        A function that adds a coordinate to the list of all used coordinates
+        in the protein
+        """
+        self.all_coordinates += [coordinate]
+
+    def remove_coordinates(self, coordinate):
+        """
+        A function that removes a coordinate from the list of all used coordinates
+        in the protein
+        """
+        self.all_coordinates.remove(coordinate)
+
+    def set_all_coordinates(self, coordinates):
+        """
+        Sets the coordinates attribute to a certain value.
+        """
+        self.all_coordinates = coordinates
+
+    def add_amino_place(self, coordinate, amino_id):
+        """
+        A function that links an Amino to its coordinates
+        {'coordinates': Amino id}
+        """
+        self.amino_places["{}".format(coordinate)] = amino_id
+
+    def remove_amino_place(self, coordinate):
+        """
+        A function that deletes a coordinate key from the dict
+        Returns the removed amino
+        """
+        return self.amino_places.pop("{}".format(coordinate))
+
+    def set_amino_places(self, amino_places):
+        """
+        Sets the amino places attribute to a certain value.
+        """
+        self.amino_places = amino_places
 
     def __repr__(self):
         s="======= Protein\n"
