@@ -1,7 +1,27 @@
+import sys
+import copy
 sys.path.append('../')
 from Protein import Protein
 from helpers import save_best_protein
 import random
+
+def greedy_loop(protein_filename):
+    """
+    A loop function where proteins are randomly folded.
+    Best proteins are saved in a csv.
+    """
+    # list variable for the most stable folded proteins
+    best_proteins = []
+
+    # fold the protein in a loop
+    while True:
+        # fold a protein
+        protein, is_completed = greedy(protein_filename)
+
+        # only save completed proteins (ones without dead endings)
+        if is_completed:
+            # update the best protein list and save the best protein in a csv
+            best_proteins = save_best_protein(best_proteins, protein)
 
 def greedy(protein_filename):
     """
@@ -9,6 +29,7 @@ def greedy(protein_filename):
     """
     protein = Protein(protein_filename)
     amino_acids = protein.get_amino_acids()
+    queue = []
 
     # place first two amino acids, bc their placing doesn't matter
     protein.place_amino([0, 0], 0)
@@ -44,9 +65,9 @@ def greedy(protein_filename):
 
             # Start greedy children selection
             # When all children added, pop all - update and compare stability - put best child back
-            if queue.length() == 2:
+            if len(queue) == 2:
                 child_1 = queue.pop(0)
-                child_2 = queu.pop(1)
+                child_2 = queue.pop(0)
 
                 # Update bonds for children
                 child_1.update_bonds()
@@ -64,10 +85,10 @@ def greedy(protein_filename):
                     all_children = [child_1, child_2]
                     chosen_child = random.choice(all_children)
                     queue.append(chosen_child)
-            elif queue.lenght() == 3:
+            elif len(queue) == 3:
                 child_1 = queue.pop(0)
-                child_2 = queue.pop(1)
-                child_3 = queue.pop(2)
+                child_2 = queue.pop(0)
+                child_3 = queue.pop(0)
 
                 # Update bonds for children
                 child_1.update_bonds()
@@ -90,10 +111,9 @@ def greedy(protein_filename):
                     chosen_child = random.choice(all_children)
                     queue.append(chosen_child)
 
-        # when protein is completed
+        # if no more next_amino
         else:
-        # call save_best_protein function
-        best_proteins = save_best_protein(best_proteins, protein)
+            return protein, True
 
 if __name__ == "__main__":
-    greedy(sys.argv[1])
+    greedy_loop(sys.argv[1])

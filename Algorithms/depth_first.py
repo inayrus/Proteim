@@ -39,16 +39,9 @@ def depth_first(protein_filename):
                 for place in all_places:
                     protein_child = copy.deepcopy(protein)
 
-<<<<<<< HEAD
-                    # update bonds for every new child
-                    # protein_child.update_bonds()
-                    # update stability
-                    # protein_child.update_stability()
-=======
                     # place new amino
                     next_child_amino = protein_child.get_next_amino()
                     protein_child.place_amino(place, next_child_amino.get_id())
->>>>>>> e9c2bae98ca68216c4d2b61dd3c6d1686a181118
 
                     # put the children on the stack
                     stack.append(protein_child)
