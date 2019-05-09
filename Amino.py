@@ -9,6 +9,10 @@ class Amino(object):
         self.location = []
         self.bond_strength = self.set_bond_strength(kind)
 
+    def get_id(self):
+        """returns the amino's id"""
+        return self.id
+
     def get_kind(self):
         """returns the amino kind (a H, P, or C)"""
         return self.kind
@@ -43,5 +47,13 @@ class Amino(object):
         """ a function to add a connected amino to self.conn"""
         self.conn += [connected_amino]
 
-    def __repr__(self):
-        return "{}: {}".format(self.id, self.kind)
+    # def __repr__(self):
+    #     s=""
+    #     s+="id:"+str(self.id)+" "
+    #     s+="conn:"+str(self.conn)+" "
+    #     s+="location:"+str(self.location)+" "
+    #     s+="bond_strength:"+str(self.bond_strength)+" "
+    #     return s
+    #
+    # def __str__(self):
+    #     return repr(self)

@@ -6,6 +6,8 @@ from Protein import Protein
 
 def depth_first(protein_filename):
     """
+    Constructive algorithm that finds solutions by going depth first through
+    the whole statespace.
     """
     protein = Protein(protein_filename)
     amino_acids = protein.get_amino_acids()
@@ -13,8 +15,8 @@ def depth_first(protein_filename):
     stack = []
 
     # place first two amino acids, bc their placing doesn't matter
-    protein.place_amino([0, 0], amino_acids[0])
-    protein.place_amino([0, 1], amino_acids[1])
+    protein.place_amino([0, 0], 0)
+    protein.place_amino([0, 1], 1)
 
     # put start protein in the stack
     stack.append(protein)
@@ -23,12 +25,11 @@ def depth_first(protein_filename):
     while stack != []:
         # pick the last child off the stack (pop function)
         protein = stack.pop()
-        print(len(stack))
 
         # if next amino exists,
-        next_amino = protein.get_next_amino()
+        next_parent_amino = protein.get_next_amino()
 
-        if next_amino:
+        if next_parent_amino:
             # get all the possible places to put the next amino
             all_places = protein.get_place_options(protein.get_rearmost_amino())
 
@@ -37,19 +38,28 @@ def depth_first(protein_filename):
                 # for every possible place, copy the current protein and create a child
                 for place in all_places:
                     protein_child = copy.deepcopy(protein)
-                    # place new amino
-                    protein_child.place_amino(place, next_amino)
 
+<<<<<<< HEAD
                     # update bonds for every new child
                     # protein_child.update_bonds()
                     # update stability
                     # protein_child.update_stability()
+=======
+                    # place new amino
+                    next_child_amino = protein_child.get_next_amino()
+                    protein_child.place_amino(place, next_child_amino.get_id())
+>>>>>>> e9c2bae98ca68216c4d2b61dd3c6d1686a181118
 
                     # put the children on the stack
                     stack.append(protein_child)
 
         # when protein is completed
         else:
+            # update bonds for every new child
+            protein.update_bonds()
+            # update stability
+            protein.update_stability()
+
             # call save_best_protein function
             best_proteins = save_best_protein(best_proteins, protein)
 

@@ -15,6 +15,7 @@ class Protein(object):
         self.bonds = []
         self.all_coordinates = []
         self.amino_places = {}
+        self.is_straight = True
 
     def load_protein(self, file):
         """
@@ -66,7 +67,7 @@ class Protein(object):
             amino = self.amino_acids[index]
             print(amino)
 
-            # for H's and C's, get neighboring locations
+            # if H or C, get surrounding locations amino is not connected to
             if amino.get_kind() != 'P':
                 surroundings = self.get_neighbors(amino)
 
@@ -77,20 +78,22 @@ class Protein(object):
                         surroundings.remove(conn_location)
 
                 for location in surroundings:
-                    # check if location is in dict and the new amino is H or C
+                    # check if location is in dict
                     str_location = "{}".format(location)
-                    if str_location in self.amino_places and \
-                       self.amino_places[str_location].get_kind() != 'P':
 
-                       # check if current bond is already stored
-                        bonded_amino = self.amino_places[str_location]
-                        if [amino, bonded_amino] not in self.bonds and \
-                           [bonded_amino, amino] not in self.bonds:
+                    if str_location in self.amino_places:
+                        amino_id = self.amino_places[str_location]
+                        nearby_amino = self.amino_acids[amino_id]
 
-                            # if not, add bond to attribute
-                            self.bonds += [[amino, bonded_amino]]
+                        # there's only a bond if new amino is H or C
+                        if nearby_amino.get_kind() != 'P':
 
-        print("bonds: {}".format(self.bonds))
+                           # check if current bond is already stored
+                            if [amino, nearby_amino] not in self.bonds and \
+                               [nearby_amino, amino] not in self.bonds:
+
+                                # if not, add bond to attribute
+                                self.bonds += [[amino, nearby_amino]]
         return self.bonds
 
     def set_bonds(self, bonds):
@@ -103,6 +106,9 @@ class Protein(object):
         """
         A function that sets the stability of the protein
         """
+        # reset stability
+        self.stability = 0
+
         # Check all bonds and get kinds of bonded amino's
         for bond in self.bonds:
             amino, other_amino = bond
@@ -118,52 +124,6 @@ class Protein(object):
         print(self.stability)
         return self.stability
 
-    def set_stability(self, stability):
-        """
-        Sets the stability attribute to a certain value.
-        """
-        self.stability = stability
-
-    def add_coordinates(self, coordinate):
-        """
-        A function that adds a coordinate to the list of all used coordinates
-        in the protein
-        """
-        self.all_coordinates += [coordinate]
-
-    def remove_coordinates(self, coordinate):
-        """
-        A function that removes a coordinate from the list of all used coordinates
-        in the protein
-        """
-        self.all_coordinates.remove(coordinate)
-
-    def set_all_coordinates(self, coordinates):
-        """
-        Sets the coordinates attribute to a certain value.
-        """
-        self.all_coordinates = coordinates
-
-    def add_amino_place(self, coordinate, amino):
-        """
-        A function that links an Amino to its coordinates
-        {'coordinates': Amino}
-        """
-        self.amino_places["{}".format(coordinate)] = amino
-
-    def remove_amino_place(self, coordinate):
-        """
-        A function that deletes a coordinate key from the dict
-        Returns the removed amino
-        """
-        return self.amino_places.pop("{}".format(coordinate))
-
-    def set_amino_places(self, amino_places):
-        """
-        Sets the amino places attribute to a certain value.
-        """
-        self.amino_places = amino_places
-
     def get_neighbors(self, amino):
         """
         A function that returns a list of all coordinates around a certain
@@ -177,8 +137,19 @@ class Protein(object):
         """
         Returns a list with the optional coordinates to place next amino in
         """
-        # 1) loop through the spaces around amino
+        # get all spaces around amino
         all_places = self.get_neighbors(amino)
+
+        # remove mirrored locations
+        if self.is_straight == True:
+            x_check = 0
+            for x, y in self.all_coordinates:
+                x_check += x
+            if x_check == 0:
+                # remove the left (x - 1) space option
+                all_places = [[x, y + 1], [x, y - 1], [x + 1, y]]
+            else:
+                self.is_straight = False
 
         # 2) check the Protein attribute what places are empty
         for xy in self.get_all_coordinates():
@@ -203,33 +174,19 @@ class Protein(object):
     def get_rearmost_amino(self):
         """
         Returns the last placed amino.
-
-        --> problem is dat there are 7 coordinates in the list, meaning there
-        should be 7 placed amino's. however, the 7th amino's coor are empty.
-        So where is that 7th coordinate in the list coming from?
-
-        --> problem 2: the coordinates list doesn't make sense:
-        [[0, 0], [0, 1], [-1, 1], [2, 1], [2, 0], [0, -1], [2, -2]]
-
-        --> problem 3: the 6th amino's location doesn't even exist in the list
         """
         num_placed = len(self.all_coordinates)
-        print("all_coordinates: {}".format(self.all_coordinates))
         amino = self.amino_acids[num_placed - 1]
         prev_amino = self.amino_acids[num_placed - 2]
-        print("rearmost amino: {}".format(amino))
-        print("rearmost amino coor: {}".format(amino.get_location()))
-        print("prev amino coor: {}".format(prev_amino.get_location()))
         return amino
 
-    def place_amino(self, coordinates, amino):
+    def place_amino(self, coordinates, amino_id):
         """
         Places an amino on given coordinates.
         """
         self.add_coordinates(coordinates)
-        self.add_amino_place(coordinates, amino)
-        amino.set_location(coordinates)
-
+        self.add_amino_place(coordinates, amino_id)
+        self.amino_acids[amino_id].set_location(coordinates)
 
     # some getters the algorithms are allowed to access
     def get_stability(self):
@@ -263,6 +220,64 @@ class Protein(object):
         {'coordinate': Amino object}
         """
         return self.amino_places
+
+    def set_stability(self, stability):
+        """
+        Sets the stability attribute to a certain value.
+        """
+        self.stability = stability
+
+    def add_coordinates(self, coordinate):
+        """
+        A function that adds a coordinate to the list of all used coordinates
+        in the protein
+        """
+        self.all_coordinates += [coordinate]
+
+    def remove_coordinates(self, coordinate):
+        """
+        A function that removes a coordinate from the list of all used coordinates
+        in the protein
+        """
+        self.all_coordinates.remove(coordinate)
+
+    def set_all_coordinates(self, coordinates):
+        """
+        Sets the coordinates attribute to a certain value.
+        """
+        self.all_coordinates = coordinates
+
+    def add_amino_place(self, coordinate, amino_id):
+        """
+        A function that links an Amino to its coordinates
+        {'coordinates': Amino id}
+        """
+        self.amino_places["{}".format(coordinate)] = amino_id
+
+    def remove_amino_place(self, coordinate):
+        """
+        A function that deletes a coordinate key from the dict
+        Returns the removed amino
+        """
+        return self.amino_places.pop("{}".format(coordinate))
+
+    def set_amino_places(self, amino_places):
+        """
+        Sets the amino places attribute to a certain value.
+        """
+        self.amino_places = amino_places
+
+    def __repr__(self):
+        s="======= Protein\n"
+        s+="stability:"+str(self.stability)+"\n"
+        s+="amino_acids:"+str(self.amino_acids)+"\n"
+        s+="bonds:"+str(self.bonds)+"\n"
+        s+="all_coordinates:"+str(self.all_coordinates)+"\n"
+        s+="amoni_places"+str(self.amino_places)+"\n"
+        return s
+
+    def __str__(self):
+        return repr(self)
 
 
 if __name__ == "__main__":
