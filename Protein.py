@@ -15,6 +15,7 @@ class Protein(object):
         self.bonds = []
         self.all_coordinates = []
         self.amino_places = {}
+        self.is_straight = True
 
     def load_protein(self, file):
         """
@@ -179,8 +180,19 @@ class Protein(object):
         """
         Returns a list with the optional coordinates to place next amino in
         """
-        # 1) loop through the spaces around amino
+        # get all spaces around amino
         all_places = self.get_neighbors(amino)
+
+        # remove mirrored locations
+        if self.is_straight == True:
+            x_check = 0
+            for x, y in self.all_coordinates:
+                x_check += x
+            if x_check == 0:
+                # remove the left (x - 1) space option
+                all_places = [[x, y + 1], [x, y - 1], [x + 1, y]]
+            else:
+                self.is_straight = False
 
         # 2) check the Protein attribute what places are empty
         for xy in self.get_all_coordinates():
