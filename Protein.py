@@ -4,6 +4,7 @@ import pathlib
 import random
 import matplotlib.pyplot as plt
 from Amino import Amino
+# import copy
 
 class Protein(object):
     """Representation of a protein"""
@@ -61,11 +62,11 @@ class Protein(object):
 
         for index in range(num_placed - 1):
             amino = self.amino_acids[index]
-            print(amino)
+            # print(amino)
 
         for index in range(num_placed - 1):
             amino = self.amino_acids[index]
-            print(amino)
+            # print(amino)
 
             # if H or C, get surrounding locations amino is not connected to
             if amino.get_kind() != 'P':
@@ -95,7 +96,7 @@ class Protein(object):
                                 # if not, add bond to attribute
                                 self.bonds += [[amino, nearby_amino]]
 
-        print("bonds: {}".format(self.bonds))
+        # print("bonds: {}".format(self.bonds))
         return self.bonds
 
     def set_bonds(self, bonds):
@@ -219,6 +220,10 @@ class Protein(object):
         else:
             return None
 
+    def __lt__(self, other):
+        return self.stability < other.get_stability()
+
+
     def get_rearmost_amino(self):
         """
         Returns the last placed amino.
@@ -301,6 +306,16 @@ if __name__ == "__main__":
     all_bonds = protein.update_bonds()
     stability = protein.update_stability()
     brute_force_search = protein.brute_force_search()
+
+    # list = []
+    # for i in range(4):
+    #     list.append(copy.deepcopy(protein))
+    #     list[-1].stability = 10 - i
+    #
+    # print("before sort: {}".format(list))
+    # list.sort()
+    # print("after sort: {}".format(list))
+
 
     # Visualize the protein
     protein.visualize()
