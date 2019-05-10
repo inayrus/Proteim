@@ -29,7 +29,7 @@ def breadth_first(protein_filename):
     while queue != []:
         # pick the child in front off the queue (pop function)
         protein = queue.pop(0)
-        print("lengte queue: {}".format(len(queue)))
+        # print("lengte queue: {}".format(len(queue)))
 
         # if next amino exists,
         next_parent_amino = protein.get_next_amino()
@@ -54,18 +54,18 @@ def breadth_first(protein_filename):
                     protein_child.update_bonds()
                     protein_child.update_stability()
                     beamsearch.append(protein_child)
-                    print("len beamsearch : {}".format(len(beamsearch)))
+                    # print("len beamsearch : {}".format(len(beamsearch)))
                     # child_stabilities.append(protein_child.get_stability())
 
                 beamsearch.sort()
-                print("beamsearch list : {}".format(beamsearch))
+                # print("beamsearch list : {}".format(beamsearch))
                 # print("len beamsearch : {}".format(len(beamsearch)))
 
                 #  list of protein stabilities
                 # child_stabilities = [child.get_stability() for child in beamsearch
 
             if queue == []:
-                print("lengte: {}".format(len(beamsearch)))
+                # print("lengte: {}".format(len(beamsearch)))
                 # while len(queue) != beam and child_stabilities != []:
                 if len(beamsearch) < beam:
                     for i in range(len(beamsearch)):
