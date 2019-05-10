@@ -7,7 +7,7 @@ import random
 
 def greedy_loop(protein_filename):
     """
-    A loop function where proteins are randomly folded.
+    A loop function where proteins are folded with greedy.
     Best proteins are saved in a csv.
     """
     # list variable for the most stable folded proteins
@@ -16,6 +16,7 @@ def greedy_loop(protein_filename):
     # fold the protein in a loop
     while True:
         # fold a protein
+        print("===================")
         protein, is_completed = greedy(protein_filename)
 
         # only save completed proteins (ones without dead endings)
@@ -29,19 +30,19 @@ def greedy(protein_filename):
     """
     protein = Protein(protein_filename)
     amino_acids = protein.get_amino_acids()
-    queue = []
+    child_list = []
 
     # place first two amino acids, bc their placing doesn't matter
     protein.place_amino([0, 0], 0)
     protein.place_amino([0, 1], 1)
 
     # put start protein in the queue
-    queue.append(protein)
+    child_list.append(protein)
 
     # --> start loop
-    while queue != []:
+    while child_list != []:
         # pick the child in front off the queue (pop function)
-        protein = queue.pop(0)
+        protein = child_list[0]
 
         # if next amino exists,
         next_parent_amino = protein.get_next_amino()
@@ -61,55 +62,27 @@ def greedy(protein_filename):
                     protein_child.place_amino(place, next_child_amino.get_id())
 
                     # put the children in the back of the queue
-                    queue.append(protein_child)
+                    child_list.append(protein_child)
+            else:
+                return protein, False
 
             # Start greedy children selection
-            # When all children added, pop all - update and compare stability - put best child back
-            if len(queue) == 2:
-                child_1 = queue.pop(0)
-                child_2 = queue.pop(0)
+            stabilities = []
+            # Get every child
+            for child in child_list:
+                # Get child stability
+                child.update_bonds()
+                child.update_stability()
+                stabilities.append(child.get_stability())
 
-                # Update bonds for children
-                child_1.update_bonds()
-                child_2.update_bonds()
-                # update stability
-                child_1.update_stability()
-                child_2.update_stability()
-
-                if child_1.get_stability() > child_2.get_stability():
-                    queue.append(child_1)
-                elif child_2.get_stability() > child_1.get_stability():
-                    queue.append(child_2)
-                else:
-                    # Pick a random child
-                    all_children = [child_1, child_2]
-                    chosen_child = random.choice(all_children)
-                    queue.append(chosen_child)
-            elif len(queue) == 3:
-                child_1 = queue.pop(0)
-                child_2 = queue.pop(0)
-                child_3 = queue.pop(0)
-
-                # Update bonds for children
-                child_1.update_bonds()
-                child_2.update_bonds()
-                child_3.update_bonds()
-                # update stability
-                child_1.update_stability()
-                child_2.update_stability()
-                child_3.update_stability()
-
-                if child_1.get_stability() > child_2.get_stability() and child_1.get_stability() > child_3.get_stability():
-                    queue.append(child_1)
-                elif child_2.get_stability() > child_1.get_stability() and child_2.get_stability() > child_3.get_stability():
-                    queue.append(child_2)
-                elif child_3.get_stability() > child_1.get_stability() and child_3.get_stability() > child_2.get_stability():
-                    queue.append(child_3)
-                else:
-                    # Pick a random child
-                    all_children = [child_1, child_2, child_3]
-                    chosen_child = random.choice(all_children)
-                    queue.append(chosen_child)
+            # If more than 1 child
+            if len(stabilities) > 1:
+                # Get indices of best children
+                best_indices = [index for index, stability in enumerate(stabilities)
+                                if stability == min(stabilities)]
+                # Choose best child or
+                chosen_index = random.choice(best_indices)
+                child_list = [child_list[chosen_index]]
 
         # if no more next_amino
         else:

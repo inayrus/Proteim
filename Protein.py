@@ -61,11 +61,11 @@ class Protein(object):
 
         for index in range(num_placed - 1):
             amino = self.amino_acids[index]
-            print(amino)
+            # print(amino)
 
         for index in range(num_placed - 1):
             amino = self.amino_acids[index]
-            print(amino)
+            # print(amino)
 
             # if H or C, get surrounding locations amino is not connected to
             if amino.get_kind() != 'P':
@@ -95,7 +95,7 @@ class Protein(object):
                                 # if not, add bond to attribute
                                 self.bonds += [[amino, nearby_amino]]
 
-        print("bonds: {}".format(self.bonds))
+        # print("bonds: {}".format(self.bonds))
         return self.bonds
 
     def set_bonds(self, bonds):
@@ -123,7 +123,7 @@ class Protein(object):
             elif amino == "C" and other_amino == "C":
                 self.stability -= 5
 
-        print(self.stability)
+        # print(self.stability)
         return self.stability
 
     def set_stability(self, stability):
