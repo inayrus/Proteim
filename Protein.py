@@ -109,6 +109,8 @@ class Protein(object):
         """
         A function that sets the stability of the protein
         """
+        self.update_bonds()
+        
         # reset stability
         self.stability = 0
 
