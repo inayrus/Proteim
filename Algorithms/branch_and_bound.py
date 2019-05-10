@@ -45,7 +45,7 @@ def branch_and_bound(protein_filename):
             # only continue if protein hasn't folded into itself
             if all_places != []:
                 # remember the current amino depth
-                depth = len(protein.get_all_coordinates()) - 1
+                depth = len(protein.get_all_coordinates())
 
                 # for every possible place, copy the current protein and create a child
                 for place in all_places:
@@ -57,7 +57,6 @@ def branch_and_bound(protein_filename):
 
                     # pseudo-place amino and update the stability
                     protein_child.place_amino(place, next_child_amino.get_id())
-                    protein_child.update_bonds()
                     child_stability = protein_child.update_stability()
 
                     # pruning only applicable when a H or C is to be placed.
@@ -93,8 +92,6 @@ def branch_and_bound(protein_filename):
                     # all branches of a P amino are kept
                     else:
                         stack.append(protein_child)
-
-
 
         # when protein is completed
         else:

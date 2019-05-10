@@ -95,7 +95,7 @@ class Protein(object):
                                 # if not, add bond to attribute
                                 self.bonds += [[amino, nearby_amino]]
 
-        print("bonds: {}".format(self.bonds))
+        # print("bonds: {}".format(self.bonds))
         return self.bonds
 
     def set_bonds(self, bonds):
@@ -108,6 +108,8 @@ class Protein(object):
         """
         A function that sets the stability of the protein
         """
+        self.update_bonds()
+        
         # reset stability
         self.stability = 0
 
