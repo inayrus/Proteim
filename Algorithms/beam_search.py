@@ -34,30 +34,6 @@ def breadth_first(protein_filename):
         next_parent_amino = protein.get_next_amino()
 
         # make a list with all proteins and their stabilities
-        for i in range(len(queue)):
-            queue[i].update_bonds()
-            queue[i].update_stability()
-            beamsearch.append(queue[i])
-
-        # make queue empty
-        queue = []
-
-
-        # print("beamsearch before sort: {}".format(beamsearch))
-        #
-        # # sort the list
-        # beamsearch.sort()
-        # print("beamsearch after sort: {}".format(beamsearch))
-
-        # is the beam is bigger thand the list, the queue is the same as the beamsearch
-        if beam > len(beamsearch):
-            queue = beamsearch
-        # else only append the most negative proteins to the queue
-        else:
-            for i in range(beam):
-                queue.append(beamsearch[i])
-
-        print(queue)
 
         if next_parent_amino:
             # get all the possible places to put the next amino
@@ -73,8 +49,28 @@ def breadth_first(protein_filename):
                     next_child_amino = protein_child.get_next_amino()
                     protein_child.place_amino(place, next_child_amino.get_id())
 
-                    # put the children in the back of the queue
-                    queue.append(protein_child)
+                    for i in range(len(queue)):
+                        queue[i].update_bonds()
+                        queue[i].update_stability()
+                        beamsearch.append(queue[i])
+
+
+                    # print("beamsearch before sort: {}".format(beamsearch))
+                    #
+                    # # sort the list
+                    # beamsearch.sort()
+                    # print("beamsearch after sort: {}".format(beamsearch))
+
+                    # is the beam is bigger thand the list, the queue is the same as the beamsearch
+                    if beam > len(beamsearch):
+                        for i in range(beamsearch):
+                            queue.append(beamsearch[i])
+                    # else only append the most negative proteins to the queue
+                    else:
+                        for i in range(beam):
+                            queue.append(beamsearch[i])
+
+
 
         # when protein is completed
         else:
@@ -87,21 +83,6 @@ def breadth_first(protein_filename):
             best_proteins = save_best_protein(best_proteins, protein)
 
 
-
-
-
-
-
-            #
-            #     Beam Search
-                    # Beam = 2300 # experimenteel gekozen
-                    # generation = [ start_state ]
-                    # while not
-                        # generation.has_solution():
-                        # all_children = [ ]
-                        # for state in generation:
-                            # all_children += state.generate_children()
-                            # generation = select_best_states( all_children , Beam );
 
 
 if __name__ == "__main__":
