@@ -4,6 +4,7 @@ import random
 sys.path.append('../')
 from helpers import save_best_protein
 from Protein import Protein
+import time
 
 def branch_and_bound(protein_filename):
     """
@@ -104,4 +105,7 @@ def branch_and_bound(protein_filename):
             best_proteins = save_best_protein(best_proteins, protein)
 
 if __name__ == "__main__":
+    start = time.time()
     branch_and_bound(sys.argv[1])
+    end = time. time()
+    print(end - start)

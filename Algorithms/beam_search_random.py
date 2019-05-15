@@ -5,6 +5,7 @@ from helpers import save_best_protein
 from Protein import Protein
 from operator import itemgetter
 import random
+import time
 
 
 def beam_search_random(protein_filename):
@@ -98,4 +99,7 @@ def beam_search_random(protein_filename):
 
 
 if __name__ == "__main__":
+    start = time.time ()
     beam_search_random(sys.argv[1])
+    end = time. time()
+    print(end - start)

@@ -5,6 +5,7 @@ from Protein import Protein
 from helpers import save_best_protein
 import random
 
+
 def greedy_loop(protein_filename):
     """
     A loop function where proteins are randomly folded.

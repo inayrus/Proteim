@@ -4,6 +4,7 @@ sys.path.append('../')
 from helpers import save_best_protein
 from Protein import Protein
 from operator import itemgetter
+import time
 
 def beam_search(protein_filename):
     """
@@ -105,4 +106,7 @@ def beam_search(protein_filename):
 
 
 if __name__ == "__main__":
+    start = time.time()
     beam_search(sys.argv[1])
+    end = time. time()
+    print(end - start)

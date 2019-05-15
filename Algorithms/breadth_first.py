@@ -3,6 +3,7 @@ import copy
 sys.path.append('../')
 from helpers import save_best_protein
 from Protein import Protein
+import time
 
 def breadth_first(protein_filename):
     """
@@ -58,4 +59,7 @@ def breadth_first(protein_filename):
             best_proteins = save_best_protein(best_proteins, protein)
 
 if __name__ == "__main__":
+    start = time.time()
     breadth_first(sys.argv[1])
+    end = time. time()
+    print(end - start)
