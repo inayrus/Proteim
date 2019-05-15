@@ -84,6 +84,8 @@ class Protein(object):
 
                     if str_location in self.amino_places:
                         amino_id = self.amino_places[str_location]
+                        # print("amino_id : {}".format(amino_id))
+                        # print("amino_places: {}".format(self.amino_places))
                         nearby_amino = self.amino_acids[amino_id]
 
                         # there's only a bond if new amino is H or C
@@ -110,7 +112,7 @@ class Protein(object):
         A function that sets the stability of the protein
         """
         self.update_bonds()
-        
+
         # reset stability
         self.stability = 0
 
