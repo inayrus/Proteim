@@ -5,8 +5,7 @@ from Protein import Protein
 from helpers import save_best_protein
 import random
 
-
-def greedy_loop(protein_filename):
+def greedy_look_ahead_loop(protein_filename):
     """
     A loop function where proteins are folded with greedy.
     Best proteins are saved in a csv.
@@ -18,14 +17,14 @@ def greedy_loop(protein_filename):
     while True:
         # fold a protein
         print("===================")
-        protein, is_completed = greedy(protein_filename)
+        protein, is_completed = greedy_look_ahead(protein_filename)
 
         # only save completed proteins (ones without dead endings)
         if is_completed:
             # update the best protein list and save the best protein in a csv
             best_proteins = save_best_protein(best_proteins, protein)
 
-def greedy(protein_filename):
+def greedy_look_ahead(protein_filename):
     """
     Constructive algorithm that finds solutions by placing amino acids in a greedy manner.
     """
@@ -90,4 +89,4 @@ def greedy(protein_filename):
             return protein, True
 
 if __name__ == "__main__":
-    greedy_loop(sys.argv[1])
+    greedy_look_ahead_loop(sys.argv[1])
