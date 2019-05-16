@@ -55,5 +55,5 @@ class Amino(object):
     #     s+="bond_strength:"+str(self.bond_strength)+" "
     #     return s
     #
-    # def __str__(self):
-    #     return repr(self)
+    def __str__(self):
+        return repr(self)
