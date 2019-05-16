@@ -64,10 +64,6 @@ class Protein(object):
             amino = self.amino_acids[index]
             # print(amino)
 
-        for index in range(num_placed - 1):
-            amino = self.amino_acids[index]
-            # print(amino)
-
             # if H or C, get surrounding locations amino is not connected to
             if amino.get_kind() != 'P':
                 surroundings = self.get_neighbors(amino)
