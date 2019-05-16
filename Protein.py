@@ -61,11 +61,7 @@ class Protein(object):
 
         for index in range(num_placed - 1):
             amino = self.amino_acids[index]
-            print(amino)
-
-        for index in range(num_placed - 1):
-            amino = self.amino_acids[index]
-            print(amino)
+            # print(amino)
 
             # if H or C, get surrounding locations amino is not connected to
             if amino.get_kind() != 'P':
@@ -109,7 +105,7 @@ class Protein(object):
         A function that sets the stability of the protein
         """
         self.update_bonds()
-        
+
         # reset stability
         self.stability = 0
 

@@ -1,6 +1,8 @@
 import sys
 import pathlib
 import random
+import csv
+import statistics
 # line below ensures Protein.py can be reached: it exits the Algorithm folder
 # and re-enters the Proteim dir, where Protein.py currently is
 sys.path.append('../')
@@ -26,7 +28,7 @@ def ribosome_loop(protein_filename):
             # update the best protein list and save the best protein in a csv
             best_proteins = save_best_protein(best_proteins, protein)
 
-
+            
 def ribosome_fold(protein_filename):
     """
     A function that folds the protein by placing its amino acids
@@ -65,6 +67,28 @@ def ribosome_fold(protein_filename):
             protein.place_amino(picked_place, amino.get_id())
 
     return protein, True
+
+
+def save_for_mean(protein, stabilities):
+    """Saves the stability in a csv"""
+    file = pathlib.Path("../MeansData/{}_1000.csv".format(sys.argv[1]))
+
+    # the data to save
+    data = [protein.get_stability()]
+
+    #  write data if file doesn't exist
+    if not file.exists():
+        with file.open(mode='w') as csvfile:
+            csvwriter = csv.writer(csvfile)
+            csvwriter.writerow(data)
+    else:
+        with file.open(mode='a') as csvfile:
+            csvwriter = csv.writer(csvfile)
+            csvwriter.writerow(data)
+    # append stability to list
+    stabilities.append(protein.get_stability())
+
+
 
 if __name__ == "__main__":
 
