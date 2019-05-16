@@ -4,6 +4,7 @@ import random
 sys.path.append('../')
 from helpers import save_best_protein
 from Protein import Protein
+import time
 
 def branch_and_bound(protein_filename):
     """
@@ -45,7 +46,7 @@ def branch_and_bound(protein_filename):
             # only continue if protein hasn't folded into itself
             if all_places != []:
                 # remember the current amino depth
-                depth = len(protein.get_all_coordinates()) - 1
+                depth = len(protein.get_all_coordinates())
 
                 # for every possible place, copy the current protein and create a child
                 for place in all_places:
@@ -57,7 +58,6 @@ def branch_and_bound(protein_filename):
 
                     # pseudo-place amino and update the stability
                     protein_child.place_amino(place, next_child_amino.get_id())
-                    protein_child.update_bonds()
                     child_stability = protein_child.update_stability()
 
                     # pruning only applicable when a H or C is to be placed.
@@ -94,8 +94,6 @@ def branch_and_bound(protein_filename):
                     else:
                         stack.append(protein_child)
 
-
-
         # when protein is completed
         else:
             # update bonds for every new child
@@ -107,4 +105,7 @@ def branch_and_bound(protein_filename):
             best_proteins = save_best_protein(best_proteins, protein)
 
 if __name__ == "__main__":
+    start = time.time()
     branch_and_bound(sys.argv[1])
+    end = time. time()
+    print(end - start)
