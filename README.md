@@ -1,22 +1,37 @@
-# project Proteim
+# Project Proteim
 
-Find the most optimal folding technique for the proteïn
+Find the most optimal folded proteins
 
 ## Getting Started
 
 ### Prerequisites
 
-Deze codebase is volledig geschreven in [Python3.6.3](https://www.python.org/downloads/). In requirements.txt staan alle benodigde packages om de code succesvol te draaien. Deze zijn gemakkelijk te installeren via pip dmv. de volgende instructie:
+This codebase is completely written in Python [Python3.6.3](https://www.python.org/downloads/). In requirements.txt are alle necessary packages to run the code sucessfully. These packages can be easily installed with pip through the following instruction:
 
 ```
 pip install -r requirements.txt
 ```
 
-### Structuur (Structure)
+### Structure
 
-Alle Python scripts staan in de folder Code. In de map Data zitten alle input waardes en in de map resultaten worden alle resultaten opgeslagen door de code.
+The Algorithms folder consists of all written algorithms. It specifically contains:
+* Random algorithm (ribosome_fold)
+* depth first search
+* breadth first search
+* local beam search
+* branch and bound
+* greedy algorithm
 
-### Test (Testing)
+The MeansData folder has csv files with the stability of all proteins after 1000 iterations with the random algorithm.
+The mean of these stabilities can be calculated with the "calculate_mean" script.
+
+The ProteinsData folder contains text files with amino acid orders of the tested proteins.
+
+The Results folder contains the results of the algorithms, where they are sorted in a seperate folder for every algorithm.
+It also has a function to visualize a results file.
+
+
+### Running code
 
 
 Om de code te draaien met de standaardconfiguratie (bv. brute-force en voorbeeld.csv) gebruik de instructie:
@@ -25,10 +40,13 @@ Om de code te draaien met de standaardconfiguratie (bv. brute-force en voorbeeld
 python main.py
 ```
 
-## Auteurs (Authors)
-Machiel Cligge, 
-Valerie Sawirja & 
+## Authors
+Machiel Cligge,
+Valerie Sawirja &
 Amber Mayenburg
 
-## Dankwoord (Acknowledgments)
+## Acknowledgments
 * minor programmeren van de UvA
+* Bas Terwijn
+* Bram van den Heuvel
+* Daan van den Berg
