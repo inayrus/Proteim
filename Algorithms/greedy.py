@@ -1,8 +1,9 @@
 import sys
 import copy
-sys.path.append('../')
-from Protein import Protein
 from helpers import save_best_protein
+# sys.path.append('../')
+sys.path.append('Classes/')
+from Protein import Protein
 import random
 
 def greedy_loop(protein_filename):
@@ -32,11 +33,11 @@ def greedy(protein_filename):
     child_list = []
 
     # place first two amino acids, bc their placing doesn't matter
-    if sys.argv[2] == "2d":
+    if sys.argv[3] == "2d":
         protein.place_amino([0, 0], 0)
         protein.place_amino([0, 1], 1)
 
-    if sys.argv[2] == "3d":
+    if sys.argv[3] == "3d":
         protein.place_amino([0, 0, 0], 0)
         protein.place_amino([0, 1, 0], 1)
 
@@ -52,6 +53,7 @@ def greedy(protein_filename):
         next_parent_amino = protein.get_next_amino()
 
         if next_parent_amino:
+            print(next_parent_amino)
             # get all the possible places to put the next amino
             all_places = protein.get_place_options(protein.get_rearmost_amino())
 
@@ -93,4 +95,4 @@ def greedy(protein_filename):
             return protein, True
 
 if __name__ == "__main__":
-    greedy_loop(sys.argv[1])
+    greedy_loop(sys.argv[2])

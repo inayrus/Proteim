@@ -2,7 +2,6 @@ import sys
 sys.path.append('../')
 import pathlib
 import random
-import matplotlib.pyplot as plt
 from Amino import Amino
 # import copy
 
@@ -176,12 +175,12 @@ class Protein(object):
         A function that returns a list of all coordinates around a certain
         grid point
         """
-        if sys.argv[2] == "2d":
+        if sys.argv[3] == "2d":
             coordinates = amino.get_location()
             x, y = coordinates
             return [[x, y + 1], [x, y - 1], [x + 1, y], [x - 1, y]]
 
-        if sys.argv[2] == "3d":
+        if sys.argv[3] == "3d":
             coordinates = amino.get_location()
             x, y, z = coordinates
             return [[x, y + 1, z], [x, y - 1, z], [x + 1, y, z], [x - 1, y, z], [x, y, z + 1], [x, y, z - 1]]
@@ -194,7 +193,7 @@ class Protein(object):
         all_places = self.get_neighbors(amino)
 
         # Remove symmetry for 2d proteins
-        if sys.argv[2] == '2d':
+        if sys.argv[3] == '2d':
             if self.is_straight == True:
                 x_check = 0
                 for x, y in self.all_coordinates:
@@ -206,7 +205,7 @@ class Protein(object):
                     self.is_straight = False
 
         # Remove symmetry for 3d proteins
-        if sys.argv[2] == "3d":
+        if sys.argv[3] == "3d":
             if self.is_straight == True:
                 x_check = 0
                 z_check = 0
@@ -223,6 +222,7 @@ class Protein(object):
                     self.is_straight = False
 
         # 2) check the Protein attribute what places are empty
+        # breakpoint()
         for coordinate in self.get_all_coordinates():
             if coordinate in all_places:
                 all_places.remove(coordinate)
@@ -235,6 +235,7 @@ class Protein(object):
         """
         # get the number of placed amino's
         num_placed = len(self.all_coordinates)
+        print("!!!")
 
         if num_placed < len(self.amino_acids):
             next_amino = self.amino_acids[num_placed]
@@ -308,37 +309,3 @@ class Protein(object):
 
     def __str__(self):
         return repr(self)
-
-
-if __name__ == "__main__":
-
-    # ensure that a filename is added to the commandline
-    if len(sys.argv) != 2:
-        print("give one protein filename to the command line (ex. protein_a1)")
-        exit(1)
-
-    # ensure that the file exists in ProteinData
-    file = pathlib.Path("ProteinData/{}.txt".format(sys.argv[1]))
-    if not file.exists():
-        print("please choose a filename that exist in the ProteinData folder")
-        exit(1)
-
-    # if all is good, create a protein object
-    protein = Protein(sys.argv[1])
-    all_coordinates = protein.ribosome_fold()
-    all_bonds = protein.update_bonds()
-    stability = protein.update_stability()
-    brute_force_search = protein.brute_force_search()
-
-    # list = []
-    # for i in range(4):
-    #     list.append(copy.deepcopy(protein))
-    #     list[-1].stability = 10 - i
-    #
-    # print("before sort: {}".format(list))
-    # list.sort()
-    # print("after sort: {}".format(list))
-
-
-    # Visualize the protein
-    protein.visualize()
