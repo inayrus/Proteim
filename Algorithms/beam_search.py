@@ -1,8 +1,9 @@
 import sys
 import copy
+sys.path.append('../Classes')
+from Protein import Protein
 sys.path.append('../')
 from helpers import save_best_protein
-from Protein import Protein
 from operator import itemgetter
 import time
 
@@ -20,8 +21,7 @@ def beam_search(protein_filename):
 
     beam = 50
     # place first two amino acids, bc their placing doesn't matter
-    protein.place_amino([0, 0], 0)
-    protein.place_amino([0, 1], 1)
+    protein.place_first_two()
 
     # put start protein in the queue
     queue.append(protein)
@@ -75,34 +75,10 @@ def beam_search(protein_filename):
                         queue.append(beamsearch[i])
                 beamsearch = []
 
-
-
-
-                    #
-                    # print("child stab: {}".format(child_stabilities))
-                    #
-                    # # get index of lowest child_stabilities
-                    # minimum = min(child_stabilities)
-                    # min_index = child_stabilities.index(minimum)
-                    #
-                    # # remove stability from list
-                    # child_stabilities.pop(min_index)
-                    #
-                    # # get the protein child with this lowest stability
-                    # low_child = beamsearch.pop(min_index)
-                    #
-                    # # append child to queue
-                    # queue.append(low_child)
-                    # print("queue: {}".format(queue))
-                    # breakpoint()
-
-
         # when protein is completed
         else:
                     # call save_best_protein function
             best_proteins = save_best_protein(best_proteins, protein)
-
-
 
 
 if __name__ == "__main__":

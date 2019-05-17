@@ -1,7 +1,8 @@
 import sys
 import copy
-sys.path.append('../')
+sys.path.append('../Classes')
 from Protein import Protein
+sys.path.append('../')
 from helpers import save_best_protein
 import random
 
@@ -32,13 +33,7 @@ def greedy(protein_filename):
     child_list = []
 
     # place first two amino acids, bc their placing doesn't matter
-    if sys.argv[2] == "2d":
-        protein.place_amino([0, 0], 0)
-        protein.place_amino([0, 1], 1)
-
-    if sys.argv[2] == "3d":
-        protein.place_amino([0, 0, 0], 0)
-        protein.place_amino([0, 1, 0], 1)
+    protein.place_first_two()
 
     # put start protein in the queue
     child_list.append(protein)
