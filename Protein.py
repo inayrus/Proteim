@@ -213,9 +213,12 @@ class Protein(object):
                 for x, y, z in self.all_coordinates:
                     x_check += x
                     z_check += z
-                if x_check == 0 and z_check == 0:
+                if x_check == 0:
                     # remove the left (x - 1) space option
-                    all_places = [[x, y + 1, z], [x + 1, y, z], [x, y, z + 1]]
+                    all_places = [[x, y + 1, z], [x + 1, y, z]]
+                elif z_check == 0:
+                    # remove the backwards (z - 1) space option
+                    all_places = [[x + 1, y, z], [x, y + 1, z], [x, y - 1, z] [x, y, z + 1]]
                 else:
                     self.is_straight = False
 

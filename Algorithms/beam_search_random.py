@@ -84,6 +84,7 @@ def beam_search_random(protein_filename):
 
                         index_to_choose = list(range(0, len(beam_random)))
                         chosen = random.choice(index_to_choose)
+                        print("chosen: " + str(chosen))
                         queue.append(beam_random[chosen])
                     beamsearch = []
                     beam_random = []
