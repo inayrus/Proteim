@@ -161,7 +161,7 @@ def get_file():
     algrm = algorithm_split[0]
     protein_name = sys.argv[1]
 
-    # create path
-    file = pathlib.Path("../Results/{}/{}_{}.csv".format(algrm, algrm, protein_name))
+    dimension = sys.argv[2].lower()
+    file = pathlib.Path("../Results/{}/{}/{}_{}.csv".format(dimension, algrm, algrm, protein_name))
 
     return file
