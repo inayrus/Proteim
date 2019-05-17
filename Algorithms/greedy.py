@@ -1,11 +1,5 @@
 import sys
 import copy
-<<<<<<< HEAD
-=======
-sys.path.append('../Classes')
-from Protein import Protein
-sys.path.append('../')
->>>>>>> e1527150c94dc0d5486f7ea6f17a98979932da23
 from helpers import save_best_protein
 # sys.path.append('../')
 sys.path.append('Classes/')
