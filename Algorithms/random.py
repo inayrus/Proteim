@@ -10,7 +10,7 @@ from Protein import Protein
 from helpers import save_best_protein
 
 
-def ribosome_loop(protein_filename):
+def random_loop(protein_filename):
     """
     A loop function where proteins are randomly folded.
     Best proteins are saved in a csv.
@@ -22,18 +22,18 @@ def ribosome_loop(protein_filename):
     while True:
         if sys.argv[2] == "2d":
             # fold a 2d protein
-            protein, is_completed = ribosome_fold2d(protein_filename)
+            protein, is_completed = random_fold2d(protein_filename)
 
         if sys.argv[2] == "3d":
             # fold a 3dprotein
-            protein, is_completed = ribosome_fold3d(protein_filename)
+            protein, is_completed = random_fold3d(protein_filename)
 
         # only save completed proteins (ones without dead endings)
         if is_completed:
             # update the best protein list and save the best protein in a csv
             best_proteins = save_best_protein(best_proteins, protein)
 
-def ribosome_fold2d(protein_filename):
+def random_fold2d(protein_filename):
     """
     A function that folds the protein by placing its amino acids
     one by one on a grid, randomly.
@@ -73,7 +73,7 @@ def ribosome_fold2d(protein_filename):
     return protein, True
 
 
-def ribosome_fold3d(protein_filename):
+def random_fold3d(protein_filename):
     """
     A function that folds the protein by placing its amino acids
     one by one on a grid, randomly.
@@ -148,14 +148,4 @@ if __name__ == "__main__":
         exit(1)
 
     # if all is good, run the algorithm
-    ribosome_loop(sys.argv[1])
-
-    # for i in range(3**4):
-    #     protein = ribosome_fold(sys.argv[1])
-
-    # all_coordinates = protein.get_all_coordinates()
-    # all_bonds = protein.update_bonds()
-    # stability = protein.update_stability()
-
-    # Visualize the protein
-    # protein.visualize()
+    random_loop(sys.argv[1])
