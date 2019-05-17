@@ -16,7 +16,7 @@ def visualize_csv(algorithm, protein, size=1):
     Usage: python visualize_csv.py algorithm protein_name [size]
     """
     # construct the path to the csv file
-    filepath = pathlib.Path("Results/{}/{}_{}.csv".format(algorithm, algorithm, protein))
+    filepath = pathlib.Path("2d/{}/{}_{}.csv".format(algorithm, algorithm, protein))
 
     # check if file exists
     if not filepath.exists():
@@ -101,7 +101,7 @@ def visualize3d_csv(algorithm, protein):
     Usage: python visualize_csv.py algorithm protein_name
     """
     # construct the path to the csv file
-    filepath = pathlib.Path("Results/{}/{}_{}.csv".format(algorithm, algorithm, protein))
+    filepath = pathlib.Path("3d/{}/{}_{}.csv".format(algorithm, algorithm, protein))
 
     # check if file exists
     if not filepath.exists():
