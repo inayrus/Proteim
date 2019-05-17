@@ -15,7 +15,7 @@ def greedy_loop(protein_filename):
     best_proteins = []
 
     # fold the protein in a loop
-    while True:
+    for i in range(1500):
         # fold a protein
         print("===================")
         protein, is_completed = greedy(protein_filename)
