@@ -132,7 +132,6 @@ def save_for_mean(protein, stabilities):
     stabilities.append(protein.get_stability())
 
 
-
 if __name__ == "__main__":
 
     # ensure that a filename is added to the commandline
