@@ -257,6 +257,16 @@ class Protein(object):
         prev_amino = self.amino_acids[num_placed - 2]
         return amino
 
+    def place_first_two(self):
+        # place first two amino acids, bc their placing doesn't matter
+        if sys.argv[2] == "2d":
+            self.place_amino([0, 0], 0)
+            self.place_amino([0, 1], 1)
+
+        if sys.argv[2] == "3d":
+            self.place_amino([0, 0, 0], 0)
+            self.place_amino([0, 1, 0], 1)
+
     def place_amino(self, coordinates, amino_id):
         """
         Places an amino on given coordinates.

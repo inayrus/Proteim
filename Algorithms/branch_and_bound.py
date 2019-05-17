@@ -1,9 +1,10 @@
 import sys
 import copy
 import random
+sys.path.append('../Classes')
+from Protein import Protein
 sys.path.append('../')
 from helpers import save_best_protein
-from Protein import Protein
 import time
 
 def branch_and_bound(protein_filename):
@@ -26,8 +27,7 @@ def branch_and_bound(protein_filename):
     p_between = 0.5
 
     # place first two amino acids, bc their placing doesn't matter
-    protein.place_amino([0, 0], 0)
-    protein.place_amino([0, 1], 1)
+    protein.place_first_two()
 
     # put start protein in the stack
     stack.append(protein)

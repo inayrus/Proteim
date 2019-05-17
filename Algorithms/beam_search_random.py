@@ -1,8 +1,9 @@
 import sys
 import copy
+sys.path.append('../Classes')
+from Protein import Protein
 sys.path.append('../')
 from helpers import save_best_protein
-from Protein import Protein
 from operator import itemgetter
 import random
 import time
@@ -23,8 +24,7 @@ def beam_search_random(protein_filename):
 
     beam = 50
     # place first two amino acids, bc their placing doesn't matter
-    protein.place_amino([0, 0], 0)
-    protein.place_amino([0, 1], 1)
+    protein.place_first_two()
 
     # put start protein in the queue
     queue.append(protein)
@@ -89,14 +89,10 @@ def beam_search_random(protein_filename):
                     beamsearch = []
                     beam_random = []
 
-
-
         # when protein is completed
         else:
             # call save_best_protein function
             best_proteins = save_best_protein(best_proteins, protein)
-
-
 
 
 if __name__ == "__main__":

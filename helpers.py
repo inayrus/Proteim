@@ -2,6 +2,7 @@ import sys
 import pathlib
 import csv
 import ast
+sys.path.append('../Classes')
 from Protein import Protein
 
 def save_best_protein(best_proteins, new_protein):
