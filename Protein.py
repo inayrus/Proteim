@@ -176,9 +176,15 @@ class Protein(object):
         A function that returns a list of all coordinates around a certain
         grid point
         """
-        coordinates = amino.get_location()
-        x, y = coordinates
-        return [[x, y + 1], [x, y - 1], [x + 1, y], [x - 1, y]]
+        if sys.argv[2] == "2d":
+            coordinates = amino.get_location()
+            x, y = coordinates
+            return [[x, y + 1], [x, y - 1], [x + 1, y], [x - 1, y]]
+
+        if sys.argv[2] == "3d":
+            coordinates = amino.get_location()
+            x, y, z = coordinates
+            return [[x, y + 1, z], [x, y - 1, z], [x + 1, y, z], [x - 1, y, z], [x, y, z + 1], [x, y, z - 1]]
 
     def get_place_options(self, amino):
         """
@@ -187,21 +193,37 @@ class Protein(object):
         # get all spaces around amino
         all_places = self.get_neighbors(amino)
 
-        # remove mirrored locations
-        if self.is_straight == True:
-            x_check = 0
-            for x, y in self.all_coordinates:
-                x_check += x
-            if x_check == 0:
-                # remove the left (x - 1) space option
-                all_places = [[x, y + 1], [x, y - 1], [x + 1, y]]
-            else:
-                self.is_straight = False
+        # Remove symmetry for 2d proteins
+        if sys.argv[2] == '2d':
+            if self.is_straight == True:
+                x_check = 0
+                for x, y in self.all_coordinates:
+                    x_check += x
+                if x_check == 0:
+                    # remove the left (x - 1) space option
+                    all_places = [[x, y + 1], [x + 1, y]]
+                else:
+                    self.is_straight = False
+
+        # Remove symmetry for 3d proteins
+        if sys.argv[2] == "3d":
+            if self.is_straight == True:
+                x_check = 0
+                z_check = 0
+                for x, y, z in self.all_coordinates:
+                    x_check += x
+                    z_check += z
+                if x_check == 0 and z_check == 0:
+                    # remove the left (x - 1) space option
+                    all_places = [[x, y + 1, z], [x + 1, y, z], [x, y, z + 1]]
+                else:
+                    self.is_straight = False
 
         # 2) check the Protein attribute what places are empty
-        for xy in self.get_all_coordinates():
-            if xy in all_places:
-                all_places.remove(xy)
+        for coordinate in self.get_all_coordinates():
+            if coordinate in all_places:
+                all_places.remove(coordinate)
+
         return all_places
 
     def get_next_amino(self):

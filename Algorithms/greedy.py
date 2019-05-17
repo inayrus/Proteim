@@ -5,7 +5,6 @@ from Protein import Protein
 from helpers import save_best_protein
 import random
 
-
 def greedy_loop(protein_filename):
     """
     A loop function where proteins are folded with greedy.
@@ -17,7 +16,6 @@ def greedy_loop(protein_filename):
     # fold the protein in a loop
     for i in range(1500):
         # fold a protein
-        print("===================")
         protein, is_completed = greedy(protein_filename)
 
         # only save completed proteins (ones without dead endings)
@@ -34,8 +32,13 @@ def greedy(protein_filename):
     child_list = []
 
     # place first two amino acids, bc their placing doesn't matter
-    protein.place_amino([0, 0], 0)
-    protein.place_amino([0, 1], 1)
+    if sys.argv[2] == "2d":
+        protein.place_amino([0, 0], 0)
+        protein.place_amino([0, 1], 1)
+
+    if sys.argv[2] == "3d":
+        protein.place_amino([0, 0, 0], 0)
+        protein.place_amino([0, 1, 0], 1)
 
     # put start protein in the queue
     child_list.append(protein)
