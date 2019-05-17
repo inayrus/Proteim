@@ -3,10 +3,9 @@ import pathlib
 import random
 import csv
 import statistics
-# line below ensures Protein.py can be reached: it exits the Algorithm folder
-# and re-enters the Proteim dir, where Protein.py currently is
-sys.path.append('../')
+sys.path.append('../Classes')
 from Protein import Protein
+sys.path.append('../')
 from helpers import save_best_protein
 
 
