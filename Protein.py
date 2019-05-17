@@ -123,8 +123,6 @@ class Protein(object):
                 self.stability -= 1
             elif amino == "C" and other_amino == "C":
                 self.stability -= 5
-
-        # print(self.stability)
         return self.stability
 
     def set_stability(self, stability):

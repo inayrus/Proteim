@@ -22,11 +22,14 @@ def depth_first(protein_filename):
     # put start protein in the stack
     stack.append(protein)
 
+    iterations = 0
+
     # --> start loop
     while stack != []:
         # pick the last child off the stack (pop function)
         protein = stack.pop()
-        print(len(stack))
+        iterations += 1
+        print("number of iterations: {}".format(iterations))
 
         # if next amino exists,
         next_parent_amino = protein.get_next_amino()
