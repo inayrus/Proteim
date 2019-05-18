@@ -26,7 +26,6 @@ def breadth_first(protein_filename):
     while queue != []:
         # pick the child in front off the queue (pop function)
         protein = queue.pop(0)
-        print(len(queue))
 
         # if next amino exists,
         next_parent_amino = protein.get_next_amino()

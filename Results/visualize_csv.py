@@ -9,6 +9,18 @@ import math
 import csv
 import ast
 
+def visualize_dimension(algorithm, protein, dimension, size=1):
+    """
+    Calls the visualize function for the right dimension.
+    """
+    if dimension == "2d":
+        visualize_csv(algorithm, protein, size)
+    elif dimension == "3d":
+        visualize3d_csv(algorithm, protein)
+    else:
+        print("can only visualize in 2d or 3d")
+        exit(1)
+
 
 def visualize_csv(algorithm, protein, size=1):
     """
@@ -16,7 +28,7 @@ def visualize_csv(algorithm, protein, size=1):
     Usage: python visualize_csv.py algorithm protein_name [size]
     """
     # construct the path to the csv file
-    filepath = pathlib.Path("2d/{}/{}_{}.csv".format(algorithm, algorithm, protein))
+    filepath = pathlib.Path("Results/2d/{}/{}_{}.csv".format(algorithm, algorithm, protein))
 
     # check if file exists
     if not filepath.exists():
@@ -101,7 +113,7 @@ def visualize3d_csv(algorithm, protein):
     Usage: python visualize_csv.py algorithm protein_name
     """
     # construct the path to the csv file
-    filepath = pathlib.Path("3d/{}/{}_{}.csv".format(algorithm, algorithm, protein))
+    filepath = pathlib.Path("Results/3d/{}/{}_{}.csv".format(algorithm, algorithm, protein))
 
     # check if file exists
     if not filepath.exists():
@@ -179,8 +191,11 @@ def visualize3d_csv(algorithm, protein):
 
 
 if __name__ == "__main__":
-    dimension = sys.argv[3].lower()
+    if len(sys.argv) < 4:
+        print("Usage: python visualize_csv.py algorithm protein_name dimension [size]")
+        exit(1)
 
+    dimension = sys.argv[3].lower()
     # if user wants 2d plot
     if dimension == "2d":
         if len(sys.argv) == 4:
@@ -192,5 +207,5 @@ if __name__ == "__main__":
     elif dimension == "3d":
         visualize3d_csv(sys.argv[1], sys.argv[2])
     else:
-        print("Usage: python visualize_csv.py algorithm protein_name [dimension] [size]")
+        print("dimension doesn't exist")
         exit(1)

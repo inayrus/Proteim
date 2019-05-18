@@ -47,7 +47,6 @@ def greedy(protein_filename):
         next_parent_amino = protein.get_next_amino()
 
         if next_parent_amino:
-            print(next_parent_amino)
             # get all the possible places to put the next amino
             all_places = protein.get_place_options(protein.get_rearmost_amino())
 

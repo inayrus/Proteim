@@ -235,7 +235,6 @@ class Protein(object):
         """
         # get the number of placed amino's
         num_placed = len(self.all_coordinates)
-        print("!!!")
 
         if num_placed < len(self.amino_acids):
             next_amino = self.amino_acids[num_placed]
@@ -259,11 +258,11 @@ class Protein(object):
 
     def place_first_two(self):
         # place first two amino acids, bc their placing doesn't matter
-        if sys.argv[2] == "2d":
+        if sys.argv[3] == "2d":
             self.place_amino([0, 0], 0)
             self.place_amino([0, 1], 1)
 
-        if sys.argv[2] == "3d":
+        if sys.argv[3] == "3d":
             self.place_amino([0, 0, 0], 0)
             self.place_amino([0, 1, 0], 1)
 

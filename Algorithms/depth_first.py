@@ -1,8 +1,8 @@
 import sys
 import copy
+sys.path.append('../')
 sys.path.append('../Classes')
 from Protein import Protein
-sys.path.append('../')
 from helpers import save_best_protein
 import time
 

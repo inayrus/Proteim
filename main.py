@@ -12,38 +12,50 @@ import breadth_first
 import depth_first
 import greedy
 import random_fold
+import visualize_csv
 
 def main():
-    action = sys.argv[1]
-    protein = sys.argv[2]
-    dimension = sys.argv[3]
 
-    if action == "greedy":
+    # link the argv's to the right variables
+    action = sys.argv[1]
+
+    # variable casting for visualizing
+    if action == "visualize" and len(sys.argv) == 6:
+        size == sys.argv[5]
+    if action == "visualize" and len(sys.argv) >= 5:
+        algorithm = sys.argv[2]
+        protein = sys.argv[3]
+        dimension = sys.argv[4].lower()
+        size = 1
+
+    # variable casting for running algorithms
+    elif action != "visualize" and len(sys.argv) == 4:
+        protein = sys.argv[2]
+        dimension = sys.argv[3].lower()
+    # argv check
+    else:
+        print("two usage options \n"
+              "running an algorithm: python main.py algorithm protein dimension\n"
+              "visualizing a result: python main.py visualize algorithm protein dimension [2d_subplot_size]\n")
+        exit(1)
+
+    if action == "beam_search_random":
+        beam_search_random.beam_search_random(protein)
+    elif action == "beam_search":
+        beam_search.beam_search(protein)
+    elif action == "branch_and_bound":
+        branch_and_bound.branch_and_bound(protein)
+    elif action == "breadth_first":
+        breadth_first.breadth_first(protein)
+    elif action == "depth_first":
+        depth_first.depth_first(protein)
+    elif action == "greedy":
         greedy.greedy_loop(protein)
     elif action == "random_fold":
         random_fold.random_loop(protein)
-
-
-    # # ask if the user wants to run an algorithm or visualize
-    # while True:
-    #     action = input("choose an action: \n"
-    #                    "1) running an algorithm \n"
-    #                    "2) visualizing a protein \n")
-    #     if action == '1' or action == '2':
-    #         break
-
-    # send the user to the right function
-
-# # running algorithms
-# def algorithms():
-#
-# # visualizing, 2d/ 3d
-# def visualizing():
-
-# protein options
+    elif action == "visualize":
+        visualize_csv.visualize_dimension(algorithm, protein, dimension, size)
 
 
 if __name__ == "__main__":
     main()
-
-    # input control --> argv needs to be at least 4 long
