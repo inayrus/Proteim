@@ -14,7 +14,7 @@ def beam_search(protein_filename):
     protein = Protein(protein_filename)
     amino_acids = protein.get_amino_acids()
     best_proteins, queue, child_stabilities, beamsearch = ([] for i in range(4))
-    beam = 50
+    beam = 1000
     # place first two amino acids, bc their placing doesn't matter
     protein.place_first_two()
 
