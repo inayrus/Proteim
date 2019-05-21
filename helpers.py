@@ -52,7 +52,6 @@ def save_in_csv(protein, write_or_append):
     """
     file = get_file()
 
-    print(write_or_append)
     amino_places = protein.get_amino_places()
     bonds = protein.get_bonds()
 
@@ -89,10 +88,10 @@ def save_in_csv(protein, write_or_append):
     return protein.get_stability()
 
 
-def load_from_csv(file, protein_name=sys.argv[1]):
+def load_from_csv(file, protein_name=sys.argv[2]):
     """
     Recreates a protein object from a csvfile.
-    protein_name arg is optional, but its default is sys.argv[1].
+    protein_name arg is optional, but its default is sys.argv[2].
     This default is used when running a algorithms,
     but it's specified when visualizing a protein (visualize_csv)
 
@@ -158,11 +157,10 @@ def get_file():
     assuming the usage: "python algorithm.py protein_name".
     """
     # construct csv filename from commandline args
-    algorithm_split = sys.argv[0].split(".")
-    algrm = algorithm_split[0]
-    protein_name = sys.argv[1]
+    algrm = sys.argv[1]
+    protein_name = sys.argv[2]
 
-    dimension = sys.argv[2].lower()
-    file = pathlib.Path("../Results/{}/{}/{}_{}.csv".format(dimension, algrm, algrm, protein_name))
+    dimension = sys.argv[3].lower()
+    file = pathlib.Path("Results/{}/{}/{}_{}.csv".format(dimension, algrm, algrm, protein_name))
 
     return file

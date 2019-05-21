@@ -1,10 +1,9 @@
 import sys
 import copy
+sys.path.append('../')
 sys.path.append('../Classes')
 from Protein import Protein
-sys.path.append('../')
 from helpers import save_best_protein
-import time
 
 def depth_first(protein_filename):
     """
@@ -13,8 +12,7 @@ def depth_first(protein_filename):
     """
     protein = Protein(protein_filename)
     amino_acids = protein.get_amino_acids()
-    best_proteins = []
-    stack = []
+    best_proteins, stack = ([] for i in range(2))
 
     # place first two amino acids, bc their placing doesn't matter
     protein.place_first_two()
@@ -53,16 +51,8 @@ def depth_first(protein_filename):
 
         # when protein is completed
         else:
-            # update bonds for every new child
-            protein.update_bonds()
             # update stability
             protein.update_stability()
 
             # call save_best_protein function
             best_proteins = save_best_protein(best_proteins, protein)
-
-if __name__ == "__main__":
-    start = time.time()
-    depth_first(sys.argv[1])
-    end = time. time()
-    print(end - start)

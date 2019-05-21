@@ -4,7 +4,6 @@ sys.path.append('../Classes')
 from Protein import Protein
 sys.path.append('../')
 from helpers import save_best_protein
-import time
 
 def breadth_first(protein_filename):
     """
@@ -13,8 +12,7 @@ def breadth_first(protein_filename):
     """
     protein = Protein(protein_filename)
     amino_acids = protein.get_amino_acids()
-    best_proteins = []
-    queue = []
+    best_proteins, queue = ([] for i in range(2))
 
     # place first two amino acids, bc their placing doesn't matter
     protein.place_first_two()
@@ -26,7 +24,6 @@ def breadth_first(protein_filename):
     while queue != []:
         # pick the child in front off the queue (pop function)
         protein = queue.pop(0)
-        print(len(queue))
 
         # if next amino exists,
         next_parent_amino = protein.get_next_amino()
@@ -50,16 +47,8 @@ def breadth_first(protein_filename):
 
         # when protein is completed
         else:
-            # update bonds for every new child
-            protein.update_bonds()
-            # update stability
+            # update bonds and  stability
             protein.update_stability()
 
             # call save_best_protein function
             best_proteins = save_best_protein(best_proteins, protein)
-
-if __name__ == "__main__":
-    start = time.time()
-    breadth_first(sys.argv[1])
-    end = time. time()
-    print(end - start)

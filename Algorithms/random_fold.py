@@ -83,20 +83,3 @@ def save_for_mean(protein, stabilities):
             csvwriter.writerow(data)
     # append stability to list
     stabilities.append(protein.get_stability())
-
-
-if __name__ == "__main__":
-
-    # ensure that a filename is added to the commandline
-    if len(sys.argv) != 3:
-        print("give one protein filename to the command line (ex. protein_a1) and specify 2d or 3d")
-        exit(1)
-
-    # ensure that the file exists in ProteinData
-    file = pathlib.Path("../ProteinData/{}.txt".format(sys.argv[1]))
-    if not file.exists():
-        print("please choose a filename that exist in the ProteinData folder")
-        exit(1)
-
-    # if all is good, run the algorithm
-    random_loop(sys.argv[1])
