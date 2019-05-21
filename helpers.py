@@ -52,7 +52,6 @@ def save_in_csv(protein, write_or_append):
     """
     file = get_file()
 
-    print(write_or_append)
     amino_places = protein.get_amino_places()
     bonds = protein.get_bonds()
 

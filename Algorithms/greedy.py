@@ -86,6 +86,6 @@ def greedy(protein_filename):
         # if no more next_amino
         else:
             return protein, True
-
-if __name__ == "__main__":
-    greedy_loop(sys.argv[2])
+#
+# if __name__ == "__main__":
+#     greedy_loop(sys.argv[2])

@@ -6,23 +6,18 @@ sys.path.append('../')
 from helpers import save_best_protein
 from operator import itemgetter
 import random
-import time
-
 
 def beam_search_random(protein_filename):
     """
-    Constructive algorithm that finds solutions by going breadth first through
-    the whole statespace.
+    Algorithm that finds solutions by going breadth first through
+    the statespace with a certain beam. The beam is selected out of the lowest
+    stabilities when this number is bigger than the beam, they are randomly selected
     """
     protein = Protein(protein_filename)
     amino_acids = protein.get_amino_acids()
-    best_proteins = []
-    queue = []
-    child_stabilities = []
-    beamsearch = []
-    beam_random  = []
+    best_proteins, queue, child_stabilities, beamsearch, beam_random = ([] for i in range(5))
+    beam = 100
 
-    beam = 50
     # place first two amino acids, bc their placing doesn't matter
     protein.place_first_two()
 
@@ -33,13 +28,11 @@ def beam_search_random(protein_filename):
     while queue != []:
         # pick the child in front off the queue (pop function)
         protein = queue.pop(0)
-        # print("lengte queue: {}".format(len(queue)))
 
         # if next amino exists,
         next_parent_amino = protein.get_next_amino()
 
         # make a list with all proteins and their stabilities
-
         if next_parent_amino:
             # get all the possible places to put the next amino
             all_places = protein.get_place_options(protein.get_rearmost_amino())
@@ -60,43 +53,32 @@ def beam_search_random(protein_filename):
 
                 beamsearch.sort()
 
-
+            # if queue is empty al kids are made
             if queue == []:
+                # if beam is bigger than the lengt of beamsearch add beamsearch to queue
                 if len(beamsearch) < beam:
-                    for i in range(len(beamsearch)):
-                        queue.append(beamsearch[i])
-                else:
+                    queue.extend(beamsearch)
 
+                else:
                     # get all low stability children
                     while (len(beam_random) + len(queue)) < beam:
                         queue.extend(beam_random)
                         beam_random = []
                         lowest = min(beamsearch)
 
+
                         while beamsearch[0].get_stability() == lowest.get_stability() and ((len(beam_random) + len(queue)) < beam):
                             beam_random.append(beamsearch.pop(0))
 
-
-
+                    # to add is the nummber of kids that still has to be added to the queue
                     to_add = beam - len(queue)
+                    # pick random the to_add and add those to the queue
+                    sampling = random.choices(beam_random, k=to_add)
+                    queue.extend(sampling)
 
-                    for i in range(to_add):
-
-                        index_to_choose = list(range(0, len(beam_random)))
-                        chosen = random.choice(index_to_choose)
-                        print("chosen: " + str(chosen))
-                        queue.append(beam_random[chosen])
-                    beamsearch = []
-                    beam_random = []
+                    beamsearch, beam_random  = ([] for i in range(2))
 
         # when protein is completed
         else:
             # call save_best_protein function
             best_proteins = save_best_protein(best_proteins, protein)
-
-
-if __name__ == "__main__":
-    start = time.time ()
-    beam_search_random(sys.argv[1])
-    end = time. time()
-    print(end - start)

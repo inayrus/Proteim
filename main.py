@@ -3,6 +3,7 @@ sys.path.append('Algorithms/')
 sys.path.append('Results/')
 sys.path.append('Classes/')
 
+import time
 import pathlib
 from Protein import Protein
 # import all the algorithm files
@@ -116,4 +117,7 @@ def argv_validation():
 
 
 if __name__ == "__main__":
+    start = time.time()
     argv_validation()
+    end = time. time()
+    print(end - start)

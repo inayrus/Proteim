@@ -5,20 +5,15 @@ from Protein import Protein
 sys.path.append('../')
 from helpers import save_best_protein
 from operator import itemgetter
-import time
 
 def beam_search(protein_filename):
     """
-    Constructive algorithm that finds solutions by going breadth first through
-    the whole statespace.
+    Algorithm that finds solutions by going breadth first through
+    the statespace with a certain beam
     """
     protein = Protein(protein_filename)
     amino_acids = protein.get_amino_acids()
-    best_proteins = []
-    queue = []
-    child_stabilities = []
-    beamsearch = []
-
+    best_proteins, queue, child_stabilities, beamsearch = ([] for i in range(4))
     beam = 50
     # place first two amino acids, bc their placing doesn't matter
     protein.place_first_two()
@@ -30,13 +25,11 @@ def beam_search(protein_filename):
     while queue != []:
         # pick the child in front off the queue (pop function)
         protein = queue.pop(0)
-        # print("lengte queue: {}".format(len(queue)))
 
         # if next amino exists,
         next_parent_amino = protein.get_next_amino()
 
         # make a list with all proteins and their stabilities
-
         if next_parent_amino:
             # get all the possible places to put the next amino
             all_places = protein.get_place_options(protein.get_rearmost_amino())
@@ -54,35 +47,22 @@ def beam_search(protein_filename):
                     # append the new child to the pre-beam list
                     protein_child.update_stability()
                     beamsearch.append(protein_child)
-                    # print("len beamsearch : {}".format(len(beamsearch)))
-                    # child_stabilities.append(protein_child.get_stability())
 
                 beamsearch.sort()
-                # print("beamsearch list : {}".format(beamsearch))
-                # print("len beamsearch : {}".format(len(beamsearch)))
 
-                #  list of protein stabilities
-                # child_stabilities = [child.get_stability() for child in beamsearch
-
+            # if queue is empty al kids are made, add the best kids (in rnage beam) to the queue
             if queue == []:
-                # print("lengte: {}".format(len(beamsearch)))
-                # while len(queue) != beam and child_stabilities != []:
                 if len(beamsearch) < beam:
                     for i in range(len(beamsearch)):
                         queue.append(beamsearch[i])
+
                 else:
                     for i in range(beam):
                         queue.append(beamsearch[i])
+
                 beamsearch = []
 
         # when protein is completed
         else:
-                    # call save_best_protein function
+            # call save_best_protein function
             best_proteins = save_best_protein(best_proteins, protein)
-
-
-if __name__ == "__main__":
-    start = time.time()
-    beam_search(sys.argv[1])
-    end = time. time()
-    print(end - start)

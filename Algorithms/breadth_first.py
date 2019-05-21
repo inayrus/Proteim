@@ -4,7 +4,6 @@ sys.path.append('../Classes')
 from Protein import Protein
 sys.path.append('../')
 from helpers import save_best_protein
-import time
 
 def breadth_first(protein_filename):
     """
@@ -13,8 +12,7 @@ def breadth_first(protein_filename):
     """
     protein = Protein(protein_filename)
     amino_acids = protein.get_amino_acids()
-    best_proteins = []
-    queue = []
+    best_proteins, queue = ([] for i in range(2))
 
     # place first two amino acids, bc their placing doesn't matter
     protein.place_first_two()
