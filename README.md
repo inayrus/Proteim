@@ -71,7 +71,7 @@ Valerie Sawirja &
 Amber Mayenburg
 
 ## Acknowledgments
-* minor programmeren van de UvA
+* Minor Programmeren van de UvA
 * Bas Terwijn
 * Bram van den Heuvel
 * Daan van den Berg
