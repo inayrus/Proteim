@@ -70,7 +70,6 @@ def greedy(protein_filename):
             # Get every child
             for child in child_list:
                 # Get child stability
-                child.update_bonds()
                 child.update_stability()
                 stabilities.append(child.get_stability())
 
@@ -86,6 +85,3 @@ def greedy(protein_filename):
         # if no more next_amino
         else:
             return protein, True
-#
-# if __name__ == "__main__":
-#     greedy_loop(sys.argv[2])

@@ -47,16 +47,8 @@ def breadth_first(protein_filename):
 
         # when protein is completed
         else:
-            # update bonds for every new child
-            protein.update_bonds()
-            # update stability
+            # update bonds and  stability
             protein.update_stability()
 
             # call save_best_protein function
             best_proteins = save_best_protein(best_proteins, protein)
-
-if __name__ == "__main__":
-    start = time.time()
-    breadth_first(sys.argv[1])
-    end = time. time()
-    print(end - start)

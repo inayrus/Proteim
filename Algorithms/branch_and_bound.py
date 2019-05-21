@@ -94,16 +94,8 @@ def branch_and_bound(protein_filename):
 
         # when protein is completed
         else:
-            # update bonds for every new child
-            protein.update_bonds()
             # update stability
             protein.update_stability()
 
             # call save_best_protein function
             best_proteins = save_best_protein(best_proteins, protein)
-
-# if __name__ == "__main__":
-#     start = time.time()
-#     branch_and_bound(sys.argv[1])
-#     end = time. time()
-#     print(end - start)

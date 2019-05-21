@@ -87,8 +87,11 @@ def argv_validation():
 
     # ensure subplot size is a positive int, if specified
     if len_args == 6:
-        size == sys.argv[5]
-        if size < 1 or not size.is_integer():
+        size = sys.argv[5]
+        if not size.isdigit():
+            print("please pick a subplot size that is a positive int")
+            exit(1)
+        if int(size) < 1:
             print("please pick a subplot size that is a positive int")
             exit(1)
 

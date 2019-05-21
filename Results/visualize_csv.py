@@ -188,24 +188,3 @@ def visualize3d_csv(algorithm, protein):
 
         # show figure
         plt.show()
-
-
-if __name__ == "__main__":
-    if len(sys.argv) < 4:
-        print("Usage: python visualize_csv.py algorithm protein_name dimension [size]")
-        exit(1)
-
-    dimension = sys.argv[3].lower()
-    # if user wants 2d plot
-    if dimension == "2d":
-        if len(sys.argv) == 4:
-            visualize_csv(sys.argv[1], sys.argv[2])
-        # argv[3] is the size of the subplots, which is in this case optional
-        elif len(sys.argv) == 5:
-            visualize_csv(sys.argv[1], sys.argv[2], sys.argv[4])
-    # if user wants 3d plot
-    elif dimension == "3d":
-        visualize3d_csv(sys.argv[1], sys.argv[2])
-    else:
-        print("dimension doesn't exist")
-        exit(1)
