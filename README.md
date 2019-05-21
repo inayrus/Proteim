@@ -15,12 +15,12 @@ pip install -r requirements.txt
 ### Structure
 
 The Algorithms folder consists of all written algorithms. It specifically contains:
-* Random algorithm (ribosome_fold)
-* depth first search
-* breadth first search
-* local beam search
-* branch and bound
-* greedy algorithm
+* Random algorithm
+* Depth first search
+* Breadth first search
+* Local beam search
+* Branch and bound
+* Greedy algorithm
 
 The MeansData folder has csv files with the stability of all proteins after 1000 iterations with the random algorithm.
 The mean of these stabilities can be calculated with the "calculate_mean" script.
