@@ -6,7 +6,7 @@ Find the most optimal folded proteins
 
 ### Prerequisites
 
-This codebase is completely written in Python [Python3.6.3](https://www.python.org/downloads/). In requirements.txt are alle necessary packages to run the code sucessfully. These packages can be easily installed with pip through the following instruction:
+This codebase is completely written in Python [Python3.6.3](https://www.python.org/downloads/). In requirements.txt are alle necessary packages to run the code successfully. These packages can be easily installed with pip through the following instruction:
 
 ```
 pip install -r requirements.txt
@@ -71,7 +71,7 @@ Valerie Sawirja &
 Amber Mayenburg
 
 ## Acknowledgments
-* minor programmeren van de UvA
+* Minor Programmeren van de UvA
 * Bas Terwijn
 * Bram van den Heuvel
 * Daan van den Berg
