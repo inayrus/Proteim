@@ -30,20 +30,11 @@ def breadth_first(protein_filename):
 
         if next_parent_amino:
             # get all the possible places to put the next amino
-            all_places = protein.get_place_options(protein.get_rearmost_amino())
+            all_children = protein.get_kids()
 
-            # only continue if protein hasn't folded into itself
-            if all_places != []:
-                # for every possible place, copy the current protein and create a child
-                for place in all_places:
-                    protein_child = copy.deepcopy(protein)
-
-                    # place new amino
-                    next_child_amino = protein_child.get_next_amino()
-                    protein_child.place_amino(place, next_child_amino.get_id())
-
-                    # put the children in the back of the queue
-                    queue.append(protein_child)
+            # put the children in the back of the queue
+            for protein_child in all_children:
+                queue.append(protein_child)
 
         # when protein is completed
         else:

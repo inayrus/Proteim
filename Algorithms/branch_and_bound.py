@@ -38,59 +38,55 @@ def branch_and_bound(protein_filename):
         next_parent_amino = protein.get_next_amino()
 
         if next_parent_amino:
+
+            # remember the current amino depth
+            depth = len(protein.get_all_coordinates())
+
             # get all the possible places to put the next amino
-            all_places = protein.get_place_options(protein.get_rearmost_amino())
+            all_children = protein.get_kids()
 
-            # only continue if protein hasn't folded into itself
-            if all_places != []:
-                # remember the current amino depth
-                depth = len(protein.get_all_coordinates())
+            # get the new child amino
+            for protein_child in all_children:
+                next_child_amino = protein_child.get_rearmost_amino()
 
-                # for every possible place, copy the current protein and create a child
-                for place in all_places:
-                    protein_child = copy.deepcopy(protein)
+                kind = next_child_amino.get_kind()
 
-                    # get the new child amino
-                    next_child_amino = protein_child.get_next_amino()
-                    kind = next_child_amino.get_kind()
+                # pseudo-place amino and update the stability
+                child_stability = protein_child.update_stability()
 
-                    # pseudo-place amino and update the stability
-                    protein_child.place_amino(place, next_child_amino.get_id())
-                    child_stability = protein_child.update_stability()
-
-                    # pruning only applicable when a H or C is to be placed.
-                    if kind != 'P':
-                        # calculate mean stability
-                        sum, total_depth_children = mean_stabilities[depth]
-                        if sum != 0:
-                            mean = sum / total_depth_children
-                        else:
-                            mean = 0
-
-                        # same or better stability: put child on stack
-                        if child_stability <= best_stabilities[depth]:
-                            stack.append(protein_child)
-                            # update this depth's best stability
-                            best_stabilities[depth] = child_stability
-                        # worse than mean stability: prune with probability
-                        elif child_stability > mean:
-                            # draw random number 0-1
-                            ran_num = random.uniform(0, 1)
-                            if ran_num > p_worse:
-                                stack.append(protein_child)
-                        # better than average, worse than best: prune with p
-                        elif child_stability < mean and child_stability > best_stabilities[depth]:
-                            # draw random number 0-1
-                            ran_num = random.uniform(0, 1)
-                            if ran_num > p_between:
-                                stack.append(protein_child)
-
-                        # UPDATE THE AVERAGE STABILITIES
-                        mean_stabilities[depth] = [sum + child_stability, total_depth_children + 1]
-
-                    # all branches of a P amino are kept
+                # pruning only applicable when a H or C is to be placed.
+                if kind != 'P':
+                    # calculate mean stability
+                    sum, total_depth_children = mean_stabilities[depth]
+                    if sum != 0:
+                        mean = sum / total_depth_children
                     else:
+                        mean = 0
+
+                    # same or better stability: put child on stack
+                    if child_stability <= best_stabilities[depth]:
                         stack.append(protein_child)
+                        # update this depth's best stability
+                        best_stabilities[depth] = child_stability
+                    # worse than mean stability: prune with probability
+                    elif child_stability > mean:
+                        # draw random number 0-1
+                        ran_num = random.uniform(0, 1)
+                        if ran_num > p_worse:
+                            stack.append(protein_child)
+                    # better than average, worse than best: prune with p
+                    elif child_stability < mean and child_stability > best_stabilities[depth]:
+                        # draw random number 0-1
+                        ran_num = random.uniform(0, 1)
+                        if ran_num > p_between:
+                            stack.append(protein_child)
+
+                    # UPDATE THE AVERAGE STABILITIES
+                    mean_stabilities[depth] = [sum + child_stability, total_depth_children + 1]
+
+                # all branches of a P amino are kept
+                else:
+                    stack.append(protein_child)
 
         # when protein is completed
         else:

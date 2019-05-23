@@ -3,7 +3,7 @@ sys.path.append('../')
 import pathlib
 import random
 from Amino import Amino
-# import copy
+import copy
 
 class Protein(object):
     """Representation of a protein"""
@@ -50,6 +50,27 @@ class Protein(object):
                     # add the new amino to the list
                     amino_acids.append(new_amino)
         return amino_acids
+
+    def get_kids(self):
+        """
+        Function that makes the children.
+        Returns a list with children.
+        """
+        kids = []
+        all_places = self.get_place_options(self.get_rearmost_amino())
+
+        # only continue if protein hasn't folded into itself
+        if all_places != []:
+            # for every possible place, copy the current protein and create a child
+            for place in all_places:
+                protein_child = copy.deepcopy(self)
+
+                # place new amino
+                next_child_amino = protein_child.get_next_amino()
+                protein_child.place_amino(place, next_child_amino.get_id())
+                kids.append(protein_child)
+        return kids
+
 
     def update_bonds(self):
         """
