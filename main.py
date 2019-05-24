@@ -3,20 +3,21 @@ import sys
 sys.path.append('Results/')
 sys.path.append('Classes/')
 sys.path.append('MeansData/')
+sys.path.append('Algorithms/')
 
 import time
 import pathlib
 from Protein import Protein
 # import all the algorithm files
-import Algorithms.beam_search_random
-# import beam_search
-# import branch_and_bound
-# import breadth_first
-# import depth_first
-# import greedy
-# import random_fold
-# import visualize_csv
-# import calculate_stats
+import beam_search_random
+import beam_search
+import branch_and_bound
+import breadth_first
+import depth_first
+import greedy
+import random_fold
+import visualize_csv
+import calculate_stats
 
 def main(action, protein, algorithm=None, dimension=None, size=None):
     """

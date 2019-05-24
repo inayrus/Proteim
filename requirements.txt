@@ -1,3 +1,4 @@
 pathlib
 matplotlib
 numpy
+statistics

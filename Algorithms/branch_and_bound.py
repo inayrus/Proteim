@@ -33,12 +33,11 @@ def branch_and_bound(protein_filename):
     stack.append(protein)
 
     while stack != []:
-        # pick the last child off the stack (pop function)
+        # pick the last child off the stack
         protein = stack.pop()
-
-        # if next amino exists,
         next_parent_amino = protein.get_next_amino()
 
+        # if next amino exists
         if next_parent_amino:
 
             # remember the current amino depth
@@ -92,11 +91,8 @@ def branch_and_bound(protein_filename):
 
         # when protein is completed
         else:
-            # increase counter
             counter += 1
-
-            # update stability
             protein.update_stability()
 
-            # call save_best_protein function
+            # save best protein
             best_proteins = save_best_protein(best_proteins, protein)

@@ -21,10 +21,8 @@ def depth_first(protein_filename):
     stack.append(protein)
 
     iterations = 0
-
-    # --> start loop
     while stack != []:
-        # pick the last child off the stack (pop function)
+        # pick the last child off the stack
         protein = stack.pop()
         iterations += 1
         print("number of iterations: {}".format(iterations))
@@ -42,8 +40,7 @@ def depth_first(protein_filename):
 
         # when protein is completed
         else:
-            # update stability
             protein.update_stability()
 
-            # call save_best_protein function
+            # save best protein
             best_proteins = save_best_protein(best_proteins, protein)

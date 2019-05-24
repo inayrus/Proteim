@@ -38,12 +38,11 @@ def greedy(protein_filename):
     # put start protein in the queue
     child_list.append(protein)
 
-    # --> start loop
     while child_list != []:
-        # pick the child in front off the queue (pop function)
+        # pick the child in front off the queue
         protein = child_list[0]
 
-        # if next amino exists,
+        # if next amino exists
         next_parent_amino = protein.get_next_amino()
 
         if next_parent_amino:
@@ -69,7 +68,6 @@ def greedy(protein_filename):
             stabilities = []
             # Get every child
             for child in child_list:
-                # Get child stability
                 child.update_stability()
                 stabilities.append(child.get_stability())
 
@@ -78,7 +76,7 @@ def greedy(protein_filename):
                 # Get indices of best children
                 best_indices = [index for index, stability in enumerate(stabilities)
                                 if stability == min(stabilities)]
-                # Choose best child or
+                # Choose best child
                 chosen_index = random.choice(best_indices)
                 child_list = [child_list[chosen_index]]
 
