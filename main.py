@@ -29,6 +29,10 @@ def main(action, protein, algorithm=None, dimension=None, size=None):
     if action == "visualize":
         actions_dict[action](algorithm, protein, dimension, size)
     # run algorithm
+    elif action != "calculate_stats":
+        print("running {} algorithm".format(action))
+        actions_dict[action](protein)
+    # calculate statistics
     else:
         actions_dict[action](protein)
 
@@ -73,14 +77,12 @@ def argv_validation():
             protein = sys.argv[2]
             dimension = sys.argv[3].lower()
         # variable casting for getting statistics
-        elif len_args == 3:
+        elif len_args == 3 and action == "calculate_stats":
             protein = sys.argv[2]
+        else:
+            print_main_usage()
     else:
-        print("three usage options \n"
-              "running an algorithm: python main.py algorithm protein dimension\n"
-              "visualizing a result: python main.py visualize algorithm protein dimension [2d_subplot_size]"
-              "calculating statistics: python main.py calculate_stats protein")
-        exit(1)
+        print_main_usage()
 
     # ensure that the protein name exists in ProteinData
     file = pathlib.Path("ProteinData/{}.txt".format(protein))
@@ -126,9 +128,16 @@ def argv_validation():
         # statistics
     elif len_args == 3:
         main(action, protein)
+        # visualize with defined subplot size
     else:
         main(action, protein, algorithm, dimension, size)
 
+def print_main_usage():
+    print("three usage options \n"
+          "running an algorithm: python main.py algorithm protein dimension\n"
+          "visualizing a result: python main.py visualize algorithm protein dimension [2d_subplot_size]"
+          "calculating statistics: python main.py calculate_stats protein")
+    exit(1)
 
 if __name__ == "__main__":
     start = time.time()
