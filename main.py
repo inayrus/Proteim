@@ -1,5 +1,5 @@
 import sys
-# sys.path.append('Algorithms/')
+sys.path.append('Algorithms/')
 sys.path.append('Results/')
 sys.path.append('Classes/')
 sys.path.append('MeansData/')
@@ -8,15 +8,15 @@ import time
 import pathlib
 from Protein import Protein
 # import all the algorithm files
-import Algorithms.beam_search_random
-# import beam_search
-# import branch_and_bound
-# import breadth_first
-# import depth_first
-# import greedy
-# import random_fold
-# import visualize_csv
-# import calculate_stats
+import beam_search_random
+import beam_search
+import branch_and_bound
+import breadth_first
+import depth_first
+import greedy
+import random_fold
+import visualize_csv
+import calculate_stats
 
 def main(action, protein, algorithm=None, dimension=None, size=None):
     """
@@ -135,7 +135,7 @@ def argv_validation():
 def print_main_usage():
     print("three usage options \n"
           "running an algorithm: python main.py algorithm protein dimension\n"
-          "visualizing a result: python main.py visualize algorithm protein dimension [2d_subplot_size]"
+          "visualizing a result: python main.py visualize algorithm protein dimension [2d_subplot_size]\n"
           "calculating statistics: python main.py calculate_stats protein")
     exit(1)
 
