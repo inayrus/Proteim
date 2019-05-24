@@ -19,7 +19,7 @@ Consists of all written algorithms. It specifically contains:
 * Random algorithm      (to run the algorithm, use random_fold)
 * Depth first search    (to run: depth_first)
 * Breadth first search  (to run: breadth_first)
-* Local beam search     (to run: beam_search or beam_search_random)
+* Local beam search     (to run: beam_search)
 * Branch and bound      (to run: branch_and_bound)
 * Greedy algorithm      (to run: greedy)
 
@@ -47,8 +47,21 @@ First you see a general example and then an example to run branch and bound for 
 
 ```
 python main.py name_algorithm protein 2d/3d
-+
+
 python main.py branch_and_bound protein_b1 3d
+```
+
+##### beam_search
+When you want to run beam search, you can chose for one with a random factor or not.
+The non-random beam search always picks the first proteins for the length of the beam.
+The beam search with a random factor makes a list of best proteins. When this list
+is bigger than the beam, this beam search picks randomly the best proteins out of this
+list. To run a beam search for protein_a1 in 2d with a random factor, see example below.
+
+```
+python main.py beam_search protein 2d/3d true/false
+
+python main.py beam_search protein_a1 2d true
 ```
 
 #### Visualizing a result

@@ -1,5 +1,5 @@
 import sys
-sys.path.append('Algorithms/')
+# sys.path.append('Algorithms/')
 sys.path.append('Results/')
 sys.path.append('Classes/')
 sys.path.append('MeansData/')
@@ -9,7 +9,6 @@ import time
 import pathlib
 from Protein import Protein
 # import all the algorithm files
-import beam_search_random
 import beam_search
 import branch_and_bound
 import breadth_first
@@ -19,7 +18,7 @@ import random_fold
 import visualize_csv
 import calculate_stats
 
-def main(action, protein, algorithm=None, dimension=None, size=None):
+def main(action, protein, algorithm=None, dimension=None, size=None, random=None):
     """
     Calls the wanted function from a dict and runs it.
     """
@@ -30,9 +29,12 @@ def main(action, protein, algorithm=None, dimension=None, size=None):
     if action == "visualize":
         actions_dict[action](algorithm, protein, dimension, size)
     # run algorithm
+    elif action == "beam_search":
+        actions_dict[action](protein, random)
     elif action != "calculate_stats":
         print("running {} algorithm".format(action))
         actions_dict[action](protein)
+
     # calculate statistics
     else:
         actions_dict[action](protein)
@@ -45,7 +47,6 @@ def get_actions():
     """
     # a dict with all actions
     actions_dict = {
-                    'beam_search_random': beam_search_random.beam_search_random,
                     'beam_search': beam_search.beam_search,
                     'branch_and_bound': branch_and_bound.branch_and_bound,
                     'breadth_first': breadth_first.breadth_first,
@@ -80,6 +81,11 @@ def argv_validation():
         # variable casting for getting statistics
         elif len_args == 3 and action == "calculate_stats":
             protein = sys.argv[2]
+        elif len_args == 5 and action == "beam_search":
+            algorithm = sys.argv[1]
+            protein = sys.argv[2]
+            dimension = sys.argv[3].lower()
+            random = sys.argv[4].lower()
         else:
             print_main_usage()
     else:
@@ -124,8 +130,13 @@ def argv_validation():
         # run algorithm
         main(action, protein)
     elif len_args == 5:
-        # visualize
-        main(action, protein, algorithm, dimension)
+        if action == "visualize":
+            # visualize
+            main(action, protein, algorithm, dimension)
+        else:
+            # specifically for beam
+            main(action, protein, algorithm, random)
+
         # statistics
     elif len_args == 3:
         main(action, protein)
@@ -136,7 +147,7 @@ def argv_validation():
 def print_main_usage():
     print("three usage options \n"
           "running an algorithm: python main.py algorithm protein dimension\n"
-          "visualizing a result: python main.py visualize algorithm protein dimension [2d_subplot_size]\n"
+          "visualizing a result: python main.py visualize algorithm protein dimension [2d_subplot_size]"
           "calculating statistics: python main.py calculate_stats protein")
     exit(1)
 
