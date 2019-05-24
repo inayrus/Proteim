@@ -14,7 +14,7 @@ def breadth_first(protein_filename):
     amino_acids = protein.get_amino_acids()
     best_proteins, queue = ([] for i in range(2))
 
-    # place first two amino acids, bc their placing doesn't matter
+    # place first two amino acids
     protein.place_first_two()
 
     # put start protein in the queue

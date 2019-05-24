@@ -32,7 +32,7 @@ def greedy(protein_filename):
     amino_acids = protein.get_amino_acids()
     child_list = []
 
-    # place first two amino acids, bc their placing doesn't matter
+    # place first two amino acids
     protein.place_first_two()
 
     # put start protein in the queue
@@ -64,16 +64,16 @@ def greedy(protein_filename):
             else:
                 return protein, False
 
-            # Start greedy children selection
+            # start greedy children selection
             stabilities = []
-            # Get every child
+            # get every child
             for child in child_list:
                 child.update_stability()
                 stabilities.append(child.get_stability())
 
-            # If more than 1 child
+            # if more than 1 child
             if len(stabilities) > 1:
-                # Get indices of best children
+                # get indices of best children
                 best_indices = [index for index, stability in enumerate(stabilities)
                                 if stability == min(stabilities)]
                 # Choose best child

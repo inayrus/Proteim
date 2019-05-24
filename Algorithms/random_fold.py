@@ -50,7 +50,6 @@ def random_fold(protein_filename):
 
         # stop if last amino is dead ending
         if all_places == []:
-            print("Whoops folded in on myself")
             return protein, False
 
         # pick one location to place the amino in
@@ -81,5 +80,6 @@ def save_for_mean(protein, stabilities):
         with file.open(mode='a') as csvfile:
             csvwriter = csv.writer(csvfile)
             csvwriter.writerow(data)
+            
     # append stability to list
     stabilities.append(protein.get_stability())
