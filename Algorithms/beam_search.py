@@ -31,24 +31,15 @@ def beam_search(protein_filename):
 
         # make a list with all proteins and their stabilities
         if next_parent_amino:
-            # get all the possible places to put the next amino
-            all_places = protein.get_place_options(protein.get_rearmost_amino())
+            # get all children 
+            all_children = protein.get_kids()
 
-            # only continue if protein hasn't folded into itself
-            if all_places != []:
-                # for every possible place, copy the current protein and create a child
-                for place in all_places:
-                    protein_child = copy.deepcopy(protein)
 
-                    # place new amino
-                    next_child_amino = protein_child.get_next_amino()
-                    protein_child.place_amino(place, next_child_amino.get_id())
-
-                    # append the new child to the pre-beam list
-                    protein_child.update_stability()
-                    beamsearch.append(protein_child)
-
-                beamsearch.sort()
+            # append the new child to the pre-beam list
+            for child in all_children:
+                child.update_stability()
+                beamsearch.append(child)
+            beamsearch.sort()
 
             # if queue is empty al kids are made, add the best kids (in rnage beam) to the queue
             if queue == []:
