@@ -27,7 +27,10 @@ def main(action, protein, algorithm=None, dimension=None, size=None, random=None
 
     # run visualize
     if action == "visualize":
-        actions_dict[action](algorithm, protein, dimension, size)
+        if len(sys.argv) == 6:
+            actions_dict[action](algorithm, protein, dimension, size)
+        else:
+            actions_dict[action](algorithm, protein, dimension)
     # run algorithm
     elif action == "beam_search":
         actions_dict[action](protein, random)
@@ -71,19 +74,19 @@ def argv_validation():
     if action == "visualize" and (len_args == 5 or len_args == 6):
         # variable casting for visualizing
         algorithm = sys.argv[2]
-        protein = sys.argv[3]
+        protein = sys.argv[3].lower()
         dimension = sys.argv[4].lower()
     elif action != "visualize":
         # variable casting for running algorithms
         if len_args == 4:
-            protein = sys.argv[2]
+            protein = sys.argv[2].lower()
             dimension = sys.argv[3].lower()
         # variable casting for getting statistics
         elif len_args == 3 and action == "calculate_stats":
             protein = sys.argv[2]
         elif len_args == 5 and action == "beam_search":
             algorithm = sys.argv[1]
-            protein = sys.argv[2]
+            protein = sys.argv[2].lower()
             dimension = sys.argv[3].lower()
             random = sys.argv[4].lower()
         else:
@@ -98,12 +101,12 @@ def argv_validation():
         exit(1)
 
     # ensure that the dimension is valid
-    if action != "calculate_stats" and dimension != "2d" and dimension != "3d":
+    elif action != "calculate_stats" and dimension != "2d" and dimension != "3d":
         print("please choose either 2d or 3d as dimension")
         exit(1)
 
     # ensure subplot size is a positive int, if specified
-    if len_args == 6:
+    elif len_args == 6:
         size = sys.argv[5]
         if not size.isdigit():
             print("please pick a subplot size that is a positive int")
@@ -111,6 +114,13 @@ def argv_validation():
         if int(size) < 1:
             print("please pick a subplot size that is a positive int")
             exit(1)
+
+    elif action == "beam_search" and len_args != 5:
+        print("beam_search usage: python main.py beam_search protein dimension random")
+        exit(1)
+    elif action == "beam_search" and random != "true" and random != "false":
+        print("The random argument in beam_search has to be true or false")
+        exit(1)
 
     # check if action exists in the dict
     actions_dict = get_actions()
@@ -129,25 +139,23 @@ def argv_validation():
     if len_args == 4:
         # run algorithm
         main(action, protein)
-    elif len_args == 5:
-        if action == "visualize":
-            # visualize
-            main(action, protein, algorithm, dimension)
+    elif action == "visualize":
+        if len_args == 6:
+            # visualize with defined subplot size
+            main(action, protein, algorithm, dimension, size)
         else:
-            # specifically for beam
-            main(action, protein, algorithm, random)
-
+            main(action, protein, algorithm, dimension)
         # statistics
     elif len_args == 3:
         main(action, protein)
-        # visualize with defined subplot size
     else:
-        main(action, protein, algorithm, dimension, size)
+        # specifically for beam
+        main(action, protein, algorithm, random)
 
 def print_main_usage():
     print("three usage options \n"
           "running an algorithm: python main.py algorithm protein dimension\n"
-          "visualizing a result: python main.py visualize algorithm protein dimension [2d_subplot_size]"
+          "visualizing a result: python main.py visualize algorithm protein dimension [2d_subplot_size]\n"
           "calculating statistics: python main.py calculate_stats protein")
     exit(1)
 

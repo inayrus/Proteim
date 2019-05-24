@@ -1,11 +1,4 @@
-<<<<<<< HEAD
 numpy==1.15.4
 matplotlib==3.0.3
 pathlib==1.0.1
 statistics==1.0.3.5
-=======
-pathlib
-matplotlib
-numpy
-statistics
->>>>>>> 905d14742b77641fbc5eae7a04a523947438ddc0

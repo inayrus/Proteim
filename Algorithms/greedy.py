@@ -46,22 +46,11 @@ def greedy(protein_filename):
         next_parent_amino = protein.get_next_amino()
 
         if next_parent_amino:
-            # get all the possible places to put the next amino
-            all_places = protein.get_place_options(protein.get_rearmost_amino())
+            # GEt al possible children
+            child_list = protein.get_kids()
 
-            # only continue if protein hasn't folded into itself
-            if all_places != []:
-                # for every possible place, copy the current protein and create a child
-                for place in all_places:
-                    protein_child = copy.deepcopy(protein)
-
-                    # place new amino
-                    next_child_amino = protein_child.get_next_amino()
-                    protein_child.place_amino(place, next_child_amino.get_id())
-
-                    # put the children in the back of the queue
-                    child_list.append(protein_child)
-            else:
+            # if child folds into itself retun false
+            if child_list == []:
                 return protein, False
 
             # start greedy children selection

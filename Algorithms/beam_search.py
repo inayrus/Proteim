@@ -63,6 +63,12 @@ def beam_search(protein_filename, random):
             best_proteins = save_best_protein(best_proteins, protein)
 
 def pick_children(beam_random, queue, beamsearch, beam, random):
+    """
+    This functon picks the best children.
+    If random = true beam_search with a random factor makes a list of best proteins. 
+    This beam search picks randomly the best proteins out of this list.
+    If random = false beam_search always picks the first proteins for the length of the beam.
+    """
     if random == "true":
         # get all low stability children
         while (len(beam_random) + len(queue)) < beam:
