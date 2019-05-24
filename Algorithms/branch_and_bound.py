@@ -15,6 +15,8 @@ def branch_and_bound(protein_filename):
     amino_acids = protein.get_amino_acids()
     best_proteins, stack= ([] for i in range(2))
 
+    counter = 0
+
     # initialize a mean stability and best stability as a list of zeroes
     len_protein = len(amino_acids)
     best_stabilities = [0] * len_protein
@@ -90,6 +92,9 @@ def branch_and_bound(protein_filename):
 
         # when protein is completed
         else:
+            # increase counter
+            counter += 1
+
             # update stability
             protein.update_stability()
 
