@@ -14,18 +14,17 @@ def breadth_first(protein_filename):
     amino_acids = protein.get_amino_acids()
     best_proteins, queue = ([] for i in range(2))
 
-    # place first two amino acids, bc their placing doesn't matter
+    # place first two amino acids
     protein.place_first_two()
 
     # put start protein in the queue
     queue.append(protein)
 
-    # --> start loop
     while queue != []:
-        # pick the child in front off the queue (pop function)
+        # pick the child in front off the queue
         protein = queue.pop(0)
 
-        # if next amino exists,
+        # if next amino exists
         next_parent_amino = protein.get_next_amino()
 
         if next_parent_amino:
@@ -38,8 +37,7 @@ def breadth_first(protein_filename):
 
         # when protein is completed
         else:
-            # update bonds and  stability
             protein.update_stability()
 
-            # call save_best_protein function
+            # save best protein
             best_proteins = save_best_protein(best_proteins, protein)

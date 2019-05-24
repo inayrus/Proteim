@@ -9,7 +9,7 @@ class Protein(object):
     """Representation of a protein"""
 
     def __init__(self, file):
-        """initializes a protein"""
+        """ Initializes a protein"""
         self.stability = 0
         self.amino_acids = self.load_protein(file)
         self.bonds = []
@@ -19,7 +19,7 @@ class Protein(object):
 
     def load_protein(self, file):
         """
-        Reads the protein in from a text file.
+        Reads the protein in from a text file
         Returns a list of Amino instances
         """
         # ensure the file can be found despite the directory that the user is in
@@ -45,16 +45,16 @@ class Protein(object):
                         prev_amino = amino_acids[index - 1]
                         new_amino.set_connections(prev_amino)
                         prev_amino.set_connections(new_amino)
-                        # print(prev_amino.conn)
 
                     # add the new amino to the list
                     amino_acids.append(new_amino)
+
         return amino_acids
 
     def get_kids(self):
         """
-        Function that makes the children.
-        Returns a list with children.
+        Function that makes the children
+        Returns a list with children
         """
         kids = []
         all_places = self.get_place_options(self.get_rearmost_amino())
@@ -69,6 +69,7 @@ class Protein(object):
                 next_child_amino = protein_child.get_next_amino()
                 protein_child.place_amino(place, next_child_amino.get_id())
                 kids.append(protein_child)
+
         return kids
 
 
@@ -82,7 +83,6 @@ class Protein(object):
 
         for index in range(num_placed - 1):
             amino = self.amino_acids[index]
-            # print(amino)
 
             # if H or C, get surrounding locations amino is not connected to
             if amino.get_kind() != 'P':
@@ -100,8 +100,6 @@ class Protein(object):
 
                     if str_location in self.amino_places:
                         amino_id = self.amino_places[str_location]
-                        # print("amino_id : {}".format(amino_id))
-                        # print("amino_places: {}".format(self.amino_places))
                         nearby_amino = self.amino_acids[amino_id]
 
                         # there's only a bond if new amino is H or C
@@ -114,7 +112,6 @@ class Protein(object):
                                 # if not, add bond to attribute
                                 self.bonds += [[amino, nearby_amino]]
 
-        # print("bonds: {}".format(self.bonds))
         return self.bonds
 
     def set_bonds(self, bonds):
@@ -132,17 +129,18 @@ class Protein(object):
         # reset stability
         self.stability = 0
 
-        # Check all bonds and get kinds of bonded amino's
+        # check all bonds and get kinds of bonded amino's
         for bond in self.bonds:
             amino, other_amino = bond
             amino = amino.get_kind()
             other_amino = other_amino.get_kind()
 
-            # Set stability to -1 of -5 depending on bond
+            # set stability to -1 of -5 depending on bond
             if amino == "H" or other_amino == "H":
                 self.stability -= 1
             elif amino == "C" and other_amino == "C":
                 self.stability -= 5
+
         return self.stability
 
     def set_stability(self, stability):
@@ -167,7 +165,7 @@ class Protein(object):
 
     def set_all_coordinates(self, coordinates):
         """
-        Sets the coordinates attribute to a certain value.
+        Sets the coordinates attribute to a certain value
         """
         self.all_coordinates = coordinates
 
@@ -196,11 +194,13 @@ class Protein(object):
         A function that returns a list of all coordinates around a certain
         grid point
         """
+        # returns surrounding coordinates in 2d
         if sys.argv[3] == "2d":
             coordinates = amino.get_location()
             x, y = coordinates
             return [[x, y + 1], [x, y - 1], [x + 1, y], [x - 1, y]]
 
+        # returns surrounding coordinates in 3d
         if sys.argv[3] == "3d":
             coordinates = amino.get_location()
             x, y, z = coordinates
@@ -213,7 +213,7 @@ class Protein(object):
         # get all spaces around amino
         all_places = self.get_neighbors(amino)
 
-        # Remove symmetry for 2d proteins
+        # remove symmetry for 2d proteins
         if sys.argv[3] == '2d':
             if self.is_straight == True:
                 x_check = 0
@@ -225,7 +225,7 @@ class Protein(object):
                 else:
                     self.is_straight = False
 
-        # Remove symmetry for 3d proteins
+        # remove symmetry for 3d proteins
         if sys.argv[3] == "3d":
             if self.is_straight == True:
                 x_check = 0
@@ -242,8 +242,7 @@ class Protein(object):
                 else:
                     self.is_straight = False
 
-        # 2) check the Protein attribute what places are empty
-        # breakpoint()
+        # remove places that already have amino acids on them
         for coordinate in self.get_all_coordinates():
             if coordinate in all_places:
                 all_places.remove(coordinate)
@@ -260,13 +259,13 @@ class Protein(object):
         if num_placed < len(self.amino_acids):
             next_amino = self.amino_acids[num_placed]
             return next_amino
+
         # there is no next amino
         else:
             return None
 
     def __lt__(self, other):
         return self.stability < other.get_stability()
-
 
     def get_rearmost_amino(self):
         """
@@ -278,7 +277,9 @@ class Protein(object):
         return amino
 
     def place_first_two(self):
-        # place first two amino acids, bc their placing doesn't matter
+        """
+        Places first two aminoacids to get rid of rotational symmetry
+        """
         if sys.argv[3] == "2d":
             self.place_amino([0, 0], 0)
             self.place_amino([0, 1], 1)
@@ -295,7 +296,6 @@ class Protein(object):
         self.add_amino_place(coordinates, amino_id)
         self.amino_acids[amino_id].set_location(coordinates)
 
-    # some getters the algorithms are allowed to access
     def get_stability(self):
         """
         Returns the protein's stability (int)

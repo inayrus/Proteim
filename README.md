@@ -6,7 +6,7 @@ Find the most optimal folded proteins
 
 ### Prerequisites
 
-This codebase is completely written in Python [Python3.6.3](https://www.python.org/downloads/). In requirements.txt are alle necessary packages to run the code successfully. These packages can be easily installed with pip through the following instruction:
+This codebase is completely written in Python [Python3.6.3](https://www.python.org/downloads/). In requirements.txt are all necessary packages to run the code successfully. These packages can be easily installed with pip through the following instruction:
 
 ```
 pip install -r requirements.txt
@@ -34,31 +34,30 @@ This folder contains 9 text files with amino acid orders of the tested proteins:
 * protein_c1 - protein_c4
 
 #### The Results folder
-In this folder are the results of the algorithms, where they are firstly seperated dimension folders and then seperated in  algorithm folders.
+In this folder are the results of the algorithms, where they are firstly separated dimension folders and then separated in  algorithm folders.
 It also has a function to visualize a results file.
 
 
 ### Running code
 
-To run the code, see the following intstructions and apply them to the algorithms and
-protein names described above.
+To run the code with a standard configuration:
 
 #### Running algorithms
-First you see a general example and then an example to run branch_and_bound for protein_b1 in 3d.
+First you see a general example and then an example to run branch and bound for protein_b1 in 3d.
 
 ```
 python main.py name_algorithm protein 2d/3d
-
++
 python main.py branch_and_bound protein_b1 3d
 ```
 
 #### Visualizing a result
-First you see a general example and than an example to visualize branch_and_bound for protein_b1 in 3d:
+First you see a general example and than an example to visualize branch and bound for protein_b1 in 3d:
 
 ```
 python main.py visualize name_algorithm protein 2d/3d
 
-python main.py visualize branch_and_bound protein_b1 3d
+python main.py branch_and_bound protein_b1 3d
 ```
 
 ##### 2d visualisation

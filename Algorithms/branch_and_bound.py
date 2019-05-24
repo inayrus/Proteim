@@ -26,19 +26,18 @@ def branch_and_bound(protein_filename):
     p_worse = 0.8
     p_between = 0.5
 
-    # place first two amino acids, bc their placing doesn't matter
+    # place first two amino acids
     protein.place_first_two()
 
     # put start protein in the stack
     stack.append(protein)
 
     while stack != []:
-        # pick the last child off the stack (pop function)
+        # pick the last child off the stack
         protein = stack.pop()
-
-        # if next amino exists,
         next_parent_amino = protein.get_next_amino()
 
+        # if next amino exists
         if next_parent_amino:
 
             # remember the current amino depth
@@ -83,7 +82,7 @@ def branch_and_bound(protein_filename):
                         if ran_num > p_between:
                             stack.append(protein_child)
 
-                    # UPDATE THE AVERAGE STABILITIES
+                    # update the average stabilities
                     mean_stabilities[depth] = [sum + child_stability, total_depth_children + 1]
 
                 # all branches of a P amino are kept
@@ -92,11 +91,8 @@ def branch_and_bound(protein_filename):
 
         # when protein is completed
         else:
-            # increase counter
             counter += 1
-
-            # update stability
             protein.update_stability()
 
-            # call save_best_protein function
+            # save best protein
             best_proteins = save_best_protein(best_proteins, protein)

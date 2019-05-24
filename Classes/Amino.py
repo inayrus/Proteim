@@ -1,8 +1,8 @@
 class Amino(object):
-    """ representation of an amino acid """
+    """ Representation of an amino acid """
 
     def __init__(self, id, kind):
-        """ initializes an amino acid """
+        """ Initializes an amino acid """
         self.id = id
         self.kind = kind
         self.conn = []
@@ -10,19 +10,19 @@ class Amino(object):
         self.bond_strength = self.set_bond_strength(kind)
 
     def get_id(self):
-        """returns the amino's id"""
+        """ Returns the amino's id"""
         return self.id
 
     def get_kind(self):
-        """returns the amino kind (a H, P, or C)"""
+        """ Returns the amino kind (a H, P, or C)"""
         return self.kind
 
     def get_conn(self):
-        """ returns the amino's connections (a list) """
+        """ Returns the amino's connections (a list) """
         return self.conn
 
     def get_location(self):
-        """ return the amino's location (a list of x and y)"""
+        """ Return the amino's location (a list of x and y)"""
         return self.location
 
     def get_bond_strength(self):
@@ -31,11 +31,11 @@ class Amino(object):
         return self.bond_strength
 
     def set_location(self, location):
-        """ sets the location of the amino: [x, y]"""
+        """ Sets the location of the amino: [x, y]"""
         self.location = location
 
     def set_bond_strength(self, kind):
-        """ if kind is H or C, set bond_strength"""
+        """ If kind is H or C, set bond_strength"""
         if self.kind == 'H':
             self.bond_strength = -1
         elif self.kind == 'C':
@@ -44,13 +44,12 @@ class Amino(object):
             self.bond_strength = 0
 
     def set_connections(self, connected_amino):
-        """ a function to add a connected amino to self.conn"""
+        """ A function to add a connected amino to self.conn"""
         self.conn += [connected_amino]
 
     def __repr__(self):
         s="\n===Amino=== \n"
         s+="id:"+str(self.id)+"\n"
-        # s+="conn:"+str(self.conn)+"\n"
         s+="location:"+str(self.location)+"\n"
         s+="bond_strength:"+str(self.bond_strength)+"\n"
         return s

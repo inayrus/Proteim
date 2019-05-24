@@ -3,6 +3,7 @@ sys.path.append('Algorithms/')
 sys.path.append('Results/')
 sys.path.append('Classes/')
 sys.path.append('MeansData/')
+sys.path.append('Algorithms/')
 
 import time
 import pathlib
