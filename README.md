@@ -14,31 +14,36 @@ pip install -r requirements.txt
 
 ### Structure
 
-The Algorithms folder consists of all written algorithms. It specifically contains:
-* Random algorithm
-* Depth first search
-* Breadth first search
-* Local beam search
-* Branch and bound
-* Greedy algorithm
+#### The Algorithms folder
+Consists of all written algorithms. It specifically contains:
+* Random algorithm      (to run the algorithm, use random_fold)
+* Depth first search    (to run: depth_first)
+* Breadth first search  (to run: breadth_first)
+* Local beam search     (to run: beam_search or beam_search_random)
+* Branch and bound      (to run: branch_and_bound)
+* Greedy algorithm      (to run: greedy)
 
-The Classes folder contains the data Structure.
+#### The MeansData folder
+This folder has csv files with the stability of all proteins after 1000 iterations with the random algorithm.
+In this folder is also a script to calculate a csv data's mean and mode, and plot the data distribution in a histogram.
 
-The MeansData folder has csv files with the stability of all proteins after 1000 iterations with the random algorithm.
-The mean of these stabilities can be calculated with the "calculate_mean" script.
+#### The ProteinsData folder
+This folder contains 9 text files with amino acid orders of the tested proteins:
+* protein_a1
+* protein_b1 - protein_b4
+* protein_c1 - protein_c4
 
-The ProteinsData folder contains text files with amino acid orders of the tested proteins.
-
-The Results folder contains the results of the algorithms, where they are sorted in a seperate folder for every algorithm.
+#### The Results folder
+In this folder are the results of the algorithms, where they are firstly separated dimension folders and then separated in  algorithm folders.
 It also has a function to visualize a results file.
 
 
 ### Running code
 
-To run the code with a standard configuration (for example by using brute-force) use the following instructions:
+To run the code with a standard configuration:
 
-If you want to run an algorithm. First you see a general example
-and than an example than an example to run  branch and bound for protein_b1 in 3d
+#### Running algorithms
+First you see a general example and then an example to run branch and bound for protein_b1 in 3d.
 
 ```
 python main.py name_algorithm protein 2d/3d
@@ -46,8 +51,8 @@ python main.py name_algorithm protein 2d/3d
 python main.py branch_and_bound protein_b1 3d
 ```
 
-If you want to visualize the result of a protein. First you see a general example
-and than an example if you want to visualize branch and bound for protein_b1 in 3d:
+#### Visualizing a result
+First you see a general example and than an example to visualize branch and bound for protein_b1 in 3d:
 
 ```
 python main.py visualize name_algorithm protein 2d/3d
@@ -55,6 +60,7 @@ python main.py visualize name_algorithm protein 2d/3d
 python main.py branch_and_bound protein_b1 3d
 ```
 
+##### 2d visualisation
 If you choose for a 2d visualisation you can also choose to visualize multiple Proteins
 in one plot. You can do this by adding a dimension. First you see an general example
 than an example to visualize the branch and bound of protein_a1 2x2.
@@ -64,6 +70,17 @@ than an example to visualize the branch and bound of protein_a1 2x2.
 python main.py visualize name_algorithm protein 2d number_of_proteins
 
 python main.py visualize branch_and_bound protein_a1 2d 2
+```
+
+#### Retrieving statistics
+If you wish to get mean, mode and data distribution for a protein.
+First you see a general example and than an example for protein_c3.
+
+
+```
+python main.py calculate_stats protein
+
+python main.py calculate_stats protein_c3
 ```
 
 

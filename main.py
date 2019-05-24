@@ -1,5 +1,5 @@
 import sys
-# sys.path.append('Algorithms/')
+sys.path.append('Algorithms/')
 sys.path.append('Results/')
 sys.path.append('Classes/')
 sys.path.append('MeansData/')
@@ -136,7 +136,7 @@ def argv_validation():
 def print_main_usage():
     print("three usage options \n"
           "running an algorithm: python main.py algorithm protein dimension\n"
-          "visualizing a result: python main.py visualize algorithm protein dimension [2d_subplot_size]"
+          "visualizing a result: python main.py visualize algorithm protein dimension [2d_subplot_size]\n"
           "calculating statistics: python main.py calculate_stats protein")
     exit(1)
 
