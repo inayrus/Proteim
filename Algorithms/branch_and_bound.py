@@ -21,7 +21,7 @@ def branch_and_bound(protein_filename):
     mean_stabilities = [[0, 0]] * len_protein
 
     # initialize prune probabilities
-    p_worse = 0.8
+    p_worse = 0.9
     p_between = 0.5
 
     # place first two amino acids, bc their placing doesn't matter

@@ -50,7 +50,7 @@ and than an example if you want to visualize branch_and_bound for protein_b1 in 
 ```
 python main.py visualize name_algorithm protein 2d/3d
 
-python main.py branch_and_bound protein_b1 3d
+python main.py visualize branch_and_bound protein_b1 3d
 ```
 
 If you choose for a 2d visualisation you can also choose to visualize mutiple Proteins
