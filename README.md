@@ -4,6 +4,20 @@ Find the most optimal folded proteins
 
 ## Getting Started
 
+### Statespace
+The upper bound of the statespace is 4 * 3<sup>(n-1)</sup>, where n is the number of amino acids in a protein.
+The first amino had four placement options and the following ones all have three.
+These placement options difference of the first animo is why the formula has a times 4 and a to the (n-1)th power.
+
+This statespace can be reduced by placing the first two amino acids. This will remove the rotational symmetry
+and results in a formula of 3<sup>(n-2)</sup>.
+
+We have also removed the mirror symmetry in the proteins, by always removing the left placement option if all the
+previously placed amino acids are laying in a straight line. This reduces the statespace by a third,
+giving us a reduced upper bound of 3<sup>(n-2)</sup> * 2/3.
+
+More information and an illustration of this statespace reduction can be found in the powerpoint (slide 5-7, Presentatie folder).
+
 ### Prerequisites
 
 This codebase is completely written in Python [Python3.6.3](https://www.python.org/downloads/). In requirements.txt are all necessary packages to run the code successfully. These packages can be easily installed with pip through the following instruction:
