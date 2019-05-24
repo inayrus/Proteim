@@ -50,7 +50,6 @@ class Amino(object):
     def __repr__(self):
         s="\n===Amino=== \n"
         s+="id:"+str(self.id)+"\n"
-        # s+="conn:"+str(self.conn)+"\n"
         s+="location:"+str(self.location)+"\n"
         s+="bond_strength:"+str(self.bond_strength)+"\n"
         return s
