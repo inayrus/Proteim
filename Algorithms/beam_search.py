@@ -15,15 +15,15 @@ def beam_search(protein_filename):
     amino_acids = protein.get_amino_acids()
     best_proteins, queue, child_stabilities, beamsearch = ([] for i in range(4))
     beam = 1000
-    # place first two amino acids, bc their placing doesn't matter
+    # place first two amino acids
     protein.place_first_two()
 
     # put start protein in the queue
     queue.append(protein)
 
-    # --> start loop
+    # start loop
     while queue != []:
-        # pick the child in front off the queue (pop function)
+        # pick the child in front off the queue
         protein = queue.pop(0)
 
         # if next amino exists,
@@ -31,9 +31,8 @@ def beam_search(protein_filename):
 
         # make a list with all proteins and their stabilities
         if next_parent_amino:
-            # get all children 
+            # get all children
             all_children = protein.get_kids()
-
 
             # append the new child to the pre-beam list
             for child in all_children:

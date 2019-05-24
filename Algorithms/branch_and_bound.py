@@ -21,17 +21,17 @@ def branch_and_bound(protein_filename):
     mean_stabilities = [[0, 0]] * len_protein
 
     # initialize prune probabilities
-    p_worse = 0.9
+    p_worse = 0.8
     p_between = 0.5
 
-    # place first two amino acids, bc their placing doesn't matter
+    # place first two amino acids
     protein.place_first_two()
 
     # put start protein in the stack
     stack.append(protein)
 
     while stack != []:
-        # pick the last child off the stack (pop function)
+        # pick the last child off the stack
         protein = stack.pop()
 
         # if next amino exists,
@@ -81,7 +81,7 @@ def branch_and_bound(protein_filename):
                         if ran_num > p_between:
                             stack.append(protein_child)
 
-                    # UPDATE THE AVERAGE STABILITIES
+                    # update the average stabilities
                     mean_stabilities[depth] = [sum + child_stability, total_depth_children + 1]
 
                 # all branches of a P amino are kept

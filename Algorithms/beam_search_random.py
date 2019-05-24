@@ -18,15 +18,15 @@ def beam_search_random(protein_filename):
     best_proteins, queue, child_stabilities, beamsearch, beam_random = ([] for i in range(5))
     beam = 50
 
-    # place first two amino acids, bc their placing doesn't matter
+    # place first two amino acids
     protein.place_first_two()
 
     # put start protein in the queue
     queue.append(protein)
 
-    # --> start loop
+    # start loop
     while queue != []:
-        # pick the child in front off the queue (pop function)
+        # pick the child in front off the queue
         protein = queue.pop(0)
 
         # if next amino exists,

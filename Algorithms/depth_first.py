@@ -14,7 +14,7 @@ def depth_first(protein_filename):
     amino_acids = protein.get_amino_acids()
     best_proteins, stack = ([] for i in range(2))
 
-    # place first two amino acids, bc their placing doesn't matter
+    # place first two amino acids
     protein.place_first_two()
 
     # put start protein in the stack
@@ -22,9 +22,9 @@ def depth_first(protein_filename):
 
     iterations = 0
 
-    # --> start loop
+    # start loop
     while stack != []:
-        # pick the last child off the stack (pop function)
+        # pick the last child off the stack
         protein = stack.pop()
         iterations += 1
         print("number of iterations: {}".format(iterations))
