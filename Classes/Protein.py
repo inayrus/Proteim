@@ -9,7 +9,7 @@ class Protein(object):
     """Representation of a protein"""
 
     def __init__(self, file):
-        """initializes a protein"""
+        """ Initializes a protein"""
         self.stability = 0
         self.amino_acids = self.load_protein(file)
         self.bonds = []
