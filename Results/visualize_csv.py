@@ -43,6 +43,9 @@ def visualize_csv(algorithm, protein, size=1):
     size = int(size)
     total_in_plot = size * size
 
+    # print the stability of one protein
+    print("stability of {}: {}".format(protein, all_proteins[0].get_stability()))
+
     for protein_i, protein in enumerate(all_proteins):
         # get the attributes of the protein
         all_coordinates = protein.get_all_coordinates()
