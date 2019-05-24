@@ -2,6 +2,7 @@ import sys
 sys.path.append('Algorithms/')
 sys.path.append('Results/')
 sys.path.append('Classes/')
+sys.path.append('MeansData/')
 
 import time
 import pathlib
@@ -15,6 +16,7 @@ import depth_first
 import greedy
 import random_fold
 import visualize_csv
+import calculate_stats
 
 def main(action, protein, algorithm=None, dimension=None, size=None):
     """
@@ -45,7 +47,8 @@ def get_actions():
                     'depth_first': depth_first.depth_first,
                     'greedy': greedy.greedy_loop,
                     'random_fold': random_fold.random_loop,
-                    'visualize': visualize_csv.visualize_dimension
+                    'visualize': visualize_csv.visualize_dimension,
+                    'calculate_stats': calculate_stats.calculate_stats
     }
     return actions_dict
 
@@ -64,14 +67,19 @@ def argv_validation():
         algorithm = sys.argv[2]
         protein = sys.argv[3]
         dimension = sys.argv[4].lower()
-    # variable casting for running algorithms
-    elif action != "visualize" and len_args == 4:
-        protein = sys.argv[2]
-        dimension = sys.argv[3].lower()
+    elif action != "visualize":
+        # variable casting for running algorithms
+        if len_args == 4:
+            protein = sys.argv[2]
+            dimension = sys.argv[3].lower()
+        # variable casting for getting statistics
+        elif len_args == 3:
+            protein = sys.argv[2]
     else:
-        print("two usage options \n"
+        print("three usage options \n"
               "running an algorithm: python main.py algorithm protein dimension\n"
-              "visualizing a result: python main.py visualize algorithm protein dimension [2d_subplot_size]")
+              "visualizing a result: python main.py visualize algorithm protein dimension [2d_subplot_size]"
+              "calculating statistics: python main.py calculate_stats protein")
         exit(1)
 
     # ensure that the protein name exists in ProteinData
@@ -81,7 +89,7 @@ def argv_validation():
         exit(1)
 
     # ensure that the dimension is valid
-    if dimension != "2d" and dimension != "3d":
+    if action != "calculate_stats" and dimension != "2d" and dimension != "3d":
         print("please choose either 2d or 3d as dimension")
         exit(1)
 
@@ -115,6 +123,9 @@ def argv_validation():
     elif len_args == 5:
         # visualize
         main(action, protein, algorithm, dimension)
+        # statistics
+    elif len_args == 3:
+        main(action, protein)
     else:
         main(action, protein, algorithm, dimension, size)
 

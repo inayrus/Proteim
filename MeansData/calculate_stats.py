@@ -4,11 +4,23 @@ import pathlib
 import csv
 import matplotlib.pyplot as plt
 
-def calculate_mean(protein_name):
-    """Function that takes data from a csv and returns the mean."""
+def calculate_stats(protein_name):
+    """
+    Prints the mean and the mode in the terminal.
+    Also plots the data distribution in a histogram.
+    """
+    calculate_mean_mode(protein_name)
+    plot_distribution(protein_name)
+
+
+def calculate_mean_mode(protein_name):
+    """
+    Function that reads the data gotten from 1000 iterations with the random
+    algorithm from a csv and returns the mean and mode.
+    """
     data = []
 
-    file = pathlib.Path("{}_1000.csv".format(protein_name))
+    file = pathlib.Path("MeansData/{}_1000.csv".format(protein_name))
 
     # read the csvfile
     with file.open('r') as csv_file:
@@ -30,7 +42,7 @@ def calculate_mean(protein_name):
 def plot_distribution(protein_name):
     data = []
 
-    file = pathlib.Path("{}_1000.csv".format(protein_name))
+    file = pathlib.Path("MeansData/{}_1000.csv".format(protein_name))
 
     # read the csvfile
     with file.open('r') as csv_file:
@@ -49,5 +61,4 @@ def plot_distribution(protein_name):
 if __name__ == "__main__":
     if len(sys.argv) != 2:
         print("type the protein you want the mean of in the command line")
-    calculate_mean(sys.argv[1])
-    plot_distribution(sys.argv[1])
+    calculate_stats(sys.argv[1])
